@@ -9,8 +9,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.7" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fatihdgn.Todo.Context\Fatihdgn.Todo.Context.csproj" />
+    <ProjectReference Include="..\Fatihdgn.Todo.Models\Fatihdgn.Todo.Models.csproj" />
   </ItemGroup>
 
 </Project>
