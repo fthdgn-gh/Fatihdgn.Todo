@@ -1,11 +1,11 @@
-﻿using Fatihdgn.ToDo.Entities;
+﻿using Fatihdgn.Todo.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fatihdgn.Todo.Context;
 
-public class ToDoContext : DbContext
+public class TodoContext : DbContext
 {
-    public ToDoContext(DbContextOptions options) : base(options) { }
+    public TodoContext(DbContextOptions options) : base(options) { }
     
     public DbSet<TodoItemEntity> Items { get; set; }
 }
