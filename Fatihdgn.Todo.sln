@@ -11,11 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fatihdgn.Todo.Entities", "F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fatihdgn.Todo.Context", "Fatihdgn.Todo.Context\Fatihdgn.Todo.Context.csproj", "{2C9A6691-D31B-425B-982A-807986E981DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fatihdgn.Todo.Repositories", "Fatihdgn.Todo.Repositories\Fatihdgn.Todo.Repositories.csproj", "{52AF7A0F-3ED9-4F11-AD0D-3355BDB87B87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fatihdgn.Todo.Repositories", "Fatihdgn.Todo.Repositories\Fatihdgn.Todo.Repositories.csproj", "{52AF7A0F-3ED9-4F11-AD0D-3355BDB87B87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fatihdgn.Todo.Entities.Abstractions", "Fatihdgn.Todo.Entities.Abstractions\Fatihdgn.Todo.Entities.Abstractions.csproj", "{D5A22614-A31B-4B42-B85D-21FFF15F47AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fatihdgn.Todo.Entities.Abstractions", "Fatihdgn.Todo.Entities.Abstractions\Fatihdgn.Todo.Entities.Abstractions.csproj", "{D5A22614-A31B-4B42-B85D-21FFF15F47AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fatihdgn.Todo.Repositories.Abstractions", "Fatihdgn.Todo.Repositories.Abstractions\Fatihdgn.Todo.Repositories.Abstractions.csproj", "{E63F47D6-F9EC-435C-BF13-8DB8775821DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fatihdgn.Todo.Repositories.Abstractions", "Fatihdgn.Todo.Repositories.Abstractions\Fatihdgn.Todo.Repositories.Abstractions.csproj", "{E63F47D6-F9EC-435C-BF13-8DB8775821DD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fatihdgn.Todo.Repositories.Tests", "Fatihdgn.Todo.Repositories.Tests\Fatihdgn.Todo.Repositories.Tests.csproj", "{6105F739-38BD-441D-8E56-4A0992880D10}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{E63F47D6-F9EC-435C-BF13-8DB8775821DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E63F47D6-F9EC-435C-BF13-8DB8775821DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E63F47D6-F9EC-435C-BF13-8DB8775821DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6105F739-38BD-441D-8E56-4A0992880D10}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6105F739-38BD-441D-8E56-4A0992880D10}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6105F739-38BD-441D-8E56-4A0992880D10}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6105F739-38BD-441D-8E56-4A0992880D10}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
