@@ -43,7 +43,9 @@ public class TodoDBCommandRepositoryTests
         
         result.IsT0.Should().BeTrue();
         result.AsT0.Id.Should().Be(id);
-        await ClearEntities();
+
+        _context.Remove(result.AsT0);
+        await _context.SaveChangesAsync();
     }
 
     [Fact]

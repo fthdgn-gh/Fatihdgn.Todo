@@ -34,13 +34,14 @@ public class TodoDBQueryRepositoryTests
     public async Task FindAsync_WithValidId_ReturnsEntity()
     {
         var id = Guid.NewGuid();
-        await _context.Items.AddAsync(new Entities.TodoItemEntity { Id = id });
+        var entry = await _context.Items.AddAsync(new Entities.TodoItemEntity { Id = id });
         await _context.SaveChangesAsync();
 
         var result = await sut.FindAsync(id);
 
         result.IsT0.Should().BeTrue();
         result.AsT0.Id.Should().Be(id);
+
         await ClearEntities();
 
     }

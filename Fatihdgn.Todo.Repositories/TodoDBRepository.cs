@@ -12,57 +12,25 @@ namespace Fatihdgn.Todo.Repositories;
 public class TodoDBRepository<TEntity> : IRepository<TEntity>
     where TEntity : class, IEntity
 {
-    private readonly TodoDB _context;
+    private readonly ICommandRepository<TEntity> _command;
+    private readonly IQueryRepository<TEntity> _query;
 
-    public TodoDBRepository(TodoDB context)
+    public TodoDBRepository(ICommandRepository<TEntity> command, IQueryRepository<TEntity> query)
     {
-        _context = context;
+        _command = command;
+        _query = query;
     }
 
-    private DbSet<TEntity> Set => _context.Set<TEntity>();
+    public IQueryRepository<TEntity> Query => _query;
+    public ICommandRepository<TEntity> Command => _command;
 
-    public async Task<OneOf<TEntity, Error<ArgumentNullException>>> AddAsync(TEntity entity)
-    {
-        if (entity == null)
-        {
-            return new Error<ArgumentNullException>(new ArgumentNullException(nameof(entity)));
-        }
 
-        var entry = await Set.AddAsync(entity);
-        await _context.SaveChangesAsync();
-        return entry.Entity;
-    }
+    public async Task<OneOf<TEntity, NotFound>> FindAsync(Guid id) => await _query.FindAsync(id);
 
-    public async Task<OneOf<TEntity, NotFound>> FindAsync(Guid id)
-    {
-        var entity = await Set.FindAsync(id);
-        if (entity == null) return new NotFound();
-        return entity;
-    }
+    public IQueryable<TEntity> GetAll() => _query.GetAll();
+    public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> exp) => _query.Where(exp);
 
-    public IQueryable<TEntity> GetAll() => Set.AsQueryable();
-
-    public async Task<OneOf<TEntity, Error<ArgumentNullException>>> RemoveAsync(TEntity entity)
-    {
-        if (entity == null)
-        {
-            return new Error<ArgumentNullException>(new ArgumentNullException(nameof(entity)));
-        }
-        var entry = Set.Remove(entity);
-        await _context.SaveChangesAsync();
-        return entry.Entity;
-    }
-
-    public async Task<OneOf<TEntity, Error<ArgumentNullException>>> UpdateAsync(TEntity entity)
-    {
-        if(entity == null)
-        {
-            return new Error<ArgumentNullException>(new ArgumentNullException(nameof(entity)));
-        }
-        var entry = Set.Update(entity);
-        await _context.SaveChangesAsync();
-        return entry.Entity;
-    }
-
-    public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> exp) => Set.Where(exp);
+    public async Task<OneOf<TEntity, Error<ArgumentNullException>>> AddAsync(TEntity entity) => await _command.AddAsync(entity);
+    public async Task<OneOf<TEntity, Error<ArgumentNullException>>> RemoveAsync(TEntity entity) => await _command.RemoveAsync(entity);
+    public async Task<OneOf<TEntity, Error<ArgumentNullException>>> UpdateAsync(TEntity entity) => await _command.UpdateAsync(entity);
 }
