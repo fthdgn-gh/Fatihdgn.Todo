@@ -40,7 +40,7 @@ public class ItemsController : Controller
 
     [HttpPut]
     [Route("{id}")]
-    public async Task<IActionResult> Post(Guid id, TodoItem model)
+    public async Task<IActionResult> Put(Guid id, TodoItem model)
     {
         var result = await _context.Items.FindAsync(id);
         if (result == null) return NotFound();
