@@ -7,7 +7,7 @@ namespace Fatihdgn.Todo.Context;
 public class TodoDB : DbContext
 {
     public TodoDB(DbContextOptions options) : base(options) { }
-    
+
     public DbSet<TodoItemEntity> Items { get; set; }
 
     private void MarkDeletedEntities<TEntity>()

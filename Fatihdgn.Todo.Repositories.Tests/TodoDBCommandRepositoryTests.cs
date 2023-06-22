@@ -38,9 +38,9 @@ public class TodoDBCommandRepositoryTests
     public async Task AddAsync_WithValidParameter_ReturnsEntity()
     {
         var id = Guid.NewGuid();
-        
+
         var result = await sut.AddAsync(new TodoItemEntity() { Id = id, Content = "To be added" });
-        
+
         result.IsT0.Should().BeTrue();
         result.AsT0.Id.Should().Be(id);
 

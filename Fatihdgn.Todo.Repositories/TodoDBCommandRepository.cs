@@ -1,11 +1,9 @@
 ﻿using Fatihdgn.Todo.Context;
-using Fatihdgn.Todo.Entities;
 using Fatihdgn.Todo.Entities.Abstractions;
 using Fatihdgn.Todo.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using OneOf;
 using OneOf.Types;
-using System.Linq.Expressions;
 
 namespace Fatihdgn.Todo.Repositories;
 
@@ -46,7 +44,7 @@ public class TodoDBCommandRepository<TEntity> : ICommandRepository<TEntity>
 
     public async Task<OneOf<TEntity, Error<ArgumentNullException>>> UpdateAsync(TEntity entity)
     {
-        if(entity == null)
+        if (entity == null)
         {
             return new Error<ArgumentNullException>(new ArgumentNullException(nameof(entity)));
         }

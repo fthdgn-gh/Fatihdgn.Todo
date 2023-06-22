@@ -1,5 +1,4 @@
-﻿using Fatihdgn.Todo.Context;
-using Fatihdgn.Todo.Entities;
+﻿using Fatihdgn.Todo.Entities;
 using Fatihdgn.Todo.Repositories.Abstractions;
 
 namespace Fatihdgn.Todo.Repositories;

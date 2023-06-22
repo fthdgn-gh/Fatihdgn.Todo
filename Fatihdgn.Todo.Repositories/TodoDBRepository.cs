@@ -1,8 +1,5 @@
-﻿using Fatihdgn.Todo.Context;
-using Fatihdgn.Todo.Entities;
-using Fatihdgn.Todo.Entities.Abstractions;
+﻿using Fatihdgn.Todo.Entities.Abstractions;
 using Fatihdgn.Todo.Repositories.Abstractions;
-using Microsoft.EntityFrameworkCore;
 using OneOf;
 using OneOf.Types;
 using System.Linq.Expressions;
