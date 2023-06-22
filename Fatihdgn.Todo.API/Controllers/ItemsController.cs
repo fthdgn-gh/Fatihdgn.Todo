@@ -1,33 +1,42 @@
 ﻿using Fatihdgn.Todo.Context;
 using Fatihdgn.Todo.Entities;
 using Fatihdgn.Todo.Models;
+using Fatihdgn.Todo.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Fatihdgn.Todo.API.Controllers;
 
 [ApiController]
 public class ItemsController : Controller
 {
-    private readonly TodoDB _context;
+    private readonly ITodoItemRepository _repo;
 
-    public ItemsController(TodoDB context)
+    public ItemsController(ITodoItemRepository repo)
     {
-        _context = context;
+        _repo = repo;
     }
+
+    [HttpGet]
+    [Route("")]
+    public async Task<IActionResult> Get() => Ok(_repo.GetAll());
 
     [HttpGet]
     [Route("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
-        var result = await _context.Items.FindAsync(id);
-        if (result == null) return NotFound();
-        return Ok(result);
+        var result = await _repo.FindAsync(id);
+        return result.Match<IActionResult>(
+            Ok,
+            notFound => NotFound()
+        );
     }
 
     [HttpPost]
+    [Route("")]
     public async Task<IActionResult> Post(TodoItem model)
     {
-        var entry = await _context.Items.AddAsync(new Entities.TodoItemEntity
+        var result = await _repo.AddAsync(new TodoItemEntity
         {
             Id = Guid.NewGuid(),
             Content = model.Content,
@@ -35,31 +44,35 @@ public class ItemsController : Controller
             DueAt = model.DueAt,
             RemindAt = model.RemindAt,
         });
-        return Ok(entry.Entity);
+        return Ok(result.AsT0);
     }
 
     [HttpPut]
     [Route("{id}")]
     public async Task<IActionResult> Put(Guid id, TodoItem model)
     {
-        var result = await _context.Items.FindAsync(id);
-        if (result == null) return NotFound();
-        result.Note = model.Note;
-        result.DueAt = model.DueAt;
-        result.Content = model.Content;
-        result.RemindAt = model.RemindAt;
-        await _context.SaveChangesAsync();
-        return Ok(result);
+        var result = await _repo.FindAsync(id);
+        return await result.Match<Task<IActionResult>>(
+            async entity =>
+            {
+                entity.Note = model.Note;
+                entity.DueAt = model.DueAt;
+                entity.Content = model.Content;
+                entity.RemindAt = model.RemindAt;
+                var updateResult = await _repo.UpdateAsync(entity);
+                return updateResult.Match<IActionResult>(Ok, _ => BadRequest("Error happened when updating"));
+            },
+            _ => Task.FromResult((IActionResult)NotFound())
+        );
     }
 
     [HttpDelete]
     [Route("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        var result = new TodoItemEntity() { Id = id };
-        _context.Items.Attach(result);
-        _context.Items.Remove(result);
-        await _context.SaveChangesAsync();
-        return Ok();
+        return (await _repo.RemoveAsync(id)).Match<IActionResult>(
+            _ => Ok(), 
+            _ => NotFound()
+        );
     }
 }

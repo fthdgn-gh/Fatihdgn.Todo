@@ -2,6 +2,7 @@ using Fatihdgn.Todo.Context;
 using Fatihdgn.Todo.Entities;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using OneOf.Types;
 
 namespace Fatihdgn.Todo.Repositories.Tests;
 
@@ -101,4 +102,32 @@ public class TodoDBCommandRepositoryTests
         result.AsT0.Should().BeEquivalentTo(entity);
         await ClearEntities();
     }
+
+    [Fact]
+    public async Task RemoveAsync_WithValidId_ReturnsNone()
+    {
+        var id = Guid.NewGuid();
+        var entry = await _context.Items.AddAsync(new Entities.TodoItemEntity() { Id = id, Content = "To be removed" });
+        await _context.SaveChangesAsync();
+        _context.ChangeTracker.Clear();
+
+        var result = await sut.RemoveAsync(id);
+
+        result.IsT0.Should().BeTrue();
+        result.AsT0.Should().BeOfType<None>();
+
+        await ClearEntities();
+    }
+
+    [Fact]
+    public async Task RemoveAsync_WithInvalidId_ReturnsNotFound()
+    {
+        var id = Guid.NewGuid();
+
+        var result = await sut.RemoveAsync(id);
+
+        result.IsT1.Should().BeTrue();
+        result.AsT1.Should().BeOfType<NotFound>();
+    }
+
 }

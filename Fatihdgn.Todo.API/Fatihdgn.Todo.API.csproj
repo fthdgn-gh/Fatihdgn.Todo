@@ -17,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Fatihdgn.Todo.Context\Fatihdgn.Todo.Context.csproj" />
     <ProjectReference Include="..\Fatihdgn.Todo.Models\Fatihdgn.Todo.Models.csproj" />
+    <ProjectReference Include="..\Fatihdgn.Todo.Repositories\Fatihdgn.Todo.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

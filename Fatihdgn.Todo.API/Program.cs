@@ -1,5 +1,6 @@
 using Fatihdgn.Todo.Context;
 using Microsoft.EntityFrameworkCore;
+using Fatihdgn.Todo.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,8 @@ builder.Services.AddDbContext<TodoDB>(options =>
     else
         options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(TodoDB)));
 });
+
+builder.Services.AddTodoDBRepositories();
 
 var app = builder.Build();
 

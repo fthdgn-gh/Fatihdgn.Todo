@@ -1,4 +1,5 @@
 ﻿using Fatihdgn.Todo.Context;
+using Fatihdgn.Todo.Entities;
 using Fatihdgn.Todo.Entities.Abstractions;
 using Fatihdgn.Todo.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using OneOf.Types;
 namespace Fatihdgn.Todo.Repositories;
 
 public class TodoDBCommandRepository<TEntity> : ICommandRepository<TEntity>
-    where TEntity : class, IEntity
+    where TEntity : class, IEntity, new ()
 {
     private readonly TodoDB _context;
 
@@ -42,6 +43,8 @@ public class TodoDBCommandRepository<TEntity> : ICommandRepository<TEntity>
         return entry.Entity;
     }
 
+   
+
     public async Task<OneOf<TEntity, Error<ArgumentNullException>>> UpdateAsync(TEntity entity)
     {
         if (entity == null)
@@ -51,5 +54,15 @@ public class TodoDBCommandRepository<TEntity> : ICommandRepository<TEntity>
         var entry = Set.Update(entity);
         await _context.SaveChangesAsync();
         return entry.Entity;
+    }
+
+    public async Task<OneOf<None, NotFound>> RemoveAsync(Guid id)
+    {
+        var count = await Set.CountAsync(x => x.Id == id);
+        if (count == 0) return new NotFound();
+        var entity = new TEntity() { Id = id };
+        Set.Remove(entity);
+        var result = await _context.SaveChangesAsync();
+        return result > 0 ? new None() : new NotFound();
     }
 }

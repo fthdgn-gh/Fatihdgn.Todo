@@ -10,4 +10,5 @@ public interface ICommandRepository<TEntity>
     Task<OneOf<TEntity, Error<ArgumentNullException>>> AddAsync(TEntity entity);
     Task<OneOf<TEntity, Error<ArgumentNullException>>> UpdateAsync(TEntity entity);
     Task<OneOf<TEntity, Error<ArgumentNullException>>> RemoveAsync(TEntity entity);
+    Task<OneOf<None, NotFound>> RemoveAsync(Guid id);
 }
