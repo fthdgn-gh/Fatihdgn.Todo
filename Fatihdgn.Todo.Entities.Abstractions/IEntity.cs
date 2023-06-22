@@ -1,4 +1,4 @@
-﻿namespace Fatihdgn.Todo.Entities;
+﻿namespace Fatihdgn.Todo.Entities.Abstractions;
 
 public interface IEntity
 {

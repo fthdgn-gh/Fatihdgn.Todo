@@ -8,9 +8,9 @@ namespace Fatihdgn.Todo.API.Controllers;
 [ApiController]
 public class ItemsController : Controller
 {
-    private readonly TodoContext _context;
+    private readonly TodoDB _context;
 
-    public ItemsController(TodoContext context)
+    public ItemsController(TodoDB context)
     {
         _context = context;
     }

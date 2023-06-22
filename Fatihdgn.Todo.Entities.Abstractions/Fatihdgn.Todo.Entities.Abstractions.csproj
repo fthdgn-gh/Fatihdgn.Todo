@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Fatihdgn.Todo.Entities.Abstractions\Fatihdgn.Todo.Entities.Abstractions.csproj" />
-  </ItemGroup>
-
 </Project>

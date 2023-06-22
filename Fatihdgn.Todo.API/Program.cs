@@ -6,12 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<TodoContext>(options =>
+builder.Services.AddDbContext<TodoDB>(options =>
 {
     if (builder.Environment.IsDevelopment())
-        options.UseInMemoryDatabase(nameof(TodoContext));
+        options.UseInMemoryDatabase(nameof(TodoDB));
     else
-        options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(TodoContext)));
+        options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(TodoDB)));
 });
 
 var app = builder.Build();

@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="OneOf" Version="3.0.255" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Fatihdgn.Todo.Entities.Abstractions\Fatihdgn.Todo.Entities.Abstractions.csproj" />
   </ItemGroup>
 

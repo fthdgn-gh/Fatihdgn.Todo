@@ -5,11 +5,17 @@ VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fatihdgn.Todo.API", "Fatihdgn.Todo.API\Fatihdgn.Todo.API.csproj", "{D98BA8F1-2B7A-471B-8E0D-F35F6E331FF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fatihdgn.Todo.Models", "Fatihdgn.Todo.Models\Fatihdgn.Todo.Models.csproj", "{191F25BA-FE15-4880-BB59-B7C5B90CCA56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fatihdgn.Todo.Models", "Fatihdgn.Todo.Models\Fatihdgn.Todo.Models.csproj", "{191F25BA-FE15-4880-BB59-B7C5B90CCA56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fatihdgn.Todo.Entities", "Fatihdgn.Todo.Entities\Fatihdgn.Todo.Entities.csproj", "{8921DDCA-F8CC-467A-B09E-50958DC8F91E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fatihdgn.Todo.Entities", "Fatihdgn.Todo.Entities\Fatihdgn.Todo.Entities.csproj", "{8921DDCA-F8CC-467A-B09E-50958DC8F91E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fatihdgn.Todo.Context", "Fatihdgn.Todo.Context\Fatihdgn.Todo.Context.csproj", "{2C9A6691-D31B-425B-982A-807986E981DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fatihdgn.Todo.Context", "Fatihdgn.Todo.Context\Fatihdgn.Todo.Context.csproj", "{2C9A6691-D31B-425B-982A-807986E981DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fatihdgn.Todo.Repositories", "Fatihdgn.Todo.Repositories\Fatihdgn.Todo.Repositories.csproj", "{52AF7A0F-3ED9-4F11-AD0D-3355BDB87B87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fatihdgn.Todo.Entities.Abstractions", "Fatihdgn.Todo.Entities.Abstractions\Fatihdgn.Todo.Entities.Abstractions.csproj", "{D5A22614-A31B-4B42-B85D-21FFF15F47AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fatihdgn.Todo.Repositories.Abstractions", "Fatihdgn.Todo.Repositories.Abstractions\Fatihdgn.Todo.Repositories.Abstractions.csproj", "{E63F47D6-F9EC-435C-BF13-8DB8775821DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +39,18 @@ Global
 		{2C9A6691-D31B-425B-982A-807986E981DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C9A6691-D31B-425B-982A-807986E981DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C9A6691-D31B-425B-982A-807986E981DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52AF7A0F-3ED9-4F11-AD0D-3355BDB87B87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52AF7A0F-3ED9-4F11-AD0D-3355BDB87B87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52AF7A0F-3ED9-4F11-AD0D-3355BDB87B87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52AF7A0F-3ED9-4F11-AD0D-3355BDB87B87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5A22614-A31B-4B42-B85D-21FFF15F47AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5A22614-A31B-4B42-B85D-21FFF15F47AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5A22614-A31B-4B42-B85D-21FFF15F47AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5A22614-A31B-4B42-B85D-21FFF15F47AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E63F47D6-F9EC-435C-BF13-8DB8775821DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E63F47D6-F9EC-435C-BF13-8DB8775821DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E63F47D6-F9EC-435C-BF13-8DB8775821DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E63F47D6-F9EC-435C-BF13-8DB8775821DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

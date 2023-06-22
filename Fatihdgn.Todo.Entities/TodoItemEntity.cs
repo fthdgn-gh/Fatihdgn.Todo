@@ -1,4 +1,6 @@
-﻿namespace Fatihdgn.Todo.Entities;
+﻿using Fatihdgn.Todo.Entities.Abstractions;
+
+namespace Fatihdgn.Todo.Entities;
 
 public class TodoItemEntity : IEntity
 {
