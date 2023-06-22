@@ -1,7 +1,10 @@
 ﻿using Fatihdgn.Todo.Context;
+using Fatihdgn.Todo.DTOs;
 using Fatihdgn.Todo.Entities;
 using Fatihdgn.Todo.Models;
 using Fatihdgn.Todo.Repositories;
+using Fatihdgn.Todo.Requests;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,23 +13,27 @@ namespace Fatihdgn.Todo.API.Controllers;
 [ApiController]
 public class ItemsController : Controller
 {
-    private readonly ITodoItemRepository _repo;
+    private readonly IMediator _mediator;
 
-    public ItemsController(ITodoItemRepository repo)
+    public ItemsController(IMediator mediator)
     {
-        _repo = repo;
+        _mediator = mediator;
     }
 
     [HttpGet]
     [Route("")]
-    public async Task<IActionResult> Get() => Ok(_repo.GetAll());
+    public async Task<IActionResult> Get()
+    {
+        var response = await _mediator.Send(new GetAllTodoItemsQuery());
+        return Ok(response);
+    }
 
     [HttpGet]
     [Route("{id}")]
     public async Task<IActionResult> Get(Guid id)
     {
-        var result = await _repo.FindAsync(id);
-        return result.Match<IActionResult>(
+        var response = await _mediator.Send(new GetTodoItemQuery(id));
+        return response.Match<IActionResult>(
             Ok,
             notFound => NotFound()
         );
@@ -34,35 +41,36 @@ public class ItemsController : Controller
 
     [HttpPost]
     [Route("")]
-    public async Task<IActionResult> Post(TodoItem model)
+    public async Task<IActionResult> Post(TodoItemCreateDTO model)
     {
-        var result = await _repo.AddAsync(new TodoItemEntity
-        {
-            Id = Guid.NewGuid(),
-            Content = model.Content,
-            Note = model.Note,
-            DueAt = model.DueAt,
-            RemindAt = model.RemindAt,
-        });
-        return Ok(result.AsT0);
+        var response = await _mediator.Send(new CreateTodoItemCommand(model));
+        return response.Match<IActionResult>(
+            Ok,
+            error => BadRequest(error.Value.Message)
+        );
     }
 
     [HttpPut]
     [Route("{id}")]
-    public async Task<IActionResult> Put(Guid id, TodoItem model)
+    public async Task<IActionResult> Put(Guid id, TodoItemUpdateDTO model)
     {
-        var result = await _repo.FindAsync(id);
-        return await result.Match<Task<IActionResult>>(
-            async entity =>
-            {
-                entity.Note = model.Note;
-                entity.DueAt = model.DueAt;
-                entity.Content = model.Content;
-                entity.RemindAt = model.RemindAt;
-                var updateResult = await _repo.UpdateAsync(entity);
-                return updateResult.Match<IActionResult>(Ok, _ => BadRequest("Error happened when updating"));
-            },
-            _ => Task.FromResult((IActionResult)NotFound())
+        var response = await _mediator.Send(new UpdateTodoItemCommand(id, model));
+        return response.Match<IActionResult>(
+            Ok,
+            notFound => NotFound(),
+            error => BadRequest(error.Value.Message)
+        );
+    }
+
+    [HttpPatch]
+    [Route("{id}")]
+    public async Task<IActionResult> Patch(Guid id, TodoItemPatchDTO model)
+    {
+        var response = await _mediator.Send(new PatchTodoItemCommand(id, model));
+        return response.Match<IActionResult>(
+            Ok,
+            notFound => NotFound(),
+            error => BadRequest(error.Value.Message)
         );
     }
 
@@ -70,8 +78,9 @@ public class ItemsController : Controller
     [Route("{id}")]
     public async Task<IActionResult> Delete(Guid id)
     {
-        return (await _repo.RemoveAsync(id)).Match<IActionResult>(
-            _ => Ok(), 
+        var response = await _mediator.Send(new RemoveTodoItemCommand(id));
+        return response.Match<IActionResult>(
+            _ => Ok(),
             _ => NotFound()
         );
     }

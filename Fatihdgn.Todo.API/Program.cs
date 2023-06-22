@@ -1,12 +1,16 @@
 using Fatihdgn.Todo.Context;
 using Microsoft.EntityFrameworkCore;
-using Fatihdgn.Todo.Repositories;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Fatihdgn.Todo.DTOs.Validators;
+using Fatihdgn.Todo.Handlers;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddDbContext<TodoDB>(options =>
 {
     if (builder.Environment.IsDevelopment())
@@ -16,6 +20,11 @@ builder.Services.AddDbContext<TodoDB>(options =>
 });
 
 builder.Services.AddTodoDBRepositories();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<DTOValidatorsMarker>();
+
+builder.Services.AddMediatR(options => options.RegisterServicesFromAssemblyContaining<RequestHandlersMarker>());
 
 var app = builder.Build();
 

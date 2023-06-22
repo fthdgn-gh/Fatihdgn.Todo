@@ -1,8 +1,7 @@
-﻿using Fatihdgn.Todo.Entities;
+﻿using Fatihdgn.Todo.Repositories;
 using Fatihdgn.Todo.Repositories.Abstractions;
-using Microsoft.Extensions.DependencyInjection;
 
-namespace Fatihdgn.Todo.Repositories;
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class TodoRepositoriesExtensions
 {

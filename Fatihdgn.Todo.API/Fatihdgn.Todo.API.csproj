@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.7" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.17.2" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
@@ -16,6 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Fatihdgn.Todo.Context\Fatihdgn.Todo.Context.csproj" />
+    <ProjectReference Include="..\Fatihdgn.Todo.DTOs.Validators\Fatihdgn.Todo.DTOs.Validators.csproj" />
+    <ProjectReference Include="..\Fatihdgn.Todo.Handlers\Fatihdgn.Todo.Handlers.csproj" />
     <ProjectReference Include="..\Fatihdgn.Todo.Models\Fatihdgn.Todo.Models.csproj" />
     <ProjectReference Include="..\Fatihdgn.Todo.Repositories\Fatihdgn.Todo.Repositories.csproj" />
   </ItemGroup>
