@@ -10,15 +10,15 @@ namespace Fatihdgn.Todo.Repositories.Tests
 {
     public class TodoDBRepositoryTests
     {
-        private readonly Mock<ICommandRepository<TodoItemEntity>> _mockCommandRepository;
-        private readonly Mock<IQueryRepository<TodoItemEntity>> _mockQueryRepository;
-        private readonly TodoDBRepository<TodoItemEntity> sut;
+        private readonly Mock<ICommandRepository<TodoItemEntity, Guid>> _mockCommandRepository;
+        private readonly Mock<IQueryRepository<TodoItemEntity, Guid>> _mockQueryRepository;
+        private readonly TodoDBRepository<TodoItemEntity, Guid> sut;
 
         public TodoDBRepositoryTests()
         {
-            _mockCommandRepository = new Mock<ICommandRepository<TodoItemEntity>>();
-            _mockQueryRepository = new Mock<IQueryRepository<TodoItemEntity>>();
-            sut = new TodoDBRepository<TodoItemEntity>(_mockCommandRepository.Object, _mockQueryRepository.Object);
+            _mockCommandRepository = new Mock<ICommandRepository<TodoItemEntity, Guid>>();
+            _mockQueryRepository = new Mock<IQueryRepository<TodoItemEntity, Guid>>();
+            sut = new TodoDBRepository<TodoItemEntity, Guid>(_mockCommandRepository.Object, _mockQueryRepository.Object);
         }
 
 

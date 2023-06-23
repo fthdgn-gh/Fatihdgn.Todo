@@ -8,8 +8,8 @@ using System.Linq.Expressions;
 
 namespace Fatihdgn.Todo.Repositories;
 
-public class TodoDBQueryRepository<TEntity> : IQueryRepository<TEntity>
-    where TEntity : class, IEntity
+public class TodoDBQueryRepository<TEntity, TKey> : IQueryRepository<TEntity, TKey>
+    where TEntity : class, IEntity<TKey>
 {
     private readonly TodoDB _context;
 
@@ -19,7 +19,7 @@ public class TodoDBQueryRepository<TEntity> : IQueryRepository<TEntity>
     }
 
     private DbSet<TEntity> Set => _context.Set<TEntity>();
-    public async Task<OneOf<TEntity, NotFound>> FindAsync(Guid id)
+    public async Task<OneOf<TEntity, NotFound>> FindAsync(TKey id)
     {
         var entity = await Set.FindAsync(id);
         if (entity == null) return new NotFound();

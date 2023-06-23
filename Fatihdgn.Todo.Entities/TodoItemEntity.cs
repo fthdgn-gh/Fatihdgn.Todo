@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Fatihdgn.Todo.Entities;
 
-public class TodoItemEntity : IEntity
+public class TodoItemEntity : IEntity<Guid>
 {
     public Guid Id { get; set; }
     public string Content { get; set; } = string.Empty;
@@ -14,5 +14,7 @@ public class TodoItemEntity : IEntity
 
     [JsonIgnore]
     public DateTimeOffset? RemovedAt { get; set; }
+
+    public TodoUserEntity? By { get; set; }
 
 }

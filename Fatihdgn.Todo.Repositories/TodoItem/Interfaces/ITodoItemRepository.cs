@@ -7,4 +7,4 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Fatihdgn.Todo.Repositories;
-public interface ITodoItemRepository : IRepository<TodoItemEntity> { }
+public interface ITodoItemRepository : IRepository<TodoItemEntity, Guid> { }

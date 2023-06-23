@@ -1,17 +1,18 @@
 ﻿using Fatihdgn.Todo.Entities;
 using Fatihdgn.Todo.Entities.Abstractions;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fatihdgn.Todo.Context;
 
-public class TodoDB : DbContext
+public class TodoDB : IdentityDbContext<TodoUserEntity>
 {
     public TodoDB(DbContextOptions options) : base(options) { }
 
     public DbSet<TodoItemEntity> Items { get; set; }
 
-    private void MarkDeletedEntities<TEntity>()
-        where TEntity : class, IEntity
+    private void MarkDeletedEntities<TEntity, TKey>()
+        where TEntity : class, IEntity<TKey>
     {
         foreach (var entry in ChangeTracker.Entries<TEntity>())
         {
@@ -23,29 +24,29 @@ public class TodoDB : DbContext
         }
     }
 
-    private void AddEntityQueryFilter<TEntity>(ModelBuilder modelBuilder)
-        where TEntity : class, IEntity
+    private void AddEntityQueryFilter<TEntity, TKey>(ModelBuilder modelBuilder)
+        where TEntity : class, IEntity<TKey>
     {
         modelBuilder.Entity<TEntity>().HasQueryFilter(entity => entity.RemovedAt == null);
     }
 
     public override int SaveChanges()
     {
-        MarkDeletedEntities<TodoItemEntity>();
+        MarkDeletedEntities<TodoItemEntity, Guid>();
 
         return base.SaveChanges();
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        MarkDeletedEntities<TodoItemEntity>();
+        MarkDeletedEntities<TodoItemEntity, Guid>();
 
         return base.SaveChangesAsync(cancellationToken);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        AddEntityQueryFilter<TodoItemEntity>(modelBuilder);
+        AddEntityQueryFilter<TodoItemEntity, Guid>(modelBuilder);
         base.OnModelCreating(modelBuilder);
     }
 }

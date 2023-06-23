@@ -8,13 +8,13 @@ namespace Fatihdgn.Todo.Repositories.Tests;
 public class TodoDBQueryRepositoryTests
 {
     private readonly TodoDB _context;
-    private readonly TodoDBQueryRepository<TodoItemEntity> sut;
+    private readonly TodoDBQueryRepository<TodoItemEntity, Guid> sut;
 
     public TodoDBQueryRepositoryTests()
     {
         var options = new DbContextOptionsBuilder().UseInMemoryDatabase(nameof(TodoDB)).Options;
         _context = new TodoDB(options);
-        sut = new TodoDBQueryRepository<TodoItemEntity>(_context);
+        sut = new TodoDBQueryRepository<TodoItemEntity, Guid>(_context);
     }
 
     async Task ClearEntities()

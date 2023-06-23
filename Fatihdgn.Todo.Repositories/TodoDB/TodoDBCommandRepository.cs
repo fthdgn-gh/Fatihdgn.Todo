@@ -8,8 +8,8 @@ using OneOf.Types;
 
 namespace Fatihdgn.Todo.Repositories;
 
-public class TodoDBCommandRepository<TEntity> : ICommandRepository<TEntity>
-    where TEntity : class, IEntity, new ()
+public class TodoDBCommandRepository<TEntity, TKey> : ICommandRepository<TEntity, TKey>
+    where TEntity : class, IEntity<TKey>, new ()
 {
     private readonly TodoDB _context;
 
@@ -56,9 +56,10 @@ public class TodoDBCommandRepository<TEntity> : ICommandRepository<TEntity>
         return entry.Entity;
     }
 
-    public async Task<OneOf<None, NotFound>> RemoveAsync(Guid id)
+    public async Task<OneOf<None, NotFound>> RemoveAsync(TKey id)
     {
-        var count = await Set.CountAsync(x => x.Id == id);
+        if (id == null) return new NotFound();
+        var count = await Set.CountAsync(x => id.Equals(x.Id));
         if (count == 0) return new NotFound();
         var entity = new TEntity() { Id = id };
         Set.Remove(entity);

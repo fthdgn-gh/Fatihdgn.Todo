@@ -1,19 +1,14 @@
-﻿using Fatihdgn.Todo.Context;
-using Fatihdgn.Todo.DTOs;
-using Fatihdgn.Todo.Entities;
-using Fatihdgn.Todo.Models;
-using Fatihdgn.Todo.Repositories;
+﻿using Fatihdgn.Todo.DTOs;
 using Fatihdgn.Todo.Requests;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NSwag.Annotations;
-//using Swashbuckle.AspNetCore.Annotations;
 
 namespace Fatihdgn.Todo.API.Controllers;
 
+[Authorize]
 [ApiController]
-
 public class ItemsController : Controller
 {
     private readonly IMediator _mediator;

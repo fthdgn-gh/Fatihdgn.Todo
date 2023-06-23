@@ -3,4 +3,4 @@ using Fatihdgn.Todo.Repositories.Abstractions;
 
 namespace Fatihdgn.Todo.Repositories;
 
-public interface ITodoItemCommandRepository : ICommandRepository<TodoItemEntity> { }
+public interface ITodoItemCommandRepository : ICommandRepository<TodoItemEntity, Guid> { }

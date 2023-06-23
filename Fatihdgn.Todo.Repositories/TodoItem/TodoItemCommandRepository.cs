@@ -3,7 +3,7 @@ using Fatihdgn.Todo.Entities;
 
 namespace Fatihdgn.Todo.Repositories;
 
-public class TodoItemCommandRepository : TodoDBCommandRepository<TodoItemEntity>, ITodoItemCommandRepository
+public class TodoItemCommandRepository : TodoDBCommandRepository<TodoItemEntity, Guid>, ITodoItemCommandRepository
 {
     public TodoItemCommandRepository(TodoDB context) : base(context) { }
 }

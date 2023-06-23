@@ -1,8 +1,7 @@
 ﻿namespace Fatihdgn.Todo.Entities.Abstractions;
 
-public interface IEntity
+public interface IEntity<TKey>
 {
-    Guid Id { get; set; }
+    TKey Id { get; set; }
     DateTimeOffset? RemovedAt { get; set; }
-
 }

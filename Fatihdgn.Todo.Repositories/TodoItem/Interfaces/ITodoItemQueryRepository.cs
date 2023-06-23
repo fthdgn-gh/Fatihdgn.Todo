@@ -3,4 +3,4 @@ using Fatihdgn.Todo.Repositories.Abstractions;
 
 namespace Fatihdgn.Todo.Repositories;
 
-public interface ITodoItemQueryRepository : IQueryRepository<TodoItemEntity> { }
+public interface ITodoItemQueryRepository : IQueryRepository<TodoItemEntity, Guid> { }
