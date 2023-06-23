@@ -45,7 +45,7 @@ public class ItemsController : Controller
     [Route("")]
     [OpenApiOperation("CreateItem")]
     [ProducesResponseType(200, Type = typeof(TodoItemDTO))]
-    public async Task<IActionResult> Create([FromBody]TodoItemCreateDTO model)
+    public async Task<IActionResult> Create([FromBody] TodoItemCreateDTO model)
     {
         var response = await _mediator.Send(new CreateTodoItemCommand(model));
         return response.Match<IActionResult>(

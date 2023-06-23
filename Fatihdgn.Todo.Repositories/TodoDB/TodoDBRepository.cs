@@ -30,5 +30,5 @@ public class TodoDBRepository<TEntity, TKey> : IRepository<TEntity, TKey>
     public async Task<OneOf<TEntity, Error<ArgumentNullException>>> AddAsync(TEntity entity) => await _command.AddAsync(entity);
     public async Task<OneOf<TEntity, Error<ArgumentNullException>>> RemoveAsync(TEntity entity) => await _command.RemoveAsync(entity);
     public async Task<OneOf<TEntity, Error<ArgumentNullException>>> UpdateAsync(TEntity entity) => await _command.UpdateAsync(entity);
-    public async Task<OneOf<None,NotFound>> RemoveAsync(TKey id) => await _command.RemoveAsync(id);
+    public async Task<OneOf<None, NotFound>> RemoveAsync(TKey id) => await _command.RemoveAsync(id);
 }

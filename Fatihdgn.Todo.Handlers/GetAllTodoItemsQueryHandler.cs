@@ -1,11 +1,8 @@
 ﻿using Fatihdgn.Todo.DTOs;
 using Fatihdgn.Todo.DTOs.Mappings.Entities;
-using Fatihdgn.Todo.Entities;
 using Fatihdgn.Todo.Repositories;
 using Fatihdgn.Todo.Requests;
 using MediatR;
-using OneOf;
-using OneOf.Types;
 
 namespace Fatihdgn.Todo.Handlers;
 

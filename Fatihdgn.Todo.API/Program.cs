@@ -1,17 +1,16 @@
 using Fatihdgn.Todo.Context;
-using Microsoft.EntityFrameworkCore;
+using Fatihdgn.Todo.DTOs.Validators;
+using Fatihdgn.Todo.Entities;
+using Fatihdgn.Todo.Handlers;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Fatihdgn.Todo.DTOs.Validators;
-using Fatihdgn.Todo.Handlers;
-using NSwag.Annotations;
-using Fatihdgn.Todo.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using NSwag;
 using NSwag.Generation.Processors.Security;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddUserSecrets<Program>();

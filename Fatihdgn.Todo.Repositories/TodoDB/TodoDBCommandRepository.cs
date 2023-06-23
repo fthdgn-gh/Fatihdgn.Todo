@@ -1,5 +1,4 @@
 ﻿using Fatihdgn.Todo.Context;
-using Fatihdgn.Todo.Entities;
 using Fatihdgn.Todo.Entities.Abstractions;
 using Fatihdgn.Todo.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +8,7 @@ using OneOf.Types;
 namespace Fatihdgn.Todo.Repositories;
 
 public class TodoDBCommandRepository<TEntity, TKey> : ICommandRepository<TEntity, TKey>
-    where TEntity : class, IEntity<TKey>, new ()
+    where TEntity : class, IEntity<TKey>, new()
 {
     private readonly TodoDB _context;
 
@@ -43,7 +42,7 @@ public class TodoDBCommandRepository<TEntity, TKey> : ICommandRepository<TEntity
         return entry.Entity;
     }
 
-   
+
 
     public async Task<OneOf<TEntity, Error<ArgumentNullException>>> UpdateAsync(TEntity entity)
     {

@@ -1,12 +1,10 @@
 ﻿using Fatihdgn.Todo.DTOs;
-using Fatihdgn.Todo.Entities;
+using Fatihdgn.Todo.DTOs.Mappings.Entities;
 using Fatihdgn.Todo.Repositories;
 using Fatihdgn.Todo.Requests;
 using MediatR;
 using OneOf;
 using OneOf.Types;
-using Fatihdgn.Todo.DTOs.Mappings.Entities;
-using Fatihdgn.Todo.Entities.Abstractions;
 
 namespace Fatihdgn.Todo.Handlers;
 
@@ -28,7 +26,7 @@ public class UpdateTodoItemCommandHandler : IRequestHandler<UpdateTodoItemComman
 
         var entity = result.AsT0;
         request.Model.ApplyTo(entity);
-        
+
         var updateResult = await _repo.UpdateAsync(entity);
         if (result.IsT1) return result.AsT1;
 
