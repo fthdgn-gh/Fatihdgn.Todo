@@ -17,7 +17,8 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
             Content = entity.Content,
             Note = entity.Note,
             DueAt = entity.DueAt,
-            RemindAt = entity.RemindAt
+            RemindAt = entity.RemindAt,
+            IsCompleted = entity.IsCompleted,
         };
 
         public static TodoItemDTO ToDTO(this TodoItemEntity entity) => new TodoItemDTO
@@ -26,7 +27,8 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
             Content = entity.Content,
             Note = entity.Note,
             DueAt = entity.DueAt,
-            RemindAt = entity.RemindAt
+            RemindAt = entity.RemindAt,
+            IsCompleted = entity.IsCompleted,
         };
 
         public static TodoItemCreateDTO ToCreateDTO(this TodoItemEntity entity) => new TodoItemCreateDTO
@@ -34,7 +36,8 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
             Content = entity.Content,
             Note = entity.Note,
             DueAt = entity.DueAt,
-            RemindAt = entity.RemindAt
+            RemindAt = entity.RemindAt,
+            IsCompleted = entity.IsCompleted,
         };
 
         public static TodoItemUpdateDTO ToUpdateDTO(this TodoItemEntity entity) => new TodoItemUpdateDTO
@@ -42,7 +45,8 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
             Content = entity.Content,
             Note = entity.Note,
             DueAt = entity.DueAt,
-            RemindAt = entity.RemindAt
+            RemindAt = entity.RemindAt,
+            IsCompleted = entity.IsCompleted,
         };
 
         public static TodoItemPatchDTO ToPatchDTO(this TodoItemEntity entity) => new TodoItemPatchDTO
@@ -50,7 +54,8 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
             Content = entity.Content,
             Note = entity.Note,
             DueAt = entity.DueAt,
-            RemindAt = entity.RemindAt
+            RemindAt = entity.RemindAt,
+            IsCompleted = entity.IsCompleted,
         };
 
         public static TodoItemEntity ApplyTo(this TodoItemCreateDTO self, TodoItemEntity entity)
@@ -59,6 +64,7 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
             entity.Note = self.Note;
             entity.DueAt = self.DueAt;
             entity.RemindAt = self.RemindAt;
+            entity.IsCompleted = self.IsCompleted;
             return entity;
         }
 
@@ -68,6 +74,7 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
             entity.Note = self.Note;
             entity.DueAt = self.DueAt;
             entity.RemindAt = self.RemindAt;
+            entity.IsCompleted = self.IsCompleted;
             return entity;
         }
 
@@ -77,6 +84,7 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
             entity.Note = self.Note ?? entity.Note;
             entity.DueAt = self.DueAt ?? entity.DueAt;
             entity.RemindAt = self.RemindAt ?? entity.RemindAt;
+            entity.IsCompleted = self.IsCompleted ?? entity.IsCompleted;
             return entity;
         }
     }

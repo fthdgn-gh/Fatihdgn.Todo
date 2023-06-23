@@ -6,4 +6,5 @@ public struct TodoItem
     public string Note { get; set; }
     public DateTimeOffset? RemindAt { get; set; }
     public DateTimeOffset? DueAt { get; set; }
+    public bool IsCompleted { get; set; }
 }

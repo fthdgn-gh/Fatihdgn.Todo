@@ -6,4 +6,5 @@ public class TodoItemUpdateDTO
     public string Note { get; set; } = string.Empty;
     public DateTimeOffset? RemindAt { get; set; }
     public DateTimeOffset? DueAt { get; set; }
+    public bool IsCompleted { get; set; }
 }
