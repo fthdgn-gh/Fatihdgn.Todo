@@ -7,10 +7,13 @@ using Fatihdgn.Todo.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NSwag.Annotations;
+//using Swashbuckle.AspNetCore.Annotations;
 
 namespace Fatihdgn.Todo.API.Controllers;
 
 [ApiController]
+
 public class ItemsController : Controller
 {
     private readonly IMediator _mediator;
@@ -22,7 +25,9 @@ public class ItemsController : Controller
 
     [HttpGet]
     [Route("")]
-    public async Task<IActionResult> Get()
+    [OpenApiOperation("GetAllItems")]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<TodoItemDTO>))]
+    public async Task<IActionResult> GetAll()
     {
         var response = await _mediator.Send(new GetAllTodoItemsQuery());
         return Ok(response);
@@ -30,6 +35,8 @@ public class ItemsController : Controller
 
     [HttpGet]
     [Route("{id}")]
+    [OpenApiOperation("GetItem")]
+    [ProducesResponseType(200, Type = typeof(TodoItemDTO))]
     public async Task<IActionResult> Get(Guid id)
     {
         var response = await _mediator.Send(new GetTodoItemQuery(id));
@@ -41,7 +48,9 @@ public class ItemsController : Controller
 
     [HttpPost]
     [Route("")]
-    public async Task<IActionResult> Post(TodoItemCreateDTO model)
+    [OpenApiOperation("CreateItem")]
+    [ProducesResponseType(200, Type = typeof(TodoItemDTO))]
+    public async Task<IActionResult> Create([FromBody]TodoItemCreateDTO model)
     {
         var response = await _mediator.Send(new CreateTodoItemCommand(model));
         return response.Match<IActionResult>(
@@ -52,7 +61,9 @@ public class ItemsController : Controller
 
     [HttpPut]
     [Route("{id}")]
-    public async Task<IActionResult> Put(Guid id, TodoItemUpdateDTO model)
+    [OpenApiOperation("UpdateItem")]
+    [ProducesResponseType(200, Type = typeof(TodoItemDTO))]
+    public async Task<IActionResult> Update(Guid id, [FromBody] TodoItemUpdateDTO model)
     {
         var response = await _mediator.Send(new UpdateTodoItemCommand(id, model));
         return response.Match<IActionResult>(
@@ -64,7 +75,9 @@ public class ItemsController : Controller
 
     [HttpPatch]
     [Route("{id}")]
-    public async Task<IActionResult> Patch(Guid id, TodoItemPatchDTO model)
+    [OpenApiOperation("PatchItem")]
+    [ProducesResponseType(200, Type = typeof(TodoItemDTO))]
+    public async Task<IActionResult> Patch(Guid id, [FromBody] TodoItemPatchDTO model)
     {
         var response = await _mediator.Send(new PatchTodoItemCommand(id, model));
         return response.Match<IActionResult>(
@@ -76,7 +89,8 @@ public class ItemsController : Controller
 
     [HttpDelete]
     [Route("{id}")]
-    public async Task<IActionResult> Delete(Guid id)
+    [OpenApiOperation("RemoveItem")]
+    public async Task<IActionResult> Remove(Guid id)
     {
         var response = await _mediator.Send(new RemoveTodoItemCommand(id));
         return response.Match<IActionResult>(

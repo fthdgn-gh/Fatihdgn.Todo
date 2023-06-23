@@ -4,12 +4,18 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Fatihdgn.Todo.DTOs.Validators;
 using Fatihdgn.Todo.Handlers;
+using NSwag.Annotations;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerDocument(configure =>
+{
+    configure.Title = "Your API Title";
+    configure.Version = "v1";
+    //configure.EnableAnnotations();
+});
 
 builder.Services.AddDbContext<TodoDB>(options =>
 {
@@ -32,8 +38,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseOpenApi();
+    app.UseSwaggerUi3();
 }
 
 app.UseHttpsRedirection();

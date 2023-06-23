@@ -141,7 +141,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "output.cs",
+      "output": "FatihdgnTodoClient.cs",
       "newLineBehavior": "Auto"
     }
   }
