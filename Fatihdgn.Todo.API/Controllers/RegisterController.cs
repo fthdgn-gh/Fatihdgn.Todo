@@ -1,5 +1,6 @@
 ﻿using Fatihdgn.Todo.API.Models;
 using Fatihdgn.Todo.Entities;
+using Fatihdgn.Todo.Entities.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -28,6 +29,8 @@ public class AuthController : Controller
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
+                user.RenewRefreshToken();
+                await _userManager.UpdateAsync(user);
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var key = Encoding.UTF8.GetBytes(_config["JwtBearerAuthenticationIssuerSigningKey"]);
                 var tokenDescriptor = new SecurityTokenDescriptor
@@ -36,14 +39,18 @@ public class AuthController : Controller
                     {
                         new Claim(ClaimTypes.Name, user.UserName),
                     }),
-                    Expires = DateTime.UtcNow.AddDays(7),
+                    Expires = model.RememberMe ? DateTime.UtcNow.AddHours(2) : DateTime.UtcNow.AddDays(7),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
-                var tokenString = tokenHandler.WriteToken(token);
+                var accessToken = tokenHandler.WriteToken(token);
 
-                // Login successful, return the JWT token
-                return Ok(new { Token = tokenString });
+                if (model.RememberMe)
+                {
+                    return Ok(new { AccessToken = accessToken, RefreshToken = user.RefreshToken });
+                }
+                else
+                    return Ok(new { AccessToken = accessToken });
             }
             else
             {
@@ -62,6 +69,7 @@ public class AuthController : Controller
         if (ModelState.IsValid)
         {
             var user = new TodoUserEntity { UserName = model.Email, Email = model.Email };
+            user.RenewRefreshToken();
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
@@ -77,6 +85,45 @@ public class AuthController : Controller
         }
 
         // Invalid registration model
+        return BadRequest(ModelState);
+    }
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> RefreshToken(RefreshTokenModel model)
+    {
+        if (ModelState.IsValid)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user != null && user.RefreshToken == model.RefreshToken)
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.UTF8.GetBytes(_config["JwtBearerAuthenticationIssuerSigningKey"]);
+
+                // Generate new access token
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                    new Claim(ClaimTypes.Name, user.UserName),
+                        // Add any additional claims as needed
+                    }),
+                    Expires = DateTime.UtcNow.AddHours(2), // Set the new access token expiration time
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var accessToken = tokenHandler.CreateToken(tokenDescriptor);
+                var accessTokenString = tokenHandler.WriteToken(accessToken);
+
+                // Refresh token successful, return the new access token
+                return Ok(new { AccessToken = accessTokenString, RefreshToken = user.RefreshToken });
+            }
+            else
+            {
+                // Invalid refresh token
+                return BadRequest("Invalid refresh token");
+            }
+        }
+
+        // Invalid refresh token model
         return BadRequest(ModelState);
     }
 }
