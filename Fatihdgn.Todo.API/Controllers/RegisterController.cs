@@ -1,129 +1,65 @@
-﻿using Fatihdgn.Todo.API.Models;
-using Fatihdgn.Todo.Entities;
-using Fatihdgn.Todo.Entities.Extensions;
+﻿using Fatihdgn.Todo.DTOs;
+using Fatihdgn.Todo.Requests;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Fatihdgn.Todo.API.Controllers;
 
 public class AuthController : Controller
 {
-    private readonly UserManager<TodoUserEntity> _userManager;
-    private readonly IConfiguration _config;
+    private readonly IMediator _mediator;
 
-    public AuthController(UserManager<TodoUserEntity> userManager, IConfiguration config)
+    public AuthController(IMediator mediator)
     {
-        _userManager = userManager;
-        _config = config;
+        _mediator = mediator;
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login(LoginModel model)
+    [ProducesResponseType(200, Type = typeof(AuthLoginResponseDTO))]
+    [ProducesResponseType(400, Type = typeof(ModelStateDictionary))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    public async Task<IActionResult> Login([FromBody] AuthLoginDTO model)
     {
-        if (ModelState.IsValid)
-        {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
-            {
-                user.RenewRefreshToken();
-                await _userManager.UpdateAsync(user);
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.UTF8.GetBytes(_config["JwtBearerAuthenticationIssuerSigningKey"]);
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                        new Claim(ClaimTypes.Name, user.UserName),
-                    }),
-                    Expires = model.RememberMe ? DateTime.UtcNow.AddHours(2) : DateTime.UtcNow.AddDays(7),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                var accessToken = tokenHandler.WriteToken(token);
+        if (!ModelState.IsValid) return BadRequest(ModelState);
 
-                if (model.RememberMe)
-                {
-                    return Ok(new { AccessToken = accessToken, RefreshToken = user.RefreshToken });
-                }
-                else
-                    return Ok(new { AccessToken = accessToken });
-            }
-            else
-            {
-                // Invalid email or password
-                return BadRequest("Invalid email or password");
-            }
-        }
+        var response = await _mediator.Send(new AuthLoginCommand(model));
 
-        // Invalid login model
-        return BadRequest(ModelState);
+        return response.Match<IActionResult>(
+            response => Ok(response),
+            error => BadRequest(error.Value)
+        );
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register(RegisterModel model)
+    [ProducesResponseType(400, Type = typeof(ModelStateDictionary))]
+    [ProducesResponseType(400, Type = typeof(IEnumerable<IdentityError>))]
+    public async Task<IActionResult> Register([FromBody] AuthRegisterDTO model)
     {
-        if (ModelState.IsValid)
-        {
-            var user = new TodoUserEntity { UserName = model.Email, Email = model.Email };
-            user.RenewRefreshToken();
-            var result = await _userManager.CreateAsync(user, model.Password);
+        if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            if (result.Succeeded)
-            {
-                // User registration successful
-                return Ok();
-            }
-            else
-            {
-                // User registration failed, return errors
-                return BadRequest(result.Errors);
-            }
-        }
+        var response = await _mediator.Send(new AuthRegisterCommand(model));
 
-        // Invalid registration model
-        return BadRequest(ModelState);
+        return response.Match<IActionResult>(
+            response => Ok(),
+            error => BadRequest(error.Value)
+        );
     }
 
     [HttpPost("refresh")]
-    public async Task<IActionResult> RefreshToken(RefreshTokenModel model)
+    [ProducesResponseType(200, Type = typeof(AuthRefreshTokenResponseDTO))]
+    [ProducesResponseType(400, Type = typeof(string))]
+    [ProducesResponseType(400, Type = typeof(ModelStateDictionary))]
+    public async Task<IActionResult> RefreshToken([FromBody] AuthRefreshTokenDTO model)
     {
-        if (ModelState.IsValid)
-        {
-            var user = await _userManager.FindByEmailAsync(model.Email);
-            if (user != null && user.RefreshToken == model.RefreshToken)
-            {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.UTF8.GetBytes(_config["JwtBearerAuthenticationIssuerSigningKey"]);
+        if (!ModelState.IsValid) return BadRequest(ModelState);
 
-                // Generate new access token
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new Claim[]
-                    {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                        // Add any additional claims as needed
-                    }),
-                    Expires = DateTime.UtcNow.AddHours(2), // Set the new access token expiration time
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var accessToken = tokenHandler.CreateToken(tokenDescriptor);
-                var accessTokenString = tokenHandler.WriteToken(accessToken);
+        var response = await _mediator.Send(new AuthRefreshTokenCommand(model));
 
-                // Refresh token successful, return the new access token
-                return Ok(new { AccessToken = accessTokenString, RefreshToken = user.RefreshToken });
-            }
-            else
-            {
-                // Invalid refresh token
-                return BadRequest("Invalid refresh token");
-            }
-        }
-
-        // Invalid refresh token model
-        return BadRequest(ModelState);
+        return response.Match<IActionResult>(
+            response => Ok(response),
+            error => BadRequest(error.Value)
+        );
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Fatihdgn.Todo.API.Models;
-public class RegisterModel
+namespace Fatihdgn.Todo.DTOs;
+public class AuthRegisterDTO
 {
     [Required]
     [EmailAddress]

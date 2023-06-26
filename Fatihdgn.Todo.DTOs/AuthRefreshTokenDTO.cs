@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Fatihdgn.Todo.API.Models;
+namespace Fatihdgn.Todo.DTOs;
 
-public class RefreshTokenModel
+public class AuthRefreshTokenDTO
 {
     [Required]
     [EmailAddress]

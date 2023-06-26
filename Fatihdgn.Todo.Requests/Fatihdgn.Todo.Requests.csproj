@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="7.0.8" />
     <PackageReference Include="OneOf" Version="3.0.255" />
   </ItemGroup>
 
