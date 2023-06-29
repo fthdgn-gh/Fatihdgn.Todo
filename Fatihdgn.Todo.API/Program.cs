@@ -50,6 +50,15 @@ builder.Services.AddDbContext<TodoDB>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(TodoDB)));
 });
 
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddHttpsRedirection(options =>
+    {
+        options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+        options.HttpsPort = 443;
+    });
+}
+
 builder.Services.AddTodoDBRepositories();
 
 builder.Services.AddFluentValidationAutoValidation();
@@ -84,6 +93,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseOpenApi();
     app.UseSwaggerUi3();
+    app.UseHttpsRedirection();
 }
 
 app.UseHttpsRedirection();
