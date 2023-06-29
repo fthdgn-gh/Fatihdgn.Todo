@@ -3,37 +3,64 @@
     <div class="mb-4">
       <div class="flex justify-between">
         <h1 class="text-xl font-bold text-gray-950 dark:text-gray-200">
-          Todo List
+          {{ title }}
         </h1>
         <fd-theme-toggle></fd-theme-toggle>
       </div>
-      <div class="mt-4 flex">
+      <div class="mt-4 flex self-end">
         <input
-          class="mr-4 w-full appearance-none rounded border border-gray-600 px-3 py-2 shadow-lg hover:border-gray-500 focus-visible:border-gray-500 active:border-gray-600 dark:border-gray-200 dark:hover:border-gray-50 dark:focus-visible:border-gray-50 dark:active:border-gray-100"
+          class="mr-4 w-full appearance-none rounded-lg border border-gray-600 px-3 py-2 shadow-lg hover:border-gray-500 focus-visible:border-gray-500 active:border-gray-600 dark:border-gray-200 dark:hover:border-gray-50 dark:focus-visible:border-gray-50 dark:active:border-gray-100"
           placeholder="Add Todo"
           [value]="text()"
           (keyup)="changeText($event)"
           (keyup.enter)="addItem()"
         />
         <button
-          class="flex-no-shrink rounded border-2 border-gray-600 p-2 text-gray-600 hover:border-gray-800 hover:text-gray-800 focus:border-gray-700 focus:text-gray-700 dark:text-gray-200 dark:hover:border-gray-100 dark:hover:text-gray-100 dark:focus:border-gray-200 dark:focus:text-gray-200"
+          class="flex-no-shrink flex items-center rounded-lg border-2 border-gray-600 p-2 text-gray-600 hover:border-gray-800 hover:text-gray-800 focus:border-gray-700 focus:text-gray-700 dark:text-gray-200 dark:hover:border-gray-100 dark:hover:text-gray-100 dark:focus:border-gray-200 dark:focus:text-gray-200"
           (click)="addItem()"
         >
+          <i class="fas fa-plus mr-1"></i>
           Add
         </button>
       </div>
-    </div>
-    <div>
-      <div class="flex mb-4 items-center" *ngFor="let item of items()">
-          <p class="w-full text-gray-950 dark:text-gray-200">{{item.content}}</p>
-          <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded border-gray-600 p-2 text-gray-600 hover:border-gray-800 hover:text-gray-800 focus:border-gray-700 focus:text-gray-700 dark:text-gray-200 dark:hover:border-gray-100 dark:hover:text-gray-100 dark:focus:border-gray-200 dark:focus:text-gray-200">Done</button>
-          <button class="flex-no-shrink p-2 ml-2 border-2 rounded border-gray-600 p-2 text-gray-600 hover:border-gray-800 hover:text-gray-800 focus:border-gray-700 focus:text-gray-700 dark:text-gray-200 dark:hover:border-gray-100 dark:hover:text-gray-100 dark:focus:border-gray-200 dark:focus:text-gray-200">Remove</button>
+      <div>
+        <div class="mt-4 flex items-center" *ngFor="let item of items()">
+          <p
+            class="w-full text-gray-950 dark:text-gray-200"
+            [class.line-through]="item.isCompleted"
+            [class.text-green-600]="item.isCompleted"
+            [class.dark:text-green-400]="item.isCompleted"
+          >
+            {{ item.content }}
+          </p>
+          <button
+            *ngIf="!item.isCompleted"
+            class="ml-4 mr-2 flex shrink-0 items-center rounded-lg border-2 border-gray-600 p-2 text-gray-600 hover:border-gray-800 hover:text-gray-800 focus:border-gray-700 focus:text-gray-700 dark:text-gray-200 dark:hover:border-gray-100 dark:hover:text-gray-100 dark:focus:border-gray-200 dark:focus:text-gray-200"
+            (click)="markAsCompleted(item)"
+          >
+            <i class="fas fa-check mr-1"></i>
+
+            Done
+          </button>
+          <button
+            *ngIf="item.isCompleted"
+            class="ml-4 mr-2 flex shrink-0 items-center rounded-lg border-2 border-gray-600 p-2 text-gray-600 hover:border-gray-800 hover:text-gray-800 focus:border-gray-700 focus:text-gray-700 dark:text-gray-200 dark:hover:border-gray-100 dark:hover:text-gray-100 dark:focus:border-gray-200 dark:focus:text-gray-200"
+            (click)="markAsNew(item)"
+          >
+            <i class="fas fa-sync mr-1"></i>
+
+            Mark as new
+          </button>
+          <button
+            class="ml-2 flex shrink-0 items-center rounded border-2 border-gray-600 p-2 text-gray-600 hover:border-gray-800 hover:text-gray-800 focus:border-gray-700 focus:text-gray-700 dark:text-gray-200 dark:hover:border-gray-100 dark:hover:text-gray-100 dark:focus:border-gray-200 dark:focus:text-gray-200"
+            (click)="removeItem(item)"
+          >
+            <i class="fas fa-times mr-1"></i>
+
+            Remove
+          </button>
+        </div>
       </div>
-      <!-- <div class="flex mb-4 items-center">
-          <p class="w-full line-through text-green">Submit Todo App Component to Tailwind Components</p>
-          <button class="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded border-neutral-600 text-neutral-600 focus:text-neutral-700 focus:border-neutral-700 hover:text-neutral-800 hover:border-neutral-800">Not Done</button>
-          <button class="flex-no-shrink p-2 ml-2 border-2 rounded border-neutral-600 text-neutral-600 focus:text-neutral-700 focus:border-neutral-700 hover:text-neutral-800 hover:border-neutral-800">Remove</button>
-      </div> -->
-  </div>
+    </div>
   </div>
 </div>
