@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
+import { TodoItemCreateDTO, TodoItemDTO } from 'src/api/models';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,23 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Fatihdgn.Todo.Web';
+  items = signal(new Array<TodoItemCreateDTO>());
+  text = signal("");
+
+  changeText(event: Event){
+    const value = (event.target as HTMLInputElement).value;
+    this.text.set(value);
+  }
+
+  addItem() {
+    this.items.mutate(_items => {
+      const todoItem: TodoItemCreateDTO = {
+        content: this.text(),
+        isCompleted: false,
+        note: ""
+      };
+      _items.push(todoItem);
+      this.text.set("");
+    })
+  }
 }
