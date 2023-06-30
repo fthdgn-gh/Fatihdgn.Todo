@@ -7,4 +7,5 @@ public class TodoItemCreateDTO
     public DateTimeOffset? RemindAt { get; set; }
     public DateTimeOffset? DueAt { get; set; }
     public bool IsCompleted { get; set; }
+    public Guid ListId { get; set; }
 }

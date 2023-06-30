@@ -15,6 +15,7 @@ public class TodoItemEntity : IEntity<Guid>
     [JsonIgnore]
     public DateTimeOffset? RemovedAt { get; set; }
 
+    public TodoListEntity? List { get; set; }
     public TodoUserEntity? By { get; set; }
 
 }

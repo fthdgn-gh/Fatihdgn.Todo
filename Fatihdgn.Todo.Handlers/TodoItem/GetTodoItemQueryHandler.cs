@@ -3,6 +3,7 @@ using Fatihdgn.Todo.DTOs.Mappings.Entities;
 using Fatihdgn.Todo.Repositories;
 using Fatihdgn.Todo.Requests;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using OneOf;
 using OneOf.Types;
 
@@ -19,6 +20,8 @@ public class GetTodoItemQueryHandler : IRequestHandler<GetTodoItemQuery, OneOf<T
 
     public async Task<OneOf<TodoItemDTO, NotFound>> Handle(GetTodoItemQuery request, CancellationToken cancellationToken)
     {
-        return (await _repo.FindAsync(request.Id)).MapT0(entity => entity.ToDTO());
+        var response = await _repo.AsQueryable().ByUserId(request.ById).ByIdAsync(request.Id);
+        if (response == null) return new NotFound();
+        return response.ToDTO();
     }
 }

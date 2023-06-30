@@ -19,14 +19,12 @@ public class TodoDBQueryRepository<TEntity, TKey> : IQueryRepository<TEntity, TK
     }
 
     private DbSet<TEntity> Set => _context.Set<TEntity>();
-    public async Task<OneOf<TEntity, NotFound>> FindAsync(TKey id)
+    public async Task<OneOf<TEntity, NotFound>> ById(TKey id)
     {
         var entity = await Set.FindAsync(id);
         if (entity == null) return new NotFound();
         return entity;
     }
 
-    public IQueryable<TEntity> GetAll() => Set.AsQueryable();
-
-    public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> exp) => Set.Where(exp);
+    public IQueryable<TEntity> AsQueryable() => Set.AsQueryable();
 }

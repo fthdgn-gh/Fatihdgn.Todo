@@ -8,7 +8,6 @@ namespace Fatihdgn.Todo.Repositories.Abstractions;
 public interface IQueryRepository<TEntity, TKey>
     where TEntity : class, IEntity<TKey>
 {
-    Task<OneOf<TEntity, NotFound>> FindAsync(TKey id);
-    IQueryable<TEntity> GetAll();
-    IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> exp);
+    Task<OneOf<TEntity, NotFound>> ById(TKey id);
+    IQueryable<TEntity> AsQueryable();
 }

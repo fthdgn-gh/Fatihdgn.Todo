@@ -10,6 +10,7 @@ public class TodoDB : IdentityDbContext<TodoUserEntity>
     public TodoDB(DbContextOptions options) : base(options) { }
 
     public DbSet<TodoItemEntity> Items { get; set; }
+    public DbSet<TodoListEntity> Lists { get; set; }
 
     private void MarkDeletedEntities<TEntity, TKey>()
         where TEntity : class, IEntity<TKey>

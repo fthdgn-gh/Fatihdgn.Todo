@@ -22,10 +22,9 @@ public class TodoDBRepository<TEntity, TKey> : IRepository<TEntity, TKey>
     public ICommandRepository<TEntity, TKey> Command => _command;
 
 
-    public async Task<OneOf<TEntity, NotFound>> FindAsync(TKey id) => await _query.FindAsync(id);
+    public async Task<OneOf<TEntity, NotFound>> ById(TKey id) => await _query.ById(id);
 
-    public IQueryable<TEntity> GetAll() => _query.GetAll();
-    public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> exp) => _query.Where(exp);
+    public IQueryable<TEntity> AsQueryable() => _query.AsQueryable();
 
     public async Task<OneOf<TEntity, Error<ArgumentNullException>>> AddAsync(TEntity entity) => await _command.AddAsync(entity);
     public async Task<OneOf<TEntity, Error<ArgumentNullException>>> RemoveAsync(TEntity entity) => await _command.RemoveAsync(entity);

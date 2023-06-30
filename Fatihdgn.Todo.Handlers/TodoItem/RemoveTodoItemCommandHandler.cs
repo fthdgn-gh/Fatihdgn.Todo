@@ -17,7 +17,10 @@ public class RemoveTodoItemCommandHandler : IRequestHandler<RemoveTodoItemComman
 
     public async Task<OneOf<None, NotFound>> Handle(RemoveTodoItemCommand request, CancellationToken cancellationToken)
     {
-        var result = await _repo.RemoveAsync(request.Id);
-        return result;
+        var entity = await _repo.AsQueryable().ByUserId(request.ById).ByIdAsync(request.Id);
+        if (entity == null) return new NotFound();
+
+        await _repo.RemoveAsync(entity);
+        return new None();
     }
 }
