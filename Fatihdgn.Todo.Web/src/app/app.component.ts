@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 import { TodoItemCreateDTO, TodoItemDTO } from 'src/api/models';
 
 @Component({
@@ -25,6 +25,9 @@ export class AppComponent {
   }
   title = 'Todo List';
   items = signal(new Array<TodoItemCreateDTO>());
+  shownItems = computed(() => {
+    return [...this.items()].reverse();
+  })
   text = signal('');
 
   changeText(event: Event) {

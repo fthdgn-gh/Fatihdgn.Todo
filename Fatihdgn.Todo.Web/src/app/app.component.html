@@ -9,7 +9,7 @@
       </div>
       <div class="mt-4 flex self-end">
         <input
-          class="mr-4 w-full appearance-none rounded-lg border border-gray-600 px-3 py-2 shadow-lg hover:border-gray-500 focus-visible:border-gray-500 active:border-gray-600 dark:border-gray-200 dark:hover:border-gray-50 dark:focus-visible:border-gray-50 dark:active:border-gray-100"
+          class="mr-4 w-full appearance-none rounded-lg border dark:text-gray-50 bg-gray-100 dark:bg-gray-700 border-gray-600 px-3 py-2 shadow-lg hover:border-gray-500 focus-visible:border-gray-500 active:border-gray-600 dark:border-gray-200 dark:hover:border-gray-50 dark:focus-visible:border-gray-50 dark:active:border-gray-100"
           placeholder="Add Todo"
           [value]="text()"
           (keyup)="changeText($event)"
@@ -24,7 +24,7 @@
         </button>
       </div>
       <div>
-        <div class="mt-4 flex items-center" *ngFor="let item of items()">
+        <div class="mt-4 flex items-center" *ngFor="let item of shownItems()">
           <p
             class="w-full text-gray-950 dark:text-gray-200"
             [class.line-through]="item.isCompleted"
