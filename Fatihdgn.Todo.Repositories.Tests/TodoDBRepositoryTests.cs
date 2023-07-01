@@ -42,7 +42,7 @@ namespace Fatihdgn.Todo.Repositories.Tests
         }
 
         [Fact]
-        public async Task ById_ShouldCall_ByIdWithinQuery()
+        public void ById_ShouldCall_ByIdWithinQuery()
         {
             _mockQueryRepository.Setup(x => x.ById(It.IsAny<Guid>()));
 
