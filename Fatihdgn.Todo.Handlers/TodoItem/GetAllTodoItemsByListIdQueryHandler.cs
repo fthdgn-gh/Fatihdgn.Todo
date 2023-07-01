@@ -6,11 +6,11 @@ using MediatR;
 
 namespace Fatihdgn.Todo.Handlers;
 
-public class GetAllTodoItemsQueryHandler : IRequestHandler<GetAllTodoItemsByListIdQuery, IEnumerable<TodoItemDTO>>
+public class GetAllTodoItemsByListIdQueryHandler : IRequestHandler<GetAllTodoItemsByListIdQuery, IEnumerable<TodoItemDTO>>
 {
     private readonly ITodoItemRepository _repo;
 
-    public GetAllTodoItemsQueryHandler(ITodoItemRepository repo)
+    public GetAllTodoItemsByListIdQueryHandler(ITodoItemRepository repo)
     {
         _repo = repo;
     }
