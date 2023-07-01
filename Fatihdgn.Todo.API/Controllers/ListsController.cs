@@ -10,39 +10,39 @@ namespace Fatihdgn.Todo.API.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("items")]
-public class ItemsController : Controller
+[Route("lists")]
+public class ListsController : Controller
 {
     private readonly IMediator _mediator;
 
-    public ItemsController(IMediator mediator)
+    public ListsController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpGet]
-    [Route("by/lists/{id}")]
-    [OpenApiOperation("GetAllItemsByListId")]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<TodoItemDTO>))]
-    public async Task<IActionResult> GetAllByListId(Guid id)
+    [Route("")]
+    [OpenApiOperation("GetAllLists")]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<TodoListDTO>))]
+    public async Task<IActionResult> GetAll()
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new GetAllTodoItemsByListIdQuery(userId, id));
+        var response = await _mediator.Send(new GetAllTodoListsQuery());
         return Ok(response);
     }
 
     [HttpGet]
     [Route("{id}")]
-    [OpenApiOperation("GetItem")]
-    [ProducesResponseType(200, Type = typeof(TodoItemDTO))]
+    [OpenApiOperation("GetList")]
+    [ProducesResponseType(200, Type = typeof(TodoListDTO))]
     public async Task<IActionResult> Get(Guid id)
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new GetTodoItemQuery(userId, id));
+        var response = await _mediator.Send(new GetTodoListQuery(userId, id));
         return response.Match<IActionResult>(
             Ok,
             notFound => NotFound()
@@ -51,14 +51,14 @@ public class ItemsController : Controller
 
     [HttpPost]
     [Route("")]
-    [OpenApiOperation("CreateItem")]
-    [ProducesResponseType(200, Type = typeof(TodoItemDTO))]
-    public async Task<IActionResult> Create([FromBody] TodoItemCreateDTO model)
+    [OpenApiOperation("CreateList")]
+    [ProducesResponseType(200, Type = typeof(TodoListDTO))]
+    public async Task<IActionResult> Create([FromBody] TodoListCreateDTO model)
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new CreateTodoItemCommand(userId, model));
+        var response = await _mediator.Send(new CreateTodoListCommand(userId, model));
         return response.Match<IActionResult>(
             Ok,
             notFound => BadRequest("Couldn't find a the user."),
@@ -68,14 +68,14 @@ public class ItemsController : Controller
 
     [HttpPut]
     [Route("{id}")]
-    [OpenApiOperation("UpdateItem")]
-    [ProducesResponseType(200, Type = typeof(TodoItemDTO))]
-    public async Task<IActionResult> Update(Guid id, [FromBody] TodoItemUpdateDTO model)
+    [OpenApiOperation("UpdateList")]
+    [ProducesResponseType(200, Type = typeof(TodoListDTO))]
+    public async Task<IActionResult> Update(Guid id, [FromBody] TodoListUpdateDTO model)
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new UpdateTodoItemCommand(userId, id, model));
+        var response = await _mediator.Send(new UpdateTodoListCommand(userId, id, model));
         return response.Match<IActionResult>(
             Ok,
             notFound => NotFound(),
@@ -85,14 +85,14 @@ public class ItemsController : Controller
 
     [HttpPatch]
     [Route("{id}")]
-    [OpenApiOperation("PatchItem")]
-    [ProducesResponseType(200, Type = typeof(TodoItemDTO))]
-    public async Task<IActionResult> Patch(Guid id, [FromBody] TodoItemPatchDTO model)
+    [OpenApiOperation("PatchList")]
+    [ProducesResponseType(200, Type = typeof(TodoListDTO))]
+    public async Task<IActionResult> Patch(Guid id, [FromBody] TodoListPatchDTO model)
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new PatchTodoItemCommand(userId, id, model));
+        var response = await _mediator.Send(new PatchTodoListCommand(userId, id, model));
         return response.Match<IActionResult>(
             Ok,
             notFound => NotFound(),
@@ -102,13 +102,13 @@ public class ItemsController : Controller
 
     [HttpDelete]
     [Route("{id}")]
-    [OpenApiOperation("RemoveItem")]
+    [OpenApiOperation("RemoveList")]
     public async Task<IActionResult> Remove(Guid id)
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new RemoveTodoItemCommand(userId, id));
+        var response = await _mediator.Send(new RemoveTodoListCommand(userId, id));
         return response.Match<IActionResult>(
             _ => Ok(),
             _ => NotFound()
