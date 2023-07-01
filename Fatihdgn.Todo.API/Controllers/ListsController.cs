@@ -10,7 +10,7 @@ namespace Fatihdgn.Todo.API.Controllers;
 
 [Authorize]
 [ApiController]
-[Route("lists")]
+[Route("api/lists")]
 public class ListsController : Controller
 {
     private readonly IMediator _mediator;
@@ -18,6 +18,13 @@ public class ListsController : Controller
     public ListsController(IMediator mediator)
     {
         _mediator = mediator;
+    }
+
+    [HttpGet]
+    [Route("hi")]
+    public IActionResult SayHi()
+    {
+        return Ok("Hi");
     }
 
     [HttpGet]

@@ -8,9 +8,9 @@ using NSwag.Annotations;
 
 namespace Fatihdgn.Todo.API.Controllers;
 
-[Authorize]
+[Authorize()]
 [ApiController]
-[Route("items")]
+[Route("api/items")]
 public class ItemsController : Controller
 {
     private readonly IMediator _mediator;
