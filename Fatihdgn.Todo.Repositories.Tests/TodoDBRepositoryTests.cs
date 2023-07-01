@@ -21,96 +21,64 @@ namespace Fatihdgn.Todo.Repositories.Tests
             sut = new TodoDBRepository<TodoItemEntity, Guid>(_mockCommandRepository.Object, _mockQueryRepository.Object);
         }
 
-
         [Fact]
-        public async Task FindAsync_WithValidId_ReturnsEntity()
+        public async Task AddAsync_ShouldCall_AddAsyncWithinCommand()
         {
-            var id = Guid.NewGuid();
-            var entity = new TodoItemEntity { Id = id };
-            _mockQueryRepository.Setup(repo => repo.FindAsync(id))
-                .ReturnsAsync(entity);
+            _mockCommandRepository.Setup(x => x.AddAsync(It.IsAny<TodoItemEntity>()));
 
-            var result = await sut.FindAsync(id);
+            await sut.AddAsync(new TodoItemEntity());
 
-            result.IsT0.Should().BeTrue();
-            result.AsT0.Should().Be(entity);
+            _mockCommandRepository.Verify(x => x.AddAsync(It.IsAny<TodoItemEntity>()), Times.Once());
         }
 
         [Fact]
-        public async Task FindAsync_WithInvalidId_ReturnsNotFound()
+        public async Task AsQueryable_ShouldCall_AsQueryableWithinQuery()
         {
-            var id = Guid.NewGuid();
-            _mockQueryRepository.Setup(repo => repo.FindAsync(id))
-                .ReturnsAsync(new NotFound());
+            _mockQueryRepository.Setup(x => x.AsQueryable());
 
-            var result = await sut.FindAsync(id);
+            var result = sut.AsQueryable();
 
-            result.IsT1.Should().BeTrue();
-            result.AsT1.Should().BeOfType<NotFound>();
+            _mockQueryRepository.Verify(x => x.AsQueryable(), Times.Once());
         }
 
         [Fact]
-        public void GetAll_ReturnsQueryRepositoryGetAll()
+        public async Task ById_ShouldCall_ByIdWithinQuery()
         {
-            var expectedQuery = new List<TodoItemEntity>().AsQueryable();
-            _mockQueryRepository.Setup(repo => repo.GetAll())
-                .Returns(expectedQuery);
+            _mockQueryRepository.Setup(x => x.ById(It.IsAny<Guid>()));
 
-            var result = sut.GetAll();
+            var result = sut.ById(Guid.NewGuid());
 
-            result.Should().BeSameAs(expectedQuery);
+            _mockQueryRepository.Verify(x => x.ById(It.IsAny<Guid>()), Times.Once());
         }
 
         [Fact]
-        public void Where_ReturnsQueryRepositoryWhere()
+        public async Task RemoveAsync_ShouldCall_RemoveAsyncWithinCommand()
         {
-            Expression<Func<TodoItemEntity, bool>> expectedExpression = entity => entity.Content.StartsWith("hello");
-            var expectedQuery = new List<TodoItemEntity>().AsQueryable();
-            _mockQueryRepository.Setup(repo => repo.Where(expectedExpression))
-                .Returns(expectedQuery);
+            _mockCommandRepository.Setup(x => x.RemoveAsync(It.IsAny<TodoItemEntity>()));
 
-            var result = sut.Where(expectedExpression);
+            await sut.RemoveAsync(new TodoItemEntity());
 
-            result.Should().BeSameAs(expectedQuery);
+            _mockCommandRepository.Verify(x => x.RemoveAsync(It.IsAny<TodoItemEntity>()), Times.Once());
         }
 
         [Fact]
-        public async Task AddAsync_CallsCommandRepositoryAddAsync()
+        public async Task RemoveAsyncWithGuid_ShouldCall_RemoveAsyncWithGuidWithinCommand()
         {
-            var entity = new TodoItemEntity();
-            var expectedResponse = OneOf<TodoItemEntity, Error<ArgumentNullException>>.FromT0(entity);
-            _mockCommandRepository.Setup(repo => repo.AddAsync(entity))
-                .ReturnsAsync(expectedResponse);
+            _mockCommandRepository.Setup(x => x.RemoveAsync(It.IsAny<Guid>()));
 
-            var result = await sut.AddAsync(entity);
+            await sut.RemoveAsync(Guid.NewGuid());
 
-            result.Should().BeEquivalentTo(expectedResponse);
+            _mockCommandRepository.Verify(x => x.RemoveAsync(It.IsAny<Guid>()), Times.Once());
         }
 
         [Fact]
-        public async Task RemoveAsync_CallsCommandRepositoryRemoveAsync()
+        public async Task UpdateAsync_ShouldCall_UpdateAsyncWithinCommand()
         {
-            var entity = new TodoItemEntity();
-            var expectedResponse = OneOf<TodoItemEntity, Error<ArgumentNullException>>.FromT0(entity);
-            _mockCommandRepository.Setup(repo => repo.RemoveAsync(entity))
-                .ReturnsAsync(expectedResponse);
+            _mockCommandRepository.Setup(x => x.UpdateAsync(It.IsAny<TodoItemEntity>()));
 
-            var result = await sut.RemoveAsync(entity);
+            await sut.UpdateAsync(new TodoItemEntity());
 
-            result.Should().BeEquivalentTo(expectedResponse);
-        }
-
-        [Fact]
-        public async Task UpdateAsync_CallsCommandRepositoryUpdateAsync()
-        {
-            var entity = new TodoItemEntity();
-            var expectedResponse = OneOf<TodoItemEntity, Error<ArgumentNullException>>.FromT0(entity);
-            _mockCommandRepository.Setup(repo => repo.UpdateAsync(entity))
-                .ReturnsAsync(expectedResponse);
-
-            var result = await sut.UpdateAsync(entity);
-
-            result.Should().BeEquivalentTo(expectedResponse);
+            _mockCommandRepository.Verify(x => x.UpdateAsync(It.IsAny<TodoItemEntity>()), Times.Once());
         }
     }
 }

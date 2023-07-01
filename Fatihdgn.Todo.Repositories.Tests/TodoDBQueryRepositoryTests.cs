@@ -47,21 +47,22 @@ public class TodoDBQueryRepositoryTests
     }
 
     [Fact]
-    public async Task GetAll_WithEmptyStore_ReturnsNone()
+    public async Task AsQueryable_WithEmptyStore_ReturnsNone()
     {
-        var result = await sut.GetAll().ToListAsync();
+        await ClearEntities();
+        var result = await sut.AsQueryable().ToListAsync();
         result.Count.Should().Be(0);
     }
 
     [Fact]
-    public async Task GetAll_WithFiveEntities_ReturnsFiveEntities()
+    public async Task AsQueryable_WithFiveEntities_ReturnsFiveEntities()
     {
         await Task.WhenAll(Enumerable.Range(1, 5).Select(async i =>
             await _context.Items.AddAsync(new Entities.TodoItemEntity { Id = Guid.NewGuid(), Content = i.ToString() })
         ));
         await _context.SaveChangesAsync();
 
-        var result = await sut.GetAll().ToListAsync();
+        var result = await sut.AsQueryable().ToListAsync();
         result.Count.Should().Be(5);
         await ClearEntities();
     }
@@ -69,7 +70,7 @@ public class TodoDBQueryRepositoryTests
     [Fact]
     public async Task Where_WithEmptyStore_ReturnsNone()
     {
-        var result = await sut.Where(x => x.Content.Contains("content")).ToListAsync();
+        var result = await sut.AsQueryable().Where(x => x.Content.Contains("content")).ToListAsync();
         result.Count.Should().Be(0);
     }
 
@@ -81,7 +82,7 @@ public class TodoDBQueryRepositoryTests
         ));
         await _context.SaveChangesAsync();
 
-        var result = await sut.Where(x => x.Content.Contains("content")).ToListAsync();
+        var result = await sut.AsQueryable().Where(x => x.Content.Contains("content")).ToListAsync();
 
         result.Count.Should().Be(5);
         await ClearEntities();
@@ -95,7 +96,7 @@ public class TodoDBQueryRepositoryTests
         ));
         await _context.SaveChangesAsync();
 
-        var result = await sut.Where(x => x.Content.StartsWith("1") || x.Content.StartsWith("2") || x.Content.StartsWith("3")).ToListAsync();
+        var result = await sut.AsQueryable().Where(x => x.Content.StartsWith("1") || x.Content.StartsWith("2") || x.Content.StartsWith("3")).ToListAsync();
 
         result.Count.Should().Be(3);
         await ClearEntities();
