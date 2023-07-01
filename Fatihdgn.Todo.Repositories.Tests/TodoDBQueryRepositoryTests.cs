@@ -24,20 +24,20 @@ public class TodoDBQueryRepositoryTests
     }
 
     [Fact]
-    public async Task ById_WithRandomId_ReturnsNotFound()
+    public async Task ByIdAsync_WithRandomId_ReturnsNotFound()
     {
-        var result = await sut.ById(Guid.NewGuid());
+        var result = await sut.ByIdAsync(Guid.NewGuid());
         result.IsT1.Should().BeTrue();
     }
 
     [Fact]
-    public async Task ById_WithValidId_ReturnsEntity()
+    public async Task ByIdAsync_WithValidId_ReturnsEntity()
     {
         var id = Guid.NewGuid();
         var entry = await _context.Items.AddAsync(new Entities.TodoItemEntity { Id = id });
         await _context.SaveChangesAsync();
 
-        var result = await sut.ById(id);
+        var result = await sut.ByIdAsync(id);
 
         result.IsT0.Should().BeTrue();
         result.AsT0.Id.Should().Be(id);

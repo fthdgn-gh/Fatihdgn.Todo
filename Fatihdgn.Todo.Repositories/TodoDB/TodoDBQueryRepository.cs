@@ -19,7 +19,7 @@ public class TodoDBQueryRepository<TEntity, TKey> : IQueryRepository<TEntity, TK
     }
 
     private DbSet<TEntity> Set => _context.Set<TEntity>();
-    public async Task<OneOf<TEntity, NotFound>> ById(TKey id)
+    public async Task<OneOf<TEntity, NotFound>> ByIdAsync(TKey id)
     {
         var entity = await Set.FindAsync(id);
         if (entity == null) return new NotFound();

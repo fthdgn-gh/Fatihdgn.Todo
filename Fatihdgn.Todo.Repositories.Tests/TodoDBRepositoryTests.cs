@@ -42,13 +42,13 @@ namespace Fatihdgn.Todo.Repositories.Tests
         }
 
         [Fact]
-        public async Task ById_ShouldCall_ByIdWithinQuery()
+        public async Task ByIdAsync_ShouldCall_ByIdWithinQuery()
         {
-            _mockQueryRepository.Setup(x => x.ById(It.IsAny<Guid>()));
+            _mockQueryRepository.Setup(x => x.ByIdAsync(It.IsAny<Guid>()));
 
-            var result = await sut.ById(Guid.NewGuid());
+            var result = await sut.ByIdAsync(Guid.NewGuid());
 
-            _mockQueryRepository.Verify(x => x.ById(It.IsAny<Guid>()), Times.Once());
+            _mockQueryRepository.Verify(x => x.ByIdAsync(It.IsAny<Guid>()), Times.Once());
         }
 
         [Fact]

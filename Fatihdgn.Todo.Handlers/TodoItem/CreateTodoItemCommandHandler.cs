@@ -25,7 +25,7 @@ public class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemComman
         if (request.Model == null) return new Error<ArgumentNullException>(new ArgumentNullException(nameof(request.Model)));
         if (string.IsNullOrEmpty(request.ById)) return new Error<ArgumentNullException>(new ArgumentNullException(nameof(request.ById)));
 
-        var userResult = await _userQuery.ById(request.ById);
+        var userResult = await _userQuery.ByIdAsync(request.ById);
         if (userResult.IsT1) return userResult.AsT1;
 
         var entity = request.Model.ApplyTo(new TodoItemEntity { Id = Guid.NewGuid(), By = userResult.AsT0 });

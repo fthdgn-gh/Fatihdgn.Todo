@@ -22,7 +22,7 @@ public class TodoDBRepository<TEntity, TKey> : IRepository<TEntity, TKey>
     public ICommandRepository<TEntity, TKey> Command => _command;
 
 
-    public async Task<OneOf<TEntity, NotFound>> ById(TKey id) => await _query.ById(id);
+    public async Task<OneOf<TEntity, NotFound>> ByIdAsync(TKey id) => await _query.ByIdAsync(id);
 
     public IQueryable<TEntity> AsQueryable() => _query.AsQueryable();
 
