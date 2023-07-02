@@ -29,7 +29,7 @@ public class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemComman
         if (userResult.IsT1) return userResult.AsT1;
 
         var entity = request.Model.ApplyTo(new TodoItemEntity { Id = Guid.NewGuid(), By = userResult.AsT0 });
-        
+
         var addResult = await _repo.AddAsync(entity);
 
         if (addResult.IsT1) return addResult.AsT1;

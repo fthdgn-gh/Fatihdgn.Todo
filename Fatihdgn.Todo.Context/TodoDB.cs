@@ -53,8 +53,6 @@ public class TodoDB : IdentityDbContext<TodoUserEntity>
         return base.SaveChangesAsync(cancellationToken);
     }
 
-    
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         AddEntityQueryFilter<TodoItemEntity, Guid>(modelBuilder);

@@ -1,10 +1,6 @@
 ﻿using Fatihdgn.Todo.Entities;
 using Fatihdgn.Todo.Repositories.Abstractions;
-using FluentAssertions;
 using Moq;
-using OneOf;
-using OneOf.Types;
-using System.Linq.Expressions;
 
 namespace Fatihdgn.Todo.Repositories.Tests
 {

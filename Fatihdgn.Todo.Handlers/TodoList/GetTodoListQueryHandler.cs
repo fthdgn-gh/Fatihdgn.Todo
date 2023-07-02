@@ -3,7 +3,6 @@ using Fatihdgn.Todo.DTOs.Mappings.Entities;
 using Fatihdgn.Todo.Repositories;
 using Fatihdgn.Todo.Requests;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using OneOf;
 using OneOf.Types;
 

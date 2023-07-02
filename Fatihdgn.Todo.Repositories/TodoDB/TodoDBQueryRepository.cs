@@ -4,7 +4,6 @@ using Fatihdgn.Todo.Repositories.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using OneOf;
 using OneOf.Types;
-using System.Linq.Expressions;
 
 namespace Fatihdgn.Todo.Repositories;
 
