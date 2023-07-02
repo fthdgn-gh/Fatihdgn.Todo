@@ -9,7 +9,7 @@ public class TodoTemplateEntity : IEntity<Guid>
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;
 
-    public JsonDocument Content { get; set; }
+    public JsonDocument? Content { get; set; }
 
     [JsonIgnore]
     public DateTimeOffset? RemovedAt { get; set; }
