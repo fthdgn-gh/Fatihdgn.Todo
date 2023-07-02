@@ -11,7 +11,8 @@ namespace Fatihdgn.Todo.API.Controllers;
 
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [ApiController]
-[Route("api/lists")]
+[Route("api/v{version:apiVersion}/lists")]
+[ApiVersion("1.0")]
 public class ListsController : Controller
 {
     private readonly IMediator _mediator;

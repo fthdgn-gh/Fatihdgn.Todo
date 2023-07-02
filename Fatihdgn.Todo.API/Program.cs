@@ -6,6 +6,8 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NSwag;
@@ -17,6 +19,22 @@ builder.Configuration.AddUserSecrets<Program>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddApiVersioning(config =>
+{
+    config.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    config.AssumeDefaultVersionWhenUnspecified = true;
+    config.ReportApiVersions = true;
+    config.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader(),
+                                                    new HeaderApiVersionReader("x-api-version"),
+                                                    new MediaTypeApiVersionReader("x-api-version"));
+});
+
+builder.Services.AddVersionedApiExplorer(setup =>
+{
+    setup.GroupNameFormat = "'v'VVV";
+    setup.SubstituteApiVersionInUrl = true;
+});
+
 builder.Services.AddSwaggerDocument(config =>
 {
     config.Title = "Fatihdgn Todo";
@@ -87,12 +105,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 var app = builder.Build();
 
+var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseOpenApi();
-    app.UseSwaggerUi3();
+    app.UseSwaggerUi3(options =>
+    {
+        foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions.Reverse())
+        {
+            options.SwaggerRoutes.Add(new NSwag.AspNetCore.SwaggerUi3Route(description.GroupName.ToUpperInvariant(), $"/swagger/{description.GroupName}/swagger.json"));
+        }
+    });
     app.UseDeveloperExceptionPage();
 }
 

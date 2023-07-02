@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace Fatihdgn.Todo.API.Controllers;
 
+[ApiController]
+[Route("api/v{version:apiVersion}/auth")]
+[ApiVersion("1.0")]
 public class AuthController : Controller
 {
     private readonly IMediator _mediator;
