@@ -19,6 +19,7 @@ builder.Configuration.AddUserSecrets<Program>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+// https://blog.christian-schou.dk/how-to-use-api-versioning-in-net-core-web-api/
 builder.Services.AddApiVersioning(config =>
 {
     config.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
