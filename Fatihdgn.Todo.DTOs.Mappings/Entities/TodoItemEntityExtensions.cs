@@ -2,7 +2,7 @@
 
 namespace Fatihdgn.Todo.DTOs.Mappings.Entities
 {
-    public static class TodoItemEntitiyExtensions
+    public static class TodoItemEntityExtensions
     {
         public static TodoItemEntity ToEntity(this TodoItemDTO entity) => new TodoItemEntity
         {
