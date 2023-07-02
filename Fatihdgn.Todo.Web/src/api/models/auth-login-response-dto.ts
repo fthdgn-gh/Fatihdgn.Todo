@@ -1,5 +1,6 @@
 /* tslint:disable */
-export interface AuthLoginResponseDTO {
-  accessToken: string;
-  refreshToken?: string;
+/* eslint-disable */
+export interface AuthLoginResponseDto {
+  accessToken?: string;
+  refreshToken?: null | string;
 }

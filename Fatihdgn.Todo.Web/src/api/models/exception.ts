@@ -1,7 +1,8 @@
 /* tslint:disable */
+/* eslint-disable */
 export interface Exception {
-  InnerException?: Exception;
-  Message: string;
-  Source?: string;
-  StackTrace?: string;
+  InnerException?: null | Exception;
+  Message?: string;
+  Source?: null | string;
+  StackTrace?: null | string;
 }

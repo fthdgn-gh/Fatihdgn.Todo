@@ -36,7 +36,7 @@ builder.Services.AddVersionedApiExplorer(setup =>
     setup.SubstituteApiVersionInUrl = true;
 });
 
-builder.Services.AddSwaggerDocument(config =>
+builder.Services.AddOpenApiDocument(config =>
 {
     config.Title = "Fatihdgn Todo";
     config.Version = "v1";

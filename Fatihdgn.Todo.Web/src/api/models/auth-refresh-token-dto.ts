@@ -1,5 +1,6 @@
 /* tslint:disable */
-export interface AuthRefreshTokenDTO {
+/* eslint-disable */
+export interface AuthRefreshTokenDto {
   email: string;
   refreshToken: string;
 }

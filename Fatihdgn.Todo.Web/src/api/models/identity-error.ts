@@ -1,5 +1,6 @@
 /* tslint:disable */
+/* eslint-disable */
 export interface IdentityError {
-  code: string;
-  description: string;
+  code?: string;
+  description?: string;
 }

@@ -1,4 +1,5 @@
 /* tslint:disable */
-export interface TodoListPatchDTO {
-  name?: string;
+/* eslint-disable */
+export interface TodoListPatchDto {
+  name?: null | string;
 }

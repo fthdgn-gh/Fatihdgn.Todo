@@ -1,5 +1,6 @@
 /* tslint:disable */
-export interface AuthRegisterDTO {
+/* eslint-disable */
+export interface AuthRegisterDto {
   confirmPassword: string;
   email: string;
   password: string;

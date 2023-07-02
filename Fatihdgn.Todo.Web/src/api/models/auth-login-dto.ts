@@ -1,6 +1,7 @@
 /* tslint:disable */
-export interface AuthLoginDTO {
+/* eslint-disable */
+export interface AuthLoginDto {
   email: string;
   password: string;
-  rememberMe: boolean;
+  rememberMe?: boolean;
 }

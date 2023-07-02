@@ -1,4 +1,5 @@
 /* tslint:disable */
-export interface TodoListCreateDTO {
-  name: string;
+/* eslint-disable */
+export interface TodoListCreateDto {
+  name?: string;
 }

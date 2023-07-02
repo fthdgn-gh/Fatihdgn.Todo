@@ -1,2 +1,8 @@
 /* tslint:disable */
-export type ModelValidationState = 0 | 1 | 2 | 3;
+/* eslint-disable */
+export enum ModelValidationState {
+  Unvalidated = 0,
+  Invalid = 1,
+  Valid = 2,
+  Skipped = 3
+}

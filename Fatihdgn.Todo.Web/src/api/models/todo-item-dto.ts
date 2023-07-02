@@ -1,9 +1,10 @@
 /* tslint:disable */
-export interface TodoItemDTO {
-  content: string;
-  dueAt?: string;
-  id: string;
-  isCompleted: boolean;
-  note: string;
-  remindAt?: string;
+/* eslint-disable */
+export interface TodoItemDto {
+  content?: string;
+  dueAt?: null | string;
+  id?: string;
+  isCompleted?: boolean;
+  note?: string;
+  remindAt?: null | string;
 }

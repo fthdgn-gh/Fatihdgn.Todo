@@ -1,265 +1,309 @@
 /* tslint:disable */
+/* eslint-disable */
+import { HttpClient, HttpContext, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
-import { BaseService as __BaseService } from '../base-service';
-import { ApiConfiguration as __Configuration } from '../api-configuration';
-import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
-import { Observable as __Observable } from 'rxjs';
-import { map as __map, filter as __filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
-import { TodoListDTO } from '../models/todo-list-dto';
-import { TodoListCreateDTO } from '../models/todo-list-create-dto';
-import { TodoListUpdateDTO } from '../models/todo-list-update-dto';
-import { TodoListPatchDTO } from '../models/todo-list-patch-dto';
-@Injectable({
-  providedIn: 'root',
-})
-class ListsService extends __BaseService {
-  static readonly GetAllListsPath = '/api/lists';
-  static readonly CreateListPath = '/api/lists';
-  static readonly GetListPath = '/api/lists/{id}';
-  static readonly UpdateListPath = '/api/lists/{id}';
-  static readonly PatchListPath = '/api/lists/{id}';
-  static readonly RemoveListPath = '/api/lists/{id}';
+import { BaseService } from '../base-service';
+import { ApiConfiguration } from '../api-configuration';
+import { StrictHttpResponse } from '../strict-http-response';
+import { RequestBuilder } from '../request-builder';
 
-  constructor(
-    config: __Configuration,
-    http: HttpClient
-  ) {
+import { TodoListCreateDto } from '../models/todo-list-create-dto';
+import { TodoListDto } from '../models/todo-list-dto';
+import { TodoListPatchDto } from '../models/todo-list-patch-dto';
+import { TodoListUpdateDto } from '../models/todo-list-update-dto';
+
+@Injectable({ providedIn: 'root' })
+export class ListsService extends BaseService {
+  constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }
-  GetAllListsResponse(): __Observable<__StrictHttpResponse<Array<TodoListDTO>>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/lists`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
 
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<Array<TodoListDTO>>;
-      })
-    );
-  }  GetAllLists(): __Observable<Array<TodoListDTO>> {
-    return this.GetAllListsResponse().pipe(
-      __map(_r => _r.body as Array<TodoListDTO>)
-    );
-  }
+  /** Path part for operation `getAllLists()` */
+  static readonly GetAllListsPath = '/api/v1/lists';
 
   /**
-   * @param model undefined
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllLists()` instead.
+   *
+   * This method doesn't expect any request body.
    */
-  CreateListResponse(model: TodoListCreateDTO): __Observable<__StrictHttpResponse<TodoListDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = model;
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/lists`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
+  getAllLists$Response(
+    params?: {
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<Array<TodoListDto>>> {
+    const rb = new RequestBuilder(this.rootUrl, ListsService.GetAllListsPath, 'get');
+    if (params) {
+    }
 
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<TodoListDTO>;
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<TodoListDto>>;
       })
     );
   }
+
   /**
-   * @param model undefined
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllLists$Response()` instead.
+   *
+   * This method doesn't expect any request body.
    */
-  CreateList(model: TodoListCreateDTO): __Observable<TodoListDTO> {
-    return this.CreateListResponse(model).pipe(
-      __map(_r => _r.body as TodoListDTO)
+  getAllLists(
+    params?: {
+    },
+    context?: HttpContext
+  ): Observable<Array<TodoListDto>> {
+    return this.getAllLists$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<TodoListDto>>): Array<TodoListDto> => r.body)
     );
   }
 
+  /** Path part for operation `createList()` */
+  static readonly CreateListPath = '/api/v1/lists';
+
   /**
-   * @param id undefined
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `createList()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  GetListResponse(id: string): __Observable<__StrictHttpResponse<TodoListDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
+  createList$Response(
+    params: {
+      body: TodoListCreateDto
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<TodoListDto>> {
+    const rb = new RequestBuilder(this.rootUrl, ListsService.CreateListPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
 
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/lists/${encodeURIComponent(String(id))}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<TodoListDTO>;
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<TodoListDto>;
       })
     );
   }
+
   /**
-   * @param id undefined
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `createList$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  GetList(id: string): __Observable<TodoListDTO> {
-    return this.GetListResponse(id).pipe(
-      __map(_r => _r.body as TodoListDTO)
+  createList(
+    params: {
+      body: TodoListCreateDto
+    },
+    context?: HttpContext
+  ): Observable<TodoListDto> {
+    return this.createList$Response(params, context).pipe(
+      map((r: StrictHttpResponse<TodoListDto>): TodoListDto => r.body)
     );
   }
 
+  /** Path part for operation `getList()` */
+  static readonly GetListPath = '/api/v1/lists/{id}';
+
   /**
-   * @param params The `ListsService.UpdateListParams` containing the following parameters:
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getList()` instead.
    *
-   * - `model`:
-   *
-   * - `id`:
+   * This method doesn't expect any request body.
    */
-  UpdateListResponse(params: ListsService.UpdateListParams): __Observable<__StrictHttpResponse<TodoListDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = params.model;
+  getList$Response(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<TodoListDto>> {
+    const rb = new RequestBuilder(this.rootUrl, ListsService.GetListPath, 'get');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
 
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/api/lists/${encodeURIComponent(String(params.id))}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<TodoListDTO>;
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<TodoListDto>;
       })
     );
   }
+
   /**
-   * @param params The `ListsService.UpdateListParams` containing the following parameters:
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getList$Response()` instead.
    *
-   * - `model`:
-   *
-   * - `id`:
+   * This method doesn't expect any request body.
    */
-  UpdateList(params: ListsService.UpdateListParams): __Observable<TodoListDTO> {
-    return this.UpdateListResponse(params).pipe(
-      __map(_r => _r.body as TodoListDTO)
+  getList(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<TodoListDto> {
+    return this.getList$Response(params, context).pipe(
+      map((r: StrictHttpResponse<TodoListDto>): TodoListDto => r.body)
     );
   }
 
+  /** Path part for operation `updateList()` */
+  static readonly UpdateListPath = '/api/v1/lists/{id}';
+
   /**
-   * @param params The `ListsService.PatchListParams` containing the following parameters:
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `updateList()` instead.
    *
-   * - `model`:
-   *
-   * - `id`:
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  PatchListResponse(params: ListsService.PatchListParams): __Observable<__StrictHttpResponse<TodoListDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = params.model;
+  updateList$Response(
+    params: {
+      id: string;
+      body: TodoListUpdateDto
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<TodoListDto>> {
+    const rb = new RequestBuilder(this.rootUrl, ListsService.UpdateListPath, 'put');
+    if (params) {
+      rb.path('id', params.id, {});
+      rb.body(params.body, 'application/json');
+    }
 
-    let req = new HttpRequest<any>(
-      'PATCH',
-      this.rootUrl + `/api/lists/${encodeURIComponent(String(params.id))}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<TodoListDTO>;
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<TodoListDto>;
       })
     );
   }
+
   /**
-   * @param params The `ListsService.PatchListParams` containing the following parameters:
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `updateList$Response()` instead.
    *
-   * - `model`:
-   *
-   * - `id`:
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  PatchList(params: ListsService.PatchListParams): __Observable<TodoListDTO> {
-    return this.PatchListResponse(params).pipe(
-      __map(_r => _r.body as TodoListDTO)
+  updateList(
+    params: {
+      id: string;
+      body: TodoListUpdateDto
+    },
+    context?: HttpContext
+  ): Observable<TodoListDto> {
+    return this.updateList$Response(params, context).pipe(
+      map((r: StrictHttpResponse<TodoListDto>): TodoListDto => r.body)
     );
   }
 
+  /** Path part for operation `removeList()` */
+  static readonly RemoveListPath = '/api/v1/lists/{id}';
+
   /**
-   * @param id undefined
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `removeList()` instead.
+   *
+   * This method doesn't expect any request body.
    */
-  RemoveListResponse(id: string): __Observable<__StrictHttpResponse<Blob>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
+  removeList$Response(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<Blob>> {
+    const rb = new RequestBuilder(this.rootUrl, ListsService.RemoveListPath, 'delete');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
 
-    let req = new HttpRequest<any>(
-      'DELETE',
-      this.rootUrl + `/api/lists/${encodeURIComponent(String(id))}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'blob'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<Blob>;
+    return this.http.request(
+      rb.build({ responseType: 'blob', accept: 'application/octet-stream', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Blob>;
       })
     );
   }
+
   /**
-   * @param id undefined
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `removeList$Response()` instead.
+   *
+   * This method doesn't expect any request body.
    */
-  RemoveList(id: string): __Observable<Blob> {
-    return this.RemoveListResponse(id).pipe(
-      __map(_r => _r.body as Blob)
+  removeList(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<Blob> {
+    return this.removeList$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Blob>): Blob => r.body)
     );
   }
+
+  /** Path part for operation `patchList()` */
+  static readonly PatchListPath = '/api/v1/lists/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `patchList()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  patchList$Response(
+    params: {
+      id: string;
+      body: TodoListPatchDto
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<TodoListDto>> {
+    const rb = new RequestBuilder(this.rootUrl, ListsService.PatchListPath, 'patch');
+    if (params) {
+      rb.path('id', params.id, {});
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<TodoListDto>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `patchList$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  patchList(
+    params: {
+      id: string;
+      body: TodoListPatchDto
+    },
+    context?: HttpContext
+  ): Observable<TodoListDto> {
+    return this.patchList$Response(params, context).pipe(
+      map((r: StrictHttpResponse<TodoListDto>): TodoListDto => r.body)
+    );
+  }
+
 }
-
-module ListsService {
-
-  /**
-   * Parameters for UpdateList
-   */
-  export interface UpdateListParams {
-    model: TodoListUpdateDTO;
-    id: string;
-  }
-
-  /**
-   * Parameters for PatchList
-   */
-  export interface PatchListParams {
-    model: TodoListPatchDTO;
-    id: string;
-  }
-}
-
-export { ListsService }

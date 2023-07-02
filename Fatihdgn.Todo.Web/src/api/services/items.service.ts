@@ -1,274 +1,312 @@
 /* tslint:disable */
+/* eslint-disable */
+import { HttpClient, HttpContext, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpRequest, HttpResponse, HttpHeaders } from '@angular/common/http';
-import { BaseService as __BaseService } from '../base-service';
-import { ApiConfiguration as __Configuration } from '../api-configuration';
-import { StrictHttpResponse as __StrictHttpResponse } from '../strict-http-response';
-import { Observable as __Observable } from 'rxjs';
-import { map as __map, filter as __filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
-import { TodoItemDTO } from '../models/todo-item-dto';
-import { TodoItemUpdateDTO } from '../models/todo-item-update-dto';
-import { TodoItemPatchDTO } from '../models/todo-item-patch-dto';
-import { TodoItemCreateDTO } from '../models/todo-item-create-dto';
-@Injectable({
-  providedIn: 'root',
-})
-class ItemsService extends __BaseService {
-  static readonly GetAllItemsByListIdPath = '/api/items/by/lists/{id}';
-  static readonly GetItemPath = '/api/items/{id}';
-  static readonly UpdateItemPath = '/api/items/{id}';
-  static readonly PatchItemPath = '/api/items/{id}';
-  static readonly RemoveItemPath = '/api/items/{id}';
-  static readonly CreateItemPath = '/api/items';
+import { BaseService } from '../base-service';
+import { ApiConfiguration } from '../api-configuration';
+import { StrictHttpResponse } from '../strict-http-response';
+import { RequestBuilder } from '../request-builder';
 
-  constructor(
-    config: __Configuration,
-    http: HttpClient
-  ) {
+import { TodoItemCreateDto } from '../models/todo-item-create-dto';
+import { TodoItemDto } from '../models/todo-item-dto';
+import { TodoItemPatchDto } from '../models/todo-item-patch-dto';
+import { TodoItemUpdateDto } from '../models/todo-item-update-dto';
+
+@Injectable({ providedIn: 'root' })
+export class ItemsService extends BaseService {
+  constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }
 
+  /** Path part for operation `getAllItemsByListId()` */
+  static readonly GetAllItemsByListIdPath = '/api/v1/items/by/lists/{id}';
+
   /**
-   * @param id undefined
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllItemsByListId()` instead.
+   *
+   * This method doesn't expect any request body.
    */
-  GetAllItemsByListIdResponse(id: string): __Observable<__StrictHttpResponse<Array<TodoItemDTO>>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
+  getAllItemsByListId$Response(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<Array<TodoItemDto>>> {
+    const rb = new RequestBuilder(this.rootUrl, ItemsService.GetAllItemsByListIdPath, 'get');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
 
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/items/by/lists/${encodeURIComponent(String(id))}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<Array<TodoItemDTO>>;
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<TodoItemDto>>;
       })
     );
   }
+
   /**
-   * @param id undefined
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllItemsByListId$Response()` instead.
+   *
+   * This method doesn't expect any request body.
    */
-  GetAllItemsByListId(id: string): __Observable<Array<TodoItemDTO>> {
-    return this.GetAllItemsByListIdResponse(id).pipe(
-      __map(_r => _r.body as Array<TodoItemDTO>)
+  getAllItemsByListId(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<Array<TodoItemDto>> {
+    return this.getAllItemsByListId$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<TodoItemDto>>): Array<TodoItemDto> => r.body)
     );
   }
 
+  /** Path part for operation `getItem()` */
+  static readonly GetItemPath = '/api/v1/items/{id}';
+
   /**
-   * @param id undefined
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getItem()` instead.
+   *
+   * This method doesn't expect any request body.
    */
-  GetItemResponse(id: string): __Observable<__StrictHttpResponse<TodoItemDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
+  getItem$Response(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<TodoItemDto>> {
+    const rb = new RequestBuilder(this.rootUrl, ItemsService.GetItemPath, 'get');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
 
-    let req = new HttpRequest<any>(
-      'GET',
-      this.rootUrl + `/api/items/${encodeURIComponent(String(id))}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<TodoItemDTO>;
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<TodoItemDto>;
       })
     );
   }
+
   /**
-   * @param id undefined
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getItem$Response()` instead.
+   *
+   * This method doesn't expect any request body.
    */
-  GetItem(id: string): __Observable<TodoItemDTO> {
-    return this.GetItemResponse(id).pipe(
-      __map(_r => _r.body as TodoItemDTO)
+  getItem(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<TodoItemDto> {
+    return this.getItem$Response(params, context).pipe(
+      map((r: StrictHttpResponse<TodoItemDto>): TodoItemDto => r.body)
     );
   }
 
+  /** Path part for operation `updateItem()` */
+  static readonly UpdateItemPath = '/api/v1/items/{id}';
+
   /**
-   * @param params The `ItemsService.UpdateItemParams` containing the following parameters:
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `updateItem()` instead.
    *
-   * - `model`:
-   *
-   * - `id`:
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  UpdateItemResponse(params: ItemsService.UpdateItemParams): __Observable<__StrictHttpResponse<TodoItemDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = params.model;
+  updateItem$Response(
+    params: {
+      id: string;
+      body: TodoItemUpdateDto
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<TodoItemDto>> {
+    const rb = new RequestBuilder(this.rootUrl, ItemsService.UpdateItemPath, 'put');
+    if (params) {
+      rb.path('id', params.id, {});
+      rb.body(params.body, 'application/json');
+    }
 
-    let req = new HttpRequest<any>(
-      'PUT',
-      this.rootUrl + `/api/items/${encodeURIComponent(String(params.id))}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<TodoItemDTO>;
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<TodoItemDto>;
       })
     );
   }
+
   /**
-   * @param params The `ItemsService.UpdateItemParams` containing the following parameters:
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `updateItem$Response()` instead.
    *
-   * - `model`:
-   *
-   * - `id`:
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  UpdateItem(params: ItemsService.UpdateItemParams): __Observable<TodoItemDTO> {
-    return this.UpdateItemResponse(params).pipe(
-      __map(_r => _r.body as TodoItemDTO)
+  updateItem(
+    params: {
+      id: string;
+      body: TodoItemUpdateDto
+    },
+    context?: HttpContext
+  ): Observable<TodoItemDto> {
+    return this.updateItem$Response(params, context).pipe(
+      map((r: StrictHttpResponse<TodoItemDto>): TodoItemDto => r.body)
     );
   }
 
+  /** Path part for operation `removeItem()` */
+  static readonly RemoveItemPath = '/api/v1/items/{id}';
+
   /**
-   * @param params The `ItemsService.PatchItemParams` containing the following parameters:
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `removeItem()` instead.
    *
-   * - `model`:
-   *
-   * - `id`:
+   * This method doesn't expect any request body.
    */
-  PatchItemResponse(params: ItemsService.PatchItemParams): __Observable<__StrictHttpResponse<TodoItemDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = params.model;
+  removeItem$Response(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<Blob>> {
+    const rb = new RequestBuilder(this.rootUrl, ItemsService.RemoveItemPath, 'delete');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
 
-    let req = new HttpRequest<any>(
-      'PATCH',
-      this.rootUrl + `/api/items/${encodeURIComponent(String(params.id))}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<TodoItemDTO>;
+    return this.http.request(
+      rb.build({ responseType: 'blob', accept: 'application/octet-stream', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Blob>;
       })
     );
   }
+
   /**
-   * @param params The `ItemsService.PatchItemParams` containing the following parameters:
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `removeItem$Response()` instead.
    *
-   * - `model`:
-   *
-   * - `id`:
+   * This method doesn't expect any request body.
    */
-  PatchItem(params: ItemsService.PatchItemParams): __Observable<TodoItemDTO> {
-    return this.PatchItemResponse(params).pipe(
-      __map(_r => _r.body as TodoItemDTO)
+  removeItem(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<Blob> {
+    return this.removeItem$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Blob>): Blob => r.body)
     );
   }
 
+  /** Path part for operation `patchItem()` */
+  static readonly PatchItemPath = '/api/v1/items/{id}';
+
   /**
-   * @param id undefined
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `patchItem()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  RemoveItemResponse(id: string): __Observable<__StrictHttpResponse<Blob>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
+  patchItem$Response(
+    params: {
+      id: string;
+      body: TodoItemPatchDto
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<TodoItemDto>> {
+    const rb = new RequestBuilder(this.rootUrl, ItemsService.PatchItemPath, 'patch');
+    if (params) {
+      rb.path('id', params.id, {});
+      rb.body(params.body, 'application/json');
+    }
 
-    let req = new HttpRequest<any>(
-      'DELETE',
-      this.rootUrl + `/api/items/${encodeURIComponent(String(id))}`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'blob'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<Blob>;
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<TodoItemDto>;
       })
     );
   }
+
   /**
-   * @param id undefined
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `patchItem$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  RemoveItem(id: string): __Observable<Blob> {
-    return this.RemoveItemResponse(id).pipe(
-      __map(_r => _r.body as Blob)
+  patchItem(
+    params: {
+      id: string;
+      body: TodoItemPatchDto
+    },
+    context?: HttpContext
+  ): Observable<TodoItemDto> {
+    return this.patchItem$Response(params, context).pipe(
+      map((r: StrictHttpResponse<TodoItemDto>): TodoItemDto => r.body)
     );
   }
 
-  /**
-   * @param model undefined
-   */
-  CreateItemResponse(model: TodoItemCreateDTO): __Observable<__StrictHttpResponse<TodoItemDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = model;
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/api/items`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
+  /** Path part for operation `createItem()` */
+  static readonly CreateItemPath = '/api/v1/items';
 
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<TodoItemDTO>;
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `createItem()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  createItem$Response(
+    params: {
+      body: TodoItemCreateDto
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<TodoItemDto>> {
+    const rb = new RequestBuilder(this.rootUrl, ItemsService.CreateItemPath, 'post');
+    if (params) {
+      rb.body(params.body, 'application/json');
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<TodoItemDto>;
       })
     );
   }
+
   /**
-   * @param model undefined
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `createItem$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
-  CreateItem(model: TodoItemCreateDTO): __Observable<TodoItemDTO> {
-    return this.CreateItemResponse(model).pipe(
-      __map(_r => _r.body as TodoItemDTO)
+  createItem(
+    params: {
+      body: TodoItemCreateDto
+    },
+    context?: HttpContext
+  ): Observable<TodoItemDto> {
+    return this.createItem$Response(params, context).pipe(
+      map((r: StrictHttpResponse<TodoItemDto>): TodoItemDto => r.body)
     );
   }
+
 }
-
-module ItemsService {
-
-  /**
-   * Parameters for UpdateItem
-   */
-  export interface UpdateItemParams {
-    model: TodoItemUpdateDTO;
-    id: string;
-  }
-
-  /**
-   * Parameters for PatchItem
-   */
-  export interface PatchItemParams {
-    model: TodoItemPatchDTO;
-    id: string;
-  }
-}
-
-export { ItemsService }
