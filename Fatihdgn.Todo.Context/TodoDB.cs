@@ -11,6 +11,7 @@ public class TodoDB : IdentityDbContext<TodoUserEntity>
 
     public DbSet<TodoItemEntity> Items { get; set; }
     public DbSet<TodoListEntity> Lists { get; set; }
+    public DbSet<TodoTemplateEntity> Templates { get; set; }
 
     private void MarkDeletedEntities<TEntity, TKey>()
         where TEntity : class, IEntity<TKey>
@@ -31,23 +32,35 @@ public class TodoDB : IdentityDbContext<TodoUserEntity>
         modelBuilder.Entity<TEntity>().HasQueryFilter(entity => entity.RemovedAt == null);
     }
 
-    public override int SaveChanges()
+    private void MarkDeletedEntities()
     {
         MarkDeletedEntities<TodoItemEntity, Guid>();
+        MarkDeletedEntities<TodoListEntity, Guid>();
+        MarkDeletedEntities<TodoTemplateEntity, Guid>();
+    }
+
+    public override int SaveChanges()
+    {
+        MarkDeletedEntities();
 
         return base.SaveChanges();
     }
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
-        MarkDeletedEntities<TodoItemEntity, Guid>();
+        MarkDeletedEntities();
 
         return base.SaveChangesAsync(cancellationToken);
     }
 
+    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         AddEntityQueryFilter<TodoItemEntity, Guid>(modelBuilder);
+        AddEntityQueryFilter<TodoListEntity, Guid>(modelBuilder);
+        AddEntityQueryFilter<TodoTemplateEntity, Guid>(modelBuilder);
+        modelBuilder.Entity<TodoTemplateEntity>().Property(x => x.Content).HasColumnType("json");
         base.OnModelCreating(modelBuilder);
     }
 }

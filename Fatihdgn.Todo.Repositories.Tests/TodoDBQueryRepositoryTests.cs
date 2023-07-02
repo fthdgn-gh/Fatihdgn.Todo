@@ -8,13 +8,13 @@ namespace Fatihdgn.Todo.Repositories.Tests;
 public class TodoDBQueryRepositoryTests
 {
     private readonly TodoDB _context;
-    private readonly TodoDBQueryRepository<TodoItemEntity, Guid> sut;
+    private readonly TodoDBQueryRepository<TodoItemEntity, Guid> _subject;
 
     public TodoDBQueryRepositoryTests()
     {
         var options = new DbContextOptionsBuilder().UseInMemoryDatabase(nameof(TodoDB)).Options;
         _context = new TodoDB(options);
-        sut = new TodoDBQueryRepository<TodoItemEntity, Guid>(_context);
+        _subject = new TodoDBQueryRepository<TodoItemEntity, Guid>(_context);
     }
 
     async Task ClearEntities()
@@ -26,7 +26,7 @@ public class TodoDBQueryRepositoryTests
     [Fact]
     public async Task ByIdAsync_WithRandomId_ReturnsNotFound()
     {
-        var result = await sut.ByIdAsync(Guid.NewGuid());
+        var result = await _subject.ByIdAsync(Guid.NewGuid());
         result.IsT1.Should().BeTrue();
     }
 
@@ -37,7 +37,7 @@ public class TodoDBQueryRepositoryTests
         var entry = await _context.Items.AddAsync(new Entities.TodoItemEntity { Id = id });
         await _context.SaveChangesAsync();
 
-        var result = await sut.ByIdAsync(id);
+        var result = await _subject.ByIdAsync(id);
 
         result.IsT0.Should().BeTrue();
         result.AsT0.Id.Should().Be(id);
@@ -50,7 +50,7 @@ public class TodoDBQueryRepositoryTests
     public async Task AsQueryable_WithEmptyStore_ReturnsNone()
     {
         await ClearEntities();
-        var result = await sut.AsQueryable().ToListAsync();
+        var result = await _subject.AsQueryable().ToListAsync();
         result.Count.Should().Be(0);
     }
 
@@ -62,7 +62,7 @@ public class TodoDBQueryRepositoryTests
         ));
         await _context.SaveChangesAsync();
 
-        var result = await sut.AsQueryable().ToListAsync();
+        var result = await _subject.AsQueryable().ToListAsync();
         result.Count.Should().Be(5);
         await ClearEntities();
     }
@@ -70,7 +70,7 @@ public class TodoDBQueryRepositoryTests
     [Fact]
     public async Task Where_WithEmptyStore_ReturnsNone()
     {
-        var result = await sut.AsQueryable().Where(x => x.Content.Contains("content")).ToListAsync();
+        var result = await _subject.AsQueryable().Where(x => x.Content.Contains("content")).ToListAsync();
         result.Count.Should().Be(0);
     }
 
@@ -82,7 +82,7 @@ public class TodoDBQueryRepositoryTests
         ));
         await _context.SaveChangesAsync();
 
-        var result = await sut.AsQueryable().Where(x => x.Content.Contains("content")).ToListAsync();
+        var result = await _subject.AsQueryable().Where(x => x.Content.Contains("content")).ToListAsync();
 
         result.Count.Should().Be(5);
         await ClearEntities();
@@ -96,7 +96,7 @@ public class TodoDBQueryRepositoryTests
         ));
         await _context.SaveChangesAsync();
 
-        var result = await sut.AsQueryable().Where(x => x.Content.StartsWith("1") || x.Content.StartsWith("2") || x.Content.StartsWith("3")).ToListAsync();
+        var result = await _subject.AsQueryable().Where(x => x.Content.StartsWith("1") || x.Content.StartsWith("2") || x.Content.StartsWith("3")).ToListAsync();
 
         result.Count.Should().Be(3);
         await ClearEntities();

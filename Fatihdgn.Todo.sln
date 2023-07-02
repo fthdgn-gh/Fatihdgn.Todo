@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fatihdgn.Todo.API.Client", 
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Fatihdgn.Todo.Web", "Fatihdgn.Todo.Web\Fatihdgn.Todo.Web.esproj", "{6FF396A2-E967-4BC9-9FBD-3EDBE17BEA81}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fatihdgn.Todo.Context.Tests", "Fatihdgn.Todo.Context.Tests\Fatihdgn.Todo.Context.Tests.csproj", "{4DBD1545-6165-414E-8AA2-6B3C3B9E1035}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,6 +97,10 @@ Global
 		{6FF396A2-E967-4BC9-9FBD-3EDBE17BEA81}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6FF396A2-E967-4BC9-9FBD-3EDBE17BEA81}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6FF396A2-E967-4BC9-9FBD-3EDBE17BEA81}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{4DBD1545-6165-414E-8AA2-6B3C3B9E1035}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DBD1545-6165-414E-8AA2-6B3C3B9E1035}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DBD1545-6165-414E-8AA2-6B3C3B9E1035}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DBD1545-6165-414E-8AA2-6B3C3B9E1035}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
