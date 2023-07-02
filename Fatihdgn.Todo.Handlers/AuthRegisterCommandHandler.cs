@@ -1,5 +1,6 @@
 ﻿using Fatihdgn.Todo.Entities;
 using Fatihdgn.Todo.Entities.Extensions;
+using Fatihdgn.Todo.Repositories;
 using Fatihdgn.Todo.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -10,11 +11,15 @@ namespace Fatihdgn.Todo.Handlers;
 
 internal class AuthRegisterCommandHandler : IRequestHandler<AuthRegisterCommand, OneOf<None, Error<IEnumerable<IdentityError>>>>
 {
-    private readonly UserManager<TodoUserEntity> _userManager;
+    const string DefaultListName = "Todo List";
 
-    public AuthRegisterCommandHandler(UserManager<TodoUserEntity> userManager)
+    private readonly UserManager<TodoUserEntity> _userManager;
+    private readonly ITodoListCommandRepository _todoListCommandRepository;
+
+    public AuthRegisterCommandHandler(UserManager<TodoUserEntity> userManager, ITodoListCommandRepository todoListCommandRepository)
     {
         _userManager = userManager;
+        _todoListCommandRepository = todoListCommandRepository;
     }
 
     public async Task<OneOf<None, Error<IEnumerable<IdentityError>>>> Handle(AuthRegisterCommand request, CancellationToken cancellationToken)
@@ -23,6 +28,11 @@ internal class AuthRegisterCommandHandler : IRequestHandler<AuthRegisterCommand,
         user.RenewRefreshToken();
 
         var result = await _userManager.CreateAsync(user, request.Model.Password);
-        return result.Succeeded ? new None() : new Error<IEnumerable<IdentityError>>(result.Errors);
+        if (!result.Succeeded) return new Error<IEnumerable<IdentityError>>(result.Errors);
+
+        var defaultListResult = await _todoListCommandRepository.AddAsync(new TodoListEntity { Id = Guid.NewGuid(), By = user, Name = DefaultListName });
+        var defaultList = defaultListResult.AsT0;
+
+        return new None();
     }
 }
