@@ -8,19 +8,19 @@ import { Observable as __Observable } from 'rxjs';
 import { map as __map, filter as __filter } from 'rxjs/operators';
 
 import { TodoItemDTO } from '../models/todo-item-dto';
-import { TodoItemCreateDTO } from '../models/todo-item-create-dto';
 import { TodoItemUpdateDTO } from '../models/todo-item-update-dto';
 import { TodoItemPatchDTO } from '../models/todo-item-patch-dto';
+import { TodoItemCreateDTO } from '../models/todo-item-create-dto';
 @Injectable({
   providedIn: 'root',
 })
 class ItemsService extends __BaseService {
-  static readonly GetAllItemsPath = '/';
-  static readonly CreateItemPath = '/';
-  static readonly GetItemPath = '/{id}';
-  static readonly UpdateItemPath = '/{id}';
-  static readonly PatchItemPath = '/{id}';
-  static readonly RemoveItemPath = '/{id}';
+  static readonly GetAllItemsByListIdPath = '/api/items/by/lists/{id}';
+  static readonly GetItemPath = '/api/items/{id}';
+  static readonly UpdateItemPath = '/api/items/{id}';
+  static readonly PatchItemPath = '/api/items/{id}';
+  static readonly RemoveItemPath = '/api/items/{id}';
+  static readonly CreateItemPath = '/api/items';
 
   constructor(
     config: __Configuration,
@@ -28,13 +28,18 @@ class ItemsService extends __BaseService {
   ) {
     super(config, http);
   }
-  GetAllItemsResponse(): __Observable<__StrictHttpResponse<Array<TodoItemDTO>>> {
+
+  /**
+   * @param id undefined
+   */
+  GetAllItemsByListIdResponse(id: string): __Observable<__StrictHttpResponse<Array<TodoItemDTO>>> {
     let __params = this.newParams();
     let __headers = new HttpHeaders();
     let __body: any = null;
+
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/`,
+      this.rootUrl + `/api/items/by/lists/${encodeURIComponent(String(id))}`,
       __body,
       {
         headers: __headers,
@@ -48,43 +53,13 @@ class ItemsService extends __BaseService {
         return _r as __StrictHttpResponse<Array<TodoItemDTO>>;
       })
     );
-  }  GetAllItems(): __Observable<Array<TodoItemDTO>> {
-    return this.GetAllItemsResponse().pipe(
+  }
+  /**
+   * @param id undefined
+   */
+  GetAllItemsByListId(id: string): __Observable<Array<TodoItemDTO>> {
+    return this.GetAllItemsByListIdResponse(id).pipe(
       __map(_r => _r.body as Array<TodoItemDTO>)
-    );
-  }
-
-  /**
-   * @param model undefined
-   */
-  CreateItemResponse(model: TodoItemCreateDTO): __Observable<__StrictHttpResponse<TodoItemDTO>> {
-    let __params = this.newParams();
-    let __headers = new HttpHeaders();
-    let __body: any = null;
-    __body = model;
-    let req = new HttpRequest<any>(
-      'POST',
-      this.rootUrl + `/`,
-      __body,
-      {
-        headers: __headers,
-        params: __params,
-        responseType: 'json'
-      });
-
-    return this.http.request<any>(req).pipe(
-      __filter(_r => _r instanceof HttpResponse),
-      __map((_r) => {
-        return _r as __StrictHttpResponse<TodoItemDTO>;
-      })
-    );
-  }
-  /**
-   * @param model undefined
-   */
-  CreateItem(model: TodoItemCreateDTO): __Observable<TodoItemDTO> {
-    return this.CreateItemResponse(model).pipe(
-      __map(_r => _r.body as TodoItemDTO)
     );
   }
 
@@ -98,7 +73,7 @@ class ItemsService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'GET',
-      this.rootUrl + `/${encodeURIComponent(String(id))}`,
+      this.rootUrl + `/api/items/${encodeURIComponent(String(id))}`,
       __body,
       {
         headers: __headers,
@@ -137,7 +112,7 @@ class ItemsService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'PUT',
-      this.rootUrl + `/${encodeURIComponent(String(params.id))}`,
+      this.rootUrl + `/api/items/${encodeURIComponent(String(params.id))}`,
       __body,
       {
         headers: __headers,
@@ -180,7 +155,7 @@ class ItemsService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'PATCH',
-      this.rootUrl + `/${encodeURIComponent(String(params.id))}`,
+      this.rootUrl + `/api/items/${encodeURIComponent(String(params.id))}`,
       __body,
       {
         headers: __headers,
@@ -218,7 +193,7 @@ class ItemsService extends __BaseService {
 
     let req = new HttpRequest<any>(
       'DELETE',
-      this.rootUrl + `/${encodeURIComponent(String(id))}`,
+      this.rootUrl + `/api/items/${encodeURIComponent(String(id))}`,
       __body,
       {
         headers: __headers,
@@ -239,6 +214,40 @@ class ItemsService extends __BaseService {
   RemoveItem(id: string): __Observable<Blob> {
     return this.RemoveItemResponse(id).pipe(
       __map(_r => _r.body as Blob)
+    );
+  }
+
+  /**
+   * @param model undefined
+   */
+  CreateItemResponse(model: TodoItemCreateDTO): __Observable<__StrictHttpResponse<TodoItemDTO>> {
+    let __params = this.newParams();
+    let __headers = new HttpHeaders();
+    let __body: any = null;
+    __body = model;
+    let req = new HttpRequest<any>(
+      'POST',
+      this.rootUrl + `/api/items`,
+      __body,
+      {
+        headers: __headers,
+        params: __params,
+        responseType: 'json'
+      });
+
+    return this.http.request<any>(req).pipe(
+      __filter(_r => _r instanceof HttpResponse),
+      __map((_r) => {
+        return _r as __StrictHttpResponse<TodoItemDTO>;
+      })
+    );
+  }
+  /**
+   * @param model undefined
+   */
+  CreateItem(model: TodoItemCreateDTO): __Observable<TodoItemDTO> {
+    return this.CreateItemResponse(model).pipe(
+      __map(_r => _r.body as TodoItemDTO)
     );
   }
 }

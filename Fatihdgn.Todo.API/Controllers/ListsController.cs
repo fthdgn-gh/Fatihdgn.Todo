@@ -2,13 +2,14 @@
 using Fatihdgn.Todo.DTOs;
 using Fatihdgn.Todo.Requests;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 
 namespace Fatihdgn.Todo.API.Controllers;
 
-[Authorize]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [ApiController]
 [Route("api/lists")]
 public class ListsController : Controller
@@ -21,13 +22,6 @@ public class ListsController : Controller
     }
 
     [HttpGet]
-    [Route("hi")]
-    public IActionResult SayHi()
-    {
-        return Ok("Hi");
-    }
-
-    [HttpGet]
     [Route("")]
     [OpenApiOperation("GetAllLists")]
     [ProducesResponseType(200, Type = typeof(IEnumerable<TodoListDTO>))]
@@ -36,7 +30,7 @@ public class ListsController : Controller
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new GetAllTodoListsQuery());
+        var response = await _mediator.Send(new GetAllTodoListsQuery(userId));
         return Ok(response);
     }
 

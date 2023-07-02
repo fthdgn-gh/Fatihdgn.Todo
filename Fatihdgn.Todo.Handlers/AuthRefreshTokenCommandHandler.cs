@@ -40,12 +40,14 @@ public class AuthRefreshTokenCommandHandler : IRequestHandler<AuthRefreshTokenCo
         // Generate new access token
         var tokenDescriptor = new SecurityTokenDescriptor
         {
+            Audience = _config["JwtBearerAuthenticationValidAudience"],
+            Issuer = _config["JwtBearerAuthenticationValidIssuer"],
             Subject = new ClaimsIdentity(new Claim[]
             {
-                    new Claim(ClaimTypes.Name, user.UserName),
-                // Add any additional claims as needed
+                new Claim(ClaimTypes.NameIdentifier,user.Id),
+                new Claim(ClaimTypes.Name, user.UserName),
             }),
-            Expires = DateTime.UtcNow.AddHours(2), // Set the new access token expiration time
+            Expires = DateTime.UtcNow.AddHours(2),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var accessToken = tokenHandler.CreateToken(tokenDescriptor);

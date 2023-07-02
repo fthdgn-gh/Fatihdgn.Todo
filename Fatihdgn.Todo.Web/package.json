@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "genapi": "npx ng-swagger-gen -i http://localhost:32771/swagger/v1/swagger.json -o src/api"
+    "genapi": "npx ng-swagger-gen -i http://localhost:32769/swagger/v1/swagger.json -o src/api"
   },
   "private": true,
   "dependencies": {

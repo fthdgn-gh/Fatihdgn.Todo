@@ -36,9 +36,12 @@ public class AuthLoginCommandHandler : IRequestHandler<AuthLoginCommand, OneOf<A
             var key = Encoding.UTF8.GetBytes(_config["JwtBearerAuthenticationIssuerSigningKey"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
+                Audience = _config["JwtBearerAuthenticationValidAudience"],
+                Issuer = _config["JwtBearerAuthenticationValidIssuer"],
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                        new Claim(ClaimTypes.Name, user.UserName),
+                    new Claim(ClaimTypes.NameIdentifier,user.Id),
+                    new Claim(ClaimTypes.Name, user.UserName),
                 }),
                 Expires = request.Model.RememberMe ? DateTime.UtcNow.AddHours(2) : DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

@@ -27,7 +27,7 @@ builder.Services.AddSwaggerDocument(config =>
         Description = "JWT Authorization header using the Bearer scheme",
         Name = "Authorization",
         In = OpenApiSecurityApiKeyLocation.Header,
-        Scheme = JwtBearerDefaults.AuthenticationScheme
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
     });
 
     config.OperationProcessors.Add(new AspNetCoreOperationSecurityScopeProcessor(JwtBearerDefaults.AuthenticationScheme));
@@ -40,8 +40,6 @@ builder.Services.AddSwaggerDocument(config =>
         In = OpenApiSecurityApiKeyLocation.Header,
         Scheme = JwtBearerDefaults.AuthenticationScheme
     }));
-
-    config.OperationProcessors.Add(new OperationSecurityScopeProcessor(JwtBearerDefaults.AuthenticationScheme));
 });
 
 builder.Services.AddDbContext<TodoDB>(options =>

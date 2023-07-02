@@ -2,13 +2,14 @@
 using Fatihdgn.Todo.DTOs;
 using Fatihdgn.Todo.Requests;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NSwag.Annotations;
 
 namespace Fatihdgn.Todo.API.Controllers;
 
-[Authorize()]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [ApiController]
 [Route("api/items")]
 public class ItemsController : Controller

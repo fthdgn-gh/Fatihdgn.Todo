@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationInterface } from './api-configuration';
 
 import { ItemsService } from './services/items.service';
+import { ListsService } from './services/lists.service';
 import { AuthService } from './services/auth.service';
 
 /**
@@ -20,6 +21,7 @@ import { AuthService } from './services/auth.service';
   providers: [
     ApiConfiguration,
     ItemsService,
+    ListsService,
     AuthService
   ],
 })
