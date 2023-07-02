@@ -23,7 +23,6 @@
     <ProjectReference Include="..\Fatihdgn.Todo.Context\Fatihdgn.Todo.Context.csproj" />
     <ProjectReference Include="..\Fatihdgn.Todo.DTOs.Validators\Fatihdgn.Todo.DTOs.Validators.csproj" />
     <ProjectReference Include="..\Fatihdgn.Todo.Handlers\Fatihdgn.Todo.Handlers.csproj" />
-    <ProjectReference Include="..\Fatihdgn.Todo.Models\Fatihdgn.Todo.Models.csproj" />
     <ProjectReference Include="..\Fatihdgn.Todo.Repositories\Fatihdgn.Todo.Repositories.csproj" />
   </ItemGroup>
 
