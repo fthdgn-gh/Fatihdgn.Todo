@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace Fatihdgn.Todo.Entities;
 
-public class TodoTemplateEntity : IEntity<Guid>
+public class TodoTemplateEntity : IEntity<Guid>, IOwned
 {
     public Guid Id { get; set; }
     public string Name { get; set; } = string.Empty;

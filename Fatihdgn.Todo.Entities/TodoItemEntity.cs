@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Fatihdgn.Todo.Entities;
 
-public class TodoItemEntity : IEntity<Guid>
+public class TodoItemEntity : IEntity<Guid>, IOwned
 {
     public Guid Id { get; set; }
     public string Content { get; set; } = string.Empty;
