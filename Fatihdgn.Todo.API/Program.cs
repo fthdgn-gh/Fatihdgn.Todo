@@ -67,6 +67,8 @@ builder.Services.AddDbContext<TodoDB>(options =>
         options.UseInMemoryDatabase(nameof(TodoDB));
     else
         options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(TodoDB)));
+
+    options.UseLazyLoadingProxies();
 });
 
 if (builder.Environment.IsDevelopment())
