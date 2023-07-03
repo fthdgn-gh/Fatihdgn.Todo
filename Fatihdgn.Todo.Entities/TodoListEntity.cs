@@ -13,4 +13,5 @@ public class TodoListEntity : IEntity<Guid>, IOwned
 
     public TodoUserEntity? By { get; set; }
 
+    public ICollection<TodoItemEntity> Items { get; set; } = new List<TodoItemEntity>();
 }
