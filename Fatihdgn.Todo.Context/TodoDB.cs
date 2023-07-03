@@ -3,7 +3,6 @@ using Fatihdgn.Todo.Entities.Abstractions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System.Text.Json;
 
 namespace Fatihdgn.Todo.Context;
 

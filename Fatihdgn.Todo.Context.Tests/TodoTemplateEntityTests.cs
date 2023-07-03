@@ -1,7 +1,5 @@
-using Fatihdgn.Todo.Entities;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using System.Text.Json;
 
 namespace Fatihdgn.Todo.Context.Tests;
 

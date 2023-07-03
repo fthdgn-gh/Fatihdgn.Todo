@@ -6,7 +6,6 @@ using Fatihdgn.Todo.Requests;
 using MediatR;
 using OneOf;
 using OneOf.Types;
-using System.Text.Json;
 
 namespace Fatihdgn.Todo.Handlers;
 

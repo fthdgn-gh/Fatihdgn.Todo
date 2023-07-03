@@ -1,5 +1,4 @@
 ﻿using Fatihdgn.Todo.Entities.Abstractions;
-using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Fatihdgn.Todo.Entities;
