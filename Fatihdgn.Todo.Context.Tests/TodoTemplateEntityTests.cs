@@ -1,3 +1,4 @@
+using Fatihdgn.Todo.Entities;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
@@ -19,13 +20,11 @@ public class TodoTemplateEntityTests
     public async Task CreateAndVerifyTheJsonContentField()
     {
         var contents = new List<string> { "Todo 1", "Todo 2", "Todo 3" };
-        var jsonBytes = JsonSerializer.SerializeToUtf8Bytes(contents);
-        var jsonDocument = JsonDocument.Parse(jsonBytes);
 
-        var result = await _context.Templates.AddAsync(new Entities.TodoTemplateEntity { Id = Guid.NewGuid(), Name = "Subject", Content = jsonDocument });
+        var result = await _context.Templates.AddAsync(new Entities.TodoTemplateEntity { Id = Guid.NewGuid(), Name = "Subject", Contents = contents });
         var entity = result.Entity;
 
-        var deserializedContent = entity.Content.RootElement.Deserialize<List<string>>();
+        var deserializedContent = entity.Contents?.Value ?? new List<string>();
 
         deserializedContent.Should().BeEquivalentTo(contents);
     }

@@ -5,7 +5,7 @@ namespace Fatihdgn.Todo.Entities;
 
 public class TodoUserEntity : IdentityUser, IEntity<string>
 {
-    public ICollection<TodoListEntity> Lists { get; set; } = new List<TodoListEntity>();
-    public string? RefreshToken { get; set; }
-    public DateTimeOffset? RemovedAt { get; set; }
+    public virtual ICollection<TodoListEntity> Lists { get; set; } = new List<TodoListEntity>();
+    public virtual string? RefreshToken { get; set; }
+    public virtual DateTimeOffset? RemovedAt { get; set; }
 }

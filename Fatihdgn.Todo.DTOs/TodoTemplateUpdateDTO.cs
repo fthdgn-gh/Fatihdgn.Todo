@@ -3,5 +3,5 @@
 public class TodoTemplateUpdateDTO
 {
     public string Name { get; set; } = string.Empty;
-    public List<string> Content { get; set; } = new List<string>();
+    public List<string> Contents { get; set; } = new List<string>();
 }

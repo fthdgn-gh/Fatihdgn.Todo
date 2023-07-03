@@ -6,14 +6,14 @@ namespace Fatihdgn.Todo.Entities;
 
 public class TodoTemplateEntity : IEntity<Guid>, IOwned
 {
-    public Guid Id { get; set; }
-    public string Name { get; set; } = string.Empty;
+    public virtual Guid Id { get; set; }
+    public virtual string Name { get; set; } = string.Empty;
 
-    public JsonDocument? Content { get; set; }
+    public virtual JsonEntity<List<string>> Contents { get; set; } = new();
 
     [JsonIgnore]
-    public DateTimeOffset? RemovedAt { get; set; }
+    public virtual DateTimeOffset? RemovedAt { get; set; }
 
-    public TodoUserEntity? By { get; set; }
+    public virtual TodoUserEntity? By { get; set; }
 
 }

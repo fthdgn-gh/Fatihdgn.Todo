@@ -19,6 +19,10 @@ public static class TodoRepositoriesExtensions
         services.AddScoped<ITodoListQueryRepository, TodoListQueryRepository>();
         services.AddScoped<ITodoListRepository, TodoListRepository>();
 
+        services.AddScoped<ITodoTemplateCommandRepository, TodoTemplateCommandRepository>();
+        services.AddScoped<ITodoTemplateQueryRepository, TodoTemplateQueryRepository>();
+        services.AddScoped<ITodoTemplateRepository, TodoTemplateRepository>();
+
         services.AddScoped<ITodoUserCommandRepository, TodoUserCommandRepository>();
         services.AddScoped<ITodoUserQueryRepository, TodoUserQueryRepository>();
         services.AddScoped<ITodoUserRepository, TodoUserRepository>();

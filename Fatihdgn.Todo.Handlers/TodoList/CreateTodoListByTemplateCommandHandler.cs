@@ -35,11 +35,11 @@ public class CreateTodoListByTemplateCommandHandler : IRequestHandler<CreateTodo
         if (templateResult.IsT1) return templateResult.AsT1;
         var template = templateResult.AsT0;
 
-        var contents = template.Content?.Deserialize<List<string>>() ?? new List<string>();
+        var contents = template.Contents.Value ?? new List<string>();
         var entity = new TodoListEntity { Id = Guid.NewGuid(), By = user };
 
         foreach (var content in contents)
-            entity.Items.Add(new TodoItemEntity { Id = Guid.NewGuid(), By = user, Content = content });
+            entity.Items.Add(new TodoItemEntity { Id = Guid.NewGuid(), By = user, Content = content ?? string.Empty });
 
         var addResult = await _repo.AddAsync(entity);
 

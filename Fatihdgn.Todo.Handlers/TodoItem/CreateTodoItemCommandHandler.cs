@@ -12,11 +12,13 @@ namespace Fatihdgn.Todo.Handlers;
 public class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemCommand, OneOf<TodoItemDTO, NotFound, Error<ArgumentNullException>>>
 {
     private readonly ITodoItemRepository _repo;
+    private readonly ITodoListQueryRepository _listQuery;
     private readonly ITodoUserQueryRepository _userQuery;
 
-    public CreateTodoItemCommandHandler(ITodoItemRepository repo, ITodoUserQueryRepository userQuery)
+    public CreateTodoItemCommandHandler(ITodoItemRepository repo, ITodoListQueryRepository listQuery, ITodoUserQueryRepository userQuery)
     {
         _repo = repo;
+        _listQuery = listQuery;
         _userQuery = userQuery;
     }
 
@@ -27,8 +29,13 @@ public class CreateTodoItemCommandHandler : IRequestHandler<CreateTodoItemComman
 
         var userResult = await _userQuery.ByIdAsync(request.ById);
         if (userResult.IsT1) return userResult.AsT1;
+        var user = userResult.AsT0;
 
-        var entity = request.Model.ApplyTo(new TodoItemEntity { Id = Guid.NewGuid(), By = userResult.AsT0 });
+        var listResult = await _listQuery.ByIdAsync(request.Model.ListId);
+        if (listResult.IsT1) return listResult.AsT1;
+        var list = listResult.AsT0;
+
+        var entity = request.Model.ApplyTo(new TodoItemEntity { Id = Guid.NewGuid(), By = user, List = list });
 
         var addResult = await _repo.AddAsync(entity);
 

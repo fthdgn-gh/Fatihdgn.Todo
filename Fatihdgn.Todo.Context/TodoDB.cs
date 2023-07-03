@@ -2,6 +2,8 @@
 using Fatihdgn.Todo.Entities.Abstractions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Text.Json;
 
 namespace Fatihdgn.Todo.Context;
 
@@ -26,10 +28,11 @@ public class TodoDB : IdentityDbContext<TodoUserEntity>
         }
     }
 
-    private void AddEntityQueryFilter<TEntity, TKey>(ModelBuilder modelBuilder)
+    private EntityTypeBuilder<TEntity> AddEntityQueryFilter<TEntity, TKey>(ModelBuilder modelBuilder)
         where TEntity : class, IEntity<TKey>
     {
         modelBuilder.Entity<TEntity>().HasQueryFilter(entity => entity.RemovedAt == null);
+        return modelBuilder.Entity<TEntity>();
     }
 
     private void MarkDeletedEntities()
@@ -55,10 +58,10 @@ public class TodoDB : IdentityDbContext<TodoUserEntity>
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Owned(typeof(JsonEntity<>));
         AddEntityQueryFilter<TodoItemEntity, Guid>(modelBuilder);
         AddEntityQueryFilter<TodoListEntity, Guid>(modelBuilder);
-        AddEntityQueryFilter<TodoTemplateEntity, Guid>(modelBuilder);
-        modelBuilder.Entity<TodoTemplateEntity>().Property(x => x.Content).HasColumnType("json");
+        AddEntityQueryFilter<TodoTemplateEntity, Guid>(modelBuilder).OwnsOne(x => x.Contents);
         base.OnModelCreating(modelBuilder);
     }
 }

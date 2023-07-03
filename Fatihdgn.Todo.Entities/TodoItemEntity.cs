@@ -5,17 +5,17 @@ namespace Fatihdgn.Todo.Entities;
 
 public class TodoItemEntity : IEntity<Guid>, IOwned
 {
-    public Guid Id { get; set; }
-    public string Content { get; set; } = string.Empty;
-    public string Note { get; set; } = string.Empty;
-    public DateTimeOffset? RemindAt { get; set; }
-    public DateTimeOffset? DueAt { get; set; }
-    public bool IsCompleted { get; set; }
+    public virtual Guid Id { get; set; }
+    public virtual string Content { get; set; } = string.Empty;
+    public virtual string Note { get; set; } = string.Empty;
+    public virtual DateTimeOffset? RemindAt { get; set; }
+    public virtual DateTimeOffset? DueAt { get; set; }
+    public virtual bool IsCompleted { get; set; }
 
     [JsonIgnore]
-    public DateTimeOffset? RemovedAt { get; set; }
+    public virtual DateTimeOffset? RemovedAt { get; set; }
 
-    public TodoListEntity? List { get; set; }
-    public TodoUserEntity? By { get; set; }
+    public virtual TodoListEntity? List { get; set; }
+    public virtual TodoUserEntity? By { get; set; }
 
 }

@@ -11,40 +11,40 @@ namespace Fatihdgn.Todo.API.Controllers;
 
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 [ApiController]
-[Route("api/v{version:apiVersion}/lists")]
+[Route("api/v{version:apiVersion}/templates")]
 [ApiVersion("1.0")]
-public class ListsController : Controller
+public class TemplatesController : Controller
 {
     private readonly IMediator _mediator;
 
-    public ListsController(IMediator mediator)
+    public TemplatesController(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpGet]
     [Route("")]
-    [OpenApiOperation("GetAllLists")]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<TodoListDTO>))]
+    [OpenApiOperation("GetAllTemplates")]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<TodoTemplateDTO>))]
     public async Task<IActionResult> GetAll()
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new GetAllTodoListsQuery(userId));
+        var response = await _mediator.Send(new GetAllTodoTemplatesQuery(userId));
         return Ok(response);
     }
 
     [HttpGet]
     [Route("{id}")]
-    [OpenApiOperation("GetList")]
-    [ProducesResponseType(200, Type = typeof(TodoListDTO))]
+    [OpenApiOperation("GetTemplate")]
+    [ProducesResponseType(200, Type = typeof(TodoTemplateDTO))]
     public async Task<IActionResult> Get(Guid id)
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new GetTodoListQuery(userId, id));
+        var response = await _mediator.Send(new GetTodoTemplateQuery(userId, id));
         return response.Match<IActionResult>(
             Ok,
             notFound => NotFound()
@@ -53,14 +53,14 @@ public class ListsController : Controller
 
     [HttpPost]
     [Route("")]
-    [OpenApiOperation("CreateList")]
-    [ProducesResponseType(200, Type = typeof(TodoListDTO))]
-    public async Task<IActionResult> Create([FromBody] TodoListCreateDTO model)
+    [OpenApiOperation("CreateTemplate")]
+    [ProducesResponseType(200, Type = typeof(TodoTemplateDTO))]
+    public async Task<IActionResult> Create([FromBody] TodoTemplateCreateDTO model)
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new CreateTodoListCommand(userId, model));
+        var response = await _mediator.Send(new CreateTodoTemplateCommand(userId, model));
         return response.Match<IActionResult>(
             Ok,
             notFound => BadRequest("Couldn't find a the user."),
@@ -69,15 +69,15 @@ public class ListsController : Controller
     }
 
     [HttpPost]
-    [Route("by/templates/{id}")]
-    [OpenApiOperation("CreateListByTemplate")]
-    [ProducesResponseType(200, Type = typeof(TodoListDTO))]
-    public async Task<IActionResult> CreateByTemplate(Guid id)
+    [Route("by/lists/{id}")]
+    [OpenApiOperation("CreateTemplateByList")]
+    [ProducesResponseType(200, Type = typeof(TodoTemplateDTO))]
+    public async Task<IActionResult> CreateByList(Guid id)
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new CreateTodoListByTemplateCommand(userId, id));
+        var response = await _mediator.Send(new CreateTodoTemplateByListCommand(userId, id));
         return response.Match<IActionResult>(
             Ok,
             notFound => BadRequest("Couldn't find a the template."),
@@ -87,14 +87,14 @@ public class ListsController : Controller
 
     [HttpPut]
     [Route("{id}")]
-    [OpenApiOperation("UpdateList")]
-    [ProducesResponseType(200, Type = typeof(TodoListDTO))]
-    public async Task<IActionResult> Update(Guid id, [FromBody] TodoListUpdateDTO model)
+    [OpenApiOperation("UpdateTemplate")]
+    [ProducesResponseType(200, Type = typeof(TodoTemplateDTO))]
+    public async Task<IActionResult> Update(Guid id, [FromBody] TodoTemplateUpdateDTO model)
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new UpdateTodoListCommand(userId, id, model));
+        var response = await _mediator.Send(new UpdateTodoTemplateCommand(userId, id, model));
         return response.Match<IActionResult>(
             Ok,
             notFound => NotFound(),
@@ -104,14 +104,14 @@ public class ListsController : Controller
 
     [HttpPatch]
     [Route("{id}")]
-    [OpenApiOperation("PatchList")]
-    [ProducesResponseType(200, Type = typeof(TodoListDTO))]
-    public async Task<IActionResult> Patch(Guid id, [FromBody] TodoListPatchDTO model)
+    [OpenApiOperation("PatchTemplate")]
+    [ProducesResponseType(200, Type = typeof(TodoTemplateDTO))]
+    public async Task<IActionResult> Patch(Guid id, [FromBody] TodoTemplatePatchDTO model)
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new PatchTodoListCommand(userId, id, model));
+        var response = await _mediator.Send(new PatchTodoTemplateCommand(userId, id, model));
         return response.Match<IActionResult>(
             Ok,
             notFound => NotFound(),
@@ -121,13 +121,13 @@ public class ListsController : Controller
 
     [HttpDelete]
     [Route("{id}")]
-    [OpenApiOperation("RemoveList")]
+    [OpenApiOperation("RemoveTemplate")]
     public async Task<IActionResult> Remove(Guid id)
     {
         var userId = User.GetNameIdentifier();
         if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-        var response = await _mediator.Send(new RemoveTodoListCommand(userId, id));
+        var response = await _mediator.Send(new RemoveTodoTemplateCommand(userId, id));
         return response.Match<IActionResult>(
             _ => Ok(),
             _ => NotFound()

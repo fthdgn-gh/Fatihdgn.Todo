@@ -11,53 +11,53 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
         {
             Id = entity.Id,
             Name = entity.Name,
-            Content = AsJsonDocument(entity.Content)
+            Contents = entity.Contents
         };
 
         public static TodoTemplateDTO ToDTO(this TodoTemplateEntity entity) => new TodoTemplateDTO
         {
             Id = entity.Id,
             Name = entity.Name,
-            Content = entity.Content?.Deserialize<List<string>>() ?? new List<string>()
+            Contents = entity.Contents ?? new List<string>()
         };
 
         public static TodoTemplateCreateDTO ToCreateDTO(this TodoTemplateEntity entity) => new TodoTemplateCreateDTO
         {
             Name = entity.Name,
-            Content = entity.Content?.Deserialize<List<string>>() ?? new List<string>()
+            Contents = entity.Contents ?? new List<string>()
         };
 
         public static TodoTemplateUpdateDTO ToUpdateDTO(this TodoTemplateEntity entity) => new TodoTemplateUpdateDTO
         {
             Name = entity.Name,
-            Content = entity.Content?.Deserialize<List<string>>() ?? new List<string>()
+            Contents = entity.Contents ?? new List<string>()
         };
 
         public static TodoTemplatePatchDTO ToPatchDTO(this TodoTemplateEntity entity) => new TodoTemplatePatchDTO
         {
             Name = entity.Name,
-            Content = entity.Content?.Deserialize<List<string>>() ?? null
+            Contents = entity.Contents ?? null
         };
 
         public static TodoTemplateEntity ApplyTo(this TodoTemplateCreateDTO self, TodoTemplateEntity entity)
         {
             entity.Name = self.Name;
-            entity.Content = AsJsonDocument(self.Content);
+            entity.Contents = self.Contents;
             return entity;
         }
 
         public static TodoTemplateEntity ApplyTo(this TodoTemplateUpdateDTO self, TodoTemplateEntity entity)
         {
             entity.Name = self.Name;
-            entity.Content = AsJsonDocument(self.Content);
+            entity.Contents = self.Contents;
             return entity;
         }
 
         public static TodoTemplateEntity ApplyTo(this TodoTemplatePatchDTO self, TodoTemplateEntity entity)
         {
             entity.Name = self.Name ?? entity.Name;
-            if (self.Content is not null)
-                entity.Content = AsJsonDocument(self.Content);
+            if (self.Contents is not null)
+                entity.Contents = self.Contents;
             return entity;
         }
     }

@@ -35,10 +35,10 @@ public class CreateTodoTemplateByListCommandHandler : IRequestHandler<CreateTodo
         if (listResult.IsT1) return listResult.AsT1;
         var template = listResult.AsT0;
 
-        var contents = template.Items.Select(x => x.Content);
+        var contents = template.Items.Select(x => x.Content).ToList();
         var entity = new TodoTemplateEntity { Id = Guid.NewGuid(), By = user };
 
-        entity.Content = AsJsonDocument(contents.ToArray());
+        entity.Contents = contents;
 
         var addResult = await _repo.AddAsync(entity);
 
@@ -46,7 +46,4 @@ public class CreateTodoTemplateByListCommandHandler : IRequestHandler<CreateTodo
 
         return addResult.AsT0.ToDTO();
     }
-
-    private JsonDocument AsJsonDocument<T>(T value) => JsonDocument.Parse(JsonSerializer.SerializeToUtf8Bytes(value));
-
 }
