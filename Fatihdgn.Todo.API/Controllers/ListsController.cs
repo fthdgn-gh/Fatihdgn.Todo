@@ -51,6 +51,19 @@ public class ListsController : Controller
         );
     }
 
+    [HttpGet]
+    [Route("{id}/items")]
+    [OpenApiOperation("GetListItems")]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<TodoItemDTO>))]
+    public async Task<IActionResult> GetItems(Guid id)
+    {
+        var userId = User.GetNameIdentifier();
+        if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+        var response = await _mediator.Send(new GetAllTodoItemsByListIdQuery(userId, id));
+        return Ok(response);
+    }
+
     [HttpPost]
     [Route("")]
     [OpenApiOperation("CreateList")]
@@ -69,7 +82,7 @@ public class ListsController : Controller
     }
 
     [HttpPost]
-    [Route("by/templates/{id}")]
+    [Route("generate/templates/{id}")]
     [OpenApiOperation("CreateListByTemplate")]
     [ProducesResponseType(200, Type = typeof(TodoListDTO))]
     public async Task<IActionResult> CreateByTemplate(Guid id)
