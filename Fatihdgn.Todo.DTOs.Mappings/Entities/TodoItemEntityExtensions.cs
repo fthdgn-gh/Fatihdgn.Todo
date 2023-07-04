@@ -9,8 +9,6 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
             Id = entity.Id,
             Content = entity.Content,
             Note = entity.Note,
-            DueAt = entity.DueAt,
-            RemindAt = entity.RemindAt,
             IsCompleted = entity.IsCompleted,
         };
 
@@ -19,8 +17,6 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
             Id = entity.Id,
             Content = entity.Content,
             Note = entity.Note,
-            DueAt = entity.DueAt,
-            RemindAt = entity.RemindAt,
             IsCompleted = entity.IsCompleted,
         };
 
@@ -28,8 +24,6 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
         {
             Content = entity.Content,
             Note = entity.Note,
-            DueAt = entity.DueAt,
-            RemindAt = entity.RemindAt,
             IsCompleted = entity.IsCompleted,
         };
 
@@ -37,8 +31,6 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
         {
             Content = entity.Content,
             Note = entity.Note,
-            DueAt = entity.DueAt,
-            RemindAt = entity.RemindAt,
             IsCompleted = entity.IsCompleted,
         };
 
@@ -46,8 +38,6 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
         {
             Content = entity.Content,
             Note = entity.Note,
-            DueAt = entity.DueAt,
-            RemindAt = entity.RemindAt,
             IsCompleted = entity.IsCompleted,
         };
 
@@ -55,8 +45,6 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
         {
             entity.Content = self.Content;
             entity.Note = self.Note;
-            entity.DueAt = self.DueAt;
-            entity.RemindAt = self.RemindAt;
             entity.IsCompleted = self.IsCompleted;
             return entity;
         }
@@ -65,8 +53,6 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
         {
             entity.Content = self.Content;
             entity.Note = self.Note;
-            entity.DueAt = self.DueAt;
-            entity.RemindAt = self.RemindAt;
             entity.IsCompleted = self.IsCompleted;
             return entity;
         }
@@ -75,8 +61,6 @@ namespace Fatihdgn.Todo.DTOs.Mappings.Entities
         {
             entity.Content = self.Content ?? entity.Content;
             entity.Note = self.Note ?? entity.Note;
-            entity.DueAt = self.DueAt ?? entity.DueAt;
-            entity.RemindAt = self.RemindAt ?? entity.RemindAt;
             entity.IsCompleted = self.IsCompleted ?? entity.IsCompleted;
             return entity;
         }

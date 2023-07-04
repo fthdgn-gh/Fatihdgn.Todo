@@ -8,8 +8,6 @@ public class TodoItemEntity : IEntity<Guid>, IOwned
     public virtual Guid Id { get; set; }
     public virtual string Content { get; set; } = string.Empty;
     public virtual string Note { get; set; } = string.Empty;
-    public virtual DateTimeOffset? RemindAt { get; set; }
-    public virtual DateTimeOffset? DueAt { get; set; }
     public virtual bool IsCompleted { get; set; }
 
     [JsonIgnore]
