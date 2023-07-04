@@ -32,10 +32,10 @@ public class CreateTodoTemplateByListCommandHandler : IRequestHandler<CreateTodo
 
         var listResult = await _listQuery.ByIdAsync(request.ListId);
         if (listResult.IsT1) return listResult.AsT1;
-        var template = listResult.AsT0;
+        var list = listResult.AsT0;
 
-        var contents = template.Items.Select(x => x.Content).ToList();
-        var entity = new TodoTemplateEntity { Id = Guid.NewGuid(), By = user };
+        var contents = list.Items.Select(x => x.Content).ToList();
+        var entity = new TodoTemplateEntity { Id = Guid.NewGuid(), Name = list.Name, By = user };
 
         entity.Contents = contents;
 

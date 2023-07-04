@@ -35,7 +35,7 @@ public class CreateTodoListByTemplateCommandHandler : IRequestHandler<CreateTodo
         var template = templateResult.AsT0;
 
         var contents = template.Contents.Value ?? new List<string>();
-        var entity = new TodoListEntity { Id = Guid.NewGuid(), By = user };
+        var entity = new TodoListEntity { Id = Guid.NewGuid(), Name = template.Name, By = user };
 
         foreach (var content in contents)
             entity.Items.Add(new TodoItemEntity { Id = Guid.NewGuid(), By = user, Content = content ?? string.Empty });
