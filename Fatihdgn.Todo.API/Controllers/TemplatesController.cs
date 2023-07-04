@@ -69,7 +69,7 @@ public class TemplatesController : Controller
     }
 
     [HttpPost]
-    [Route("by/lists/{id}")]
+    [Route("generate/lists/{id}")]
     [OpenApiOperation("CreateTemplateByList")]
     [ProducesResponseType(200, Type = typeof(TodoTemplateDTO))]
     public async Task<IActionResult> CreateByList(Guid id)
