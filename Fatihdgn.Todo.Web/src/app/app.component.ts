@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
-import { TodoItemCreateDTO, TodoItemDTO } from 'src/api/models';
+import { TodoItemCreateDto } from 'src/api/models';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +24,7 @@ export class AppComponent {
     ]);
   }
   title = 'Todo List';
-  items = signal(new Array<TodoItemCreateDTO>());
+  items = signal(new Array<TodoItemCreateDto>());
   shownItems = computed(() => {
     return [...this.items()].reverse();
   })
@@ -37,7 +37,7 @@ export class AppComponent {
 
   addItem() {
     this.items.mutate((_items) => {
-      const todoItem: TodoItemCreateDTO = {
+      const todoItem: TodoItemCreateDto = {
         content: this.text(),
         isCompleted: false,
         note: '',
@@ -47,15 +47,15 @@ export class AppComponent {
     });
   }
 
-  markAsCompleted(item: TodoItemCreateDTO) {
+  markAsCompleted(item: TodoItemCreateDto) {
     item.isCompleted = true;
   }
 
-  markAsNew(item: TodoItemCreateDTO) {
+  markAsNew(item: TodoItemCreateDto) {
     item.isCompleted = false;
   }
 
-  removeItem(item: TodoItemCreateDTO) {
+  removeItem(item: TodoItemCreateDto) {
     this.items.mutate(items => {
       return items.splice(items.indexOf(item), 1);
     });
