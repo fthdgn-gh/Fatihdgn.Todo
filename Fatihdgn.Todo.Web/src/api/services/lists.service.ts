@@ -10,6 +10,7 @@ import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 import { RequestBuilder } from '../request-builder';
 
+import { TodoItemDto } from '../models/todo-item-dto';
 import { TodoListCreateDto } from '../models/todo-list-create-dto';
 import { TodoListDto } from '../models/todo-list-dto';
 import { TodoListPatchDto } from '../models/todo-list-patch-dto';
@@ -302,6 +303,100 @@ export class ListsService extends BaseService {
     context?: HttpContext
   ): Observable<TodoListDto> {
     return this.patchList$Response(params, context).pipe(
+      map((r: StrictHttpResponse<TodoListDto>): TodoListDto => r.body)
+    );
+  }
+
+  /** Path part for operation `getListItems()` */
+  static readonly GetListItemsPath = '/api/v1/lists/{id}/items';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getListItems()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getListItems$Response(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<Array<TodoItemDto>>> {
+    const rb = new RequestBuilder(this.rootUrl, ListsService.GetListItemsPath, 'get');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<Array<TodoItemDto>>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getListItems$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getListItems(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<Array<TodoItemDto>> {
+    return this.getListItems$Response(params, context).pipe(
+      map((r: StrictHttpResponse<Array<TodoItemDto>>): Array<TodoItemDto> => r.body)
+    );
+  }
+
+  /** Path part for operation `createListByTemplate()` */
+  static readonly CreateListByTemplatePath = '/api/v1/lists/generate/templates/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `createListByTemplate()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  createListByTemplate$Response(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<StrictHttpResponse<TodoListDto>> {
+    const rb = new RequestBuilder(this.rootUrl, ListsService.CreateListByTemplatePath, 'post');
+    if (params) {
+      rb.path('id', params.id, {});
+    }
+
+    return this.http.request(
+      rb.build({ responseType: 'json', accept: 'application/json', context })
+    ).pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<TodoListDto>;
+      })
+    );
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `createListByTemplate$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  createListByTemplate(
+    params: {
+      id: string;
+    },
+    context?: HttpContext
+  ): Observable<TodoListDto> {
+    return this.createListByTemplate$Response(params, context).pipe(
       map((r: StrictHttpResponse<TodoListDto>): TodoListDto => r.body)
     );
   }

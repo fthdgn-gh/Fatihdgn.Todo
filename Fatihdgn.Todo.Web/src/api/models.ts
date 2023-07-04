@@ -20,3 +20,7 @@ export { ModelError } from './models/model-error';
 export { Exception } from './models/exception';
 export { ModelValidationState } from './models/model-validation-state';
 export { AuthRefreshTokenDto } from './models/auth-refresh-token-dto';
+export { TodoTemplateDto } from './models/todo-template-dto';
+export { TodoTemplateCreateDto } from './models/todo-template-create-dto';
+export { TodoTemplateUpdateDto } from './models/todo-template-update-dto';
+export { TodoTemplatePatchDto } from './models/todo-template-patch-dto';
