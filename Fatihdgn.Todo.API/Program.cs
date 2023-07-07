@@ -39,7 +39,7 @@ builder.Services.AddVersionedApiExplorer(setup =>
 builder.Services.AddOpenApiDocument(config =>
 {
     config.Title = "Fatihdgn Todo";
-    config.Version = "v1";
+    config.Version = "v1.0";
     config.AddSecurity(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
     {
         Type = OpenApiSecuritySchemeType.ApiKey,
@@ -70,15 +70,6 @@ builder.Services.AddDbContext<TodoDB>(options =>
 
     options.UseLazyLoadingProxies();
 });
-
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddHttpsRedirection(options =>
-    {
-        options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-        options.HttpsPort = 443;
-    });
-}
 
 builder.Services.AddTodoDBRepositories();
 

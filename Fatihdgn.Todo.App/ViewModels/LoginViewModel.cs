@@ -1,4 +1,5 @@
 ﻿using Fatihdgn.Todo.API.Client;
+using Fatihdgn.Todo.App.Pages;
 using Fatihdgn.Todo.App.Providers;
 using System;
 using System.Collections.Generic;
@@ -9,16 +10,16 @@ using System.Windows.Input;
 
 namespace Fatihdgn.Todo.App.ViewModels;
 
-public class AuthViewModel : BindableObject
+public class LoginViewModel : BindableObject
 {
     private readonly IFatihdgnTodoAuthClient _authClient;
 
-    private string username;
+    private string email;
 
-    public string Username
+    public string Email
     {
-        get { return username; }
-        set { username = value; OnPropertyChanged(); }
+        get { return email; }
+        set { email = value; OnPropertyChanged(); }
     }
 
     private string password;
@@ -38,28 +39,40 @@ public class AuthViewModel : BindableObject
     }
 
 
-    public string Error { get; set; } = "Username or password isn't correct";
+    private string error;
+    public string Error 
+    { 
+        get => error;
+        set { error = value; OnPropertyChanged(); }
+    }
 
 
     public ICommand LoginCommand { get; private set; }
+    public ICommand RegisterCommand { get; private set; }
 
-    public AuthViewModel()
+    public LoginViewModel()
     {
         _authClient = FatihdgnTodoAuthClientProvider.Current;
         LoginCommand = new Command(async () => await LoginAsync());
+        RegisterCommand = new Command(async () => await RegisterAsync());
     }
 
     private async Task LoginAsync()
     {
-        if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password))
+        if (!string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password))
         {
             try
             {
-                var response = await _authClient.LoginAsync(new AuthLoginDTO { Email = Username, Password = Password, RememberMe = true });
+                var response = await _authClient.LoginAsync(new AuthLoginDTO { Email = Email, Password = Password, RememberMe = true });
             }
-            catch (ApiException ex) {
+            catch {
                 Error = "Username or password isn't correct";
             }
         }
+    }
+
+    private async Task RegisterAsync()
+    {
+        await Shell.Current.GoToAsync($"///{nameof(Register)}");
     }
 }

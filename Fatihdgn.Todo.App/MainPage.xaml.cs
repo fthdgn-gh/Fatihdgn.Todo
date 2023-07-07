@@ -23,7 +23,7 @@ public partial class MainPage : ContentPage
         var email = await SecureStorage.GetAsync("Email");
         if (email is null)
         {
-            await Shell.Current.GoToAsync($"///{nameof(Auth)}");
+            await Shell.Current.GoToAsync($"///{nameof(Login)}");
             return;
         }
 
@@ -44,6 +44,6 @@ public partial class MainPage : ContentPage
             await Shell.Current.GoToAsync($"///{nameof(Dashboard)}");
             return;
         }
-        await Shell.Current.GoToAsync($"///{nameof(Auth)}");
+        await Shell.Current.GoToAsync($"///{nameof(Login)}");
     }
 }

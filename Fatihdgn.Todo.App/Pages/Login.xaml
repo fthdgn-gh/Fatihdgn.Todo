@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Fatihdgn.Todo.App.Pages.Auth"
-             Title="Auth"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Fatihdgn.Todo.App.Pages.Login"
              BackgroundColor="{StaticResource Gray600}">
     <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
         <StackLayout Spacing="20" Padding="20" MinimumWidthRequest="400">
             <Label Text="Login" FontSize="24" TextColor="{StaticResource Gray100}"></Label>
-            <Entry Placeholder="Username" Text="{Binding Username}"></Entry>
-            <Entry Placeholder="Password" Text="{Binding Password}"></Entry>
+            <Entry Placeholder="Email" Text="{Binding Email}"></Entry>
+            <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="True"></Entry>
             <StackLayout Orientation="Horizontal">
                 <CheckBox IsChecked="{Binding RememberMe}" />
                 <Label Text="Remember me" VerticalOptions="Center" />
             </StackLayout>
             <Button Text="Login" Command="{Binding LoginCommand}"></Button>
+            <Button Text="Register" Command="{Binding RegisterCommand}"></Button>
             <Label Text="{Binding Error}" TextColor="{StaticResource Red300Accent}"></Label>
         </StackLayout>
     </Grid>

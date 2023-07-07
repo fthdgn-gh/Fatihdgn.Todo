@@ -2,11 +2,11 @@ using Fatihdgn.Todo.App.ViewModels;
 
 namespace Fatihdgn.Todo.App.Pages;
 
-public partial class Auth : ContentPage
+public partial class Login : ContentPage
 {
-	public Auth()
+	public Login()
 	{
 		InitializeComponent();
-		BindingContext = new AuthViewModel();
+		BindingContext = new LoginViewModel();
 	}
 }
