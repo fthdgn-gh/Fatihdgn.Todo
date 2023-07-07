@@ -2,14 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Fatihdgn.Todo.App.MainPage"
-             BackgroundColor="{StaticResource Gray600}">
+             BackgroundColor="{StaticResource Gray600}" Loaded="ContentPage_Loaded">
 
     <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-        <StackLayout Spacing="20" Padding="20" MinimumWidthRequest="400">
-            <Label Text="Login" FontSize="24" TextColor="{StaticResource Gray100}"></Label>
-            <Entry Placeholder="Username" x:Name="Username"></Entry>
-            <Entry Placeholder="Password" x:Name="Password"></Entry>
-            <Button Text="Login"></Button>
-        </StackLayout>
+        <Label Text="Welcome to Todo App" />
     </Grid>
 </ContentPage>

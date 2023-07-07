@@ -2527,12 +2527,6 @@ namespace Fatihdgn.Todo.API.Client
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Note { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("RemindAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? RemindAt { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("DueAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? DueAt { get; set; }
-
         [Newtonsoft.Json.JsonProperty("IsCompleted", Required = Newtonsoft.Json.Required.Always)]
         public bool IsCompleted { get; set; }
 
@@ -2548,12 +2542,6 @@ namespace Fatihdgn.Todo.API.Client
         [Newtonsoft.Json.JsonProperty("Note", Required = Newtonsoft.Json.Required.Always)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Note { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("RemindAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? RemindAt { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("DueAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? DueAt { get; set; }
 
         [Newtonsoft.Json.JsonProperty("IsCompleted", Required = Newtonsoft.Json.Required.Always)]
         public bool IsCompleted { get; set; }
@@ -2575,12 +2563,6 @@ namespace Fatihdgn.Todo.API.Client
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Note { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("RemindAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? RemindAt { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("DueAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? DueAt { get; set; }
-
         [Newtonsoft.Json.JsonProperty("IsCompleted", Required = Newtonsoft.Json.Required.Always)]
         public bool IsCompleted { get; set; }
 
@@ -2594,12 +2576,6 @@ namespace Fatihdgn.Todo.API.Client
 
         [Newtonsoft.Json.JsonProperty("Note", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string Note { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("RemindAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? RemindAt { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("DueAt", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.DateTimeOffset? DueAt { get; set; }
 
         [Newtonsoft.Json.JsonProperty("IsCompleted", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public bool? IsCompleted { get; set; }
