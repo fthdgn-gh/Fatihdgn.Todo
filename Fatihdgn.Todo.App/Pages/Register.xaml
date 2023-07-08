@@ -2,18 +2,23 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Fatihdgn.Todo.App.Pages.Register"
+             xmlns:ui="clr-namespace:Xe.AcrylicView;assembly=Xe.AcrylicView"
              BackgroundColor="{StaticResource Gray600}">
-    <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
-        <StackLayout Spacing="20" Padding="20" MinimumWidthRequest="400">
-            <Label Text="Register" FontSize="24" TextColor="{StaticResource Gray100}" />
-            <Entry Placeholder="Email" Text="{Binding Email.Value}" />
-            <Label Text="{Binding Email.Message}" IsVisible="{Binding Email.HasMessage}" TextColor="{StaticResource Red300Accent}" />
-            <Entry Placeholder="Password" Text="{Binding Password.Value}" IsPassword="True" />
-            <Label Text="{Binding Password.Message}" IsVisible="{Binding Password.HasMessage}" TextColor="{StaticResource Red300Accent}" />
-            <Entry Placeholder="Confirm Password" Text="{Binding ConfirmPassword.Value}" IsPassword="True"/>
-            <Label Text="{Binding ConfirmPassword.Message}" IsVisible="{Binding ConfirmPassword.HasMessage}" TextColor="{StaticResource Red300Accent}" />
-            <Button Text="Register" Command="{Binding RegisterCommand}" />
-            <Label Text="{Binding Error}" IsVisible="{Binding HasError}" TextColor="{StaticResource Red300Accent}" />
-        </StackLayout>
-    </Grid>
+    <ui:AcrylicView VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" 
+                EffectStyle="Dark"
+                CornerRadius="15" >
+        <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
+            <StackLayout Spacing="20" Padding="20" MinimumWidthRequest="400">
+                <Label Text="Register" FontSize="24" TextColor="{StaticResource Gray100}" />
+                <Entry Placeholder="Email" Text="{Binding Email.Value}" />
+                <Label Text="{Binding Email.Message}" IsVisible="{Binding Email.HasMessage}" TextColor="{StaticResource Red300Accent}" />
+                <Entry Placeholder="Password" Text="{Binding Password.Value}" IsPassword="True" />
+                <Label Text="{Binding Password.Message}" IsVisible="{Binding Password.HasMessage}" TextColor="{StaticResource Red300Accent}" />
+                <Entry Placeholder="Confirm Password" Text="{Binding ConfirmPassword.Value}" IsPassword="True"/>
+                <Label Text="{Binding ConfirmPassword.Message}" IsVisible="{Binding ConfirmPassword.HasMessage}" TextColor="{StaticResource Red300Accent}" />
+                <Button Text="Register" Command="{Binding RegisterCommand}" />
+                <Label Text="{Binding Error}" IsVisible="{Binding HasError}" TextColor="{StaticResource Red300Accent}" />
+            </StackLayout>
+        </Grid>
+    </ui:AcrylicView>
 </ContentPage>

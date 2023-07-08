@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Maui;
-using Fatihdgn.Todo.App.ViewModels;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Xe.AcrylicView;
 
 namespace Fatihdgn.Todo.App
 {
@@ -13,6 +12,7 @@ namespace Fatihdgn.Todo.App
             builder
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
+                .UseAcrylicView()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -22,7 +22,7 @@ namespace Fatihdgn.Todo.App
                 .AddHttpClient();
 
 #if DEBUG
-		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();
