@@ -49,6 +49,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="1.2.0" />
 		<PackageReference Include="AcrylicView.Maui" Version="1.13.0" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="5.2.0" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />

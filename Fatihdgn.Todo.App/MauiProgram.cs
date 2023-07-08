@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Maui;
+using MauiIcons.Fluent;
 using Microsoft.Extensions.Logging;
 using Xe.AcrylicView;
 
@@ -13,6 +14,7 @@ namespace Fatihdgn.Todo.App
                 .UseMauiApp<App>()
                 .UseMauiCommunityToolkit()
                 .UseAcrylicView()
+                .UseFluentMauiIcons()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

@@ -1,11 +1,33 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Fatihdgn.Todo.App.Pages.Dashboard">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:Class="Fatihdgn.Todo.App.Pages.Dashboard"
+             xmlns:ui="clr-namespace:Xe.AcrylicView;assembly=Xe.AcrylicView"
+             xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
+             BackgroundColor="{StaticResource Gray600}"
+             BackgroundImageSource="background.jpg">
+    <ui:AcrylicView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" 
+                EffectStyle="Dark"
+                Margin="10"
+                CornerRadius="25" >
+        <VerticalStackLayout>
+            <Grid ColumnDefinitions="*,auto,*">
+                <Grid Grid.Column="0" HorizontalOptions="Start">
+                    <HorizontalStackLayout>
+                        <fluent:MauiIcon Icon="Add24" Margin="10" VerticalOptions="Center" />
+                        <Label VerticalOptions="Center">Add List</Label>
+                    </HorizontalStackLayout>
+                </Grid>
+                <Grid Grid.Column="1" HorizontalOptions="Fill">
+                    <Label VerticalOptions="Center" Margin="20">Items</Label>
+                </Grid>
+                <Grid Grid.Column="2" HorizontalOptions="End">
+                    <HorizontalStackLayout>
+                        <Label VerticalOptions="Center">Generate Template</Label>
+                        <fluent:MauiIcon Icon="Add24" Margin="10" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+                </Grid>
+            </Grid>
+        </VerticalStackLayout>
+    </ui:AcrylicView>
 </ContentPage>

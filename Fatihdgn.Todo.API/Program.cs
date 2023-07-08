@@ -1,6 +1,7 @@
 using Fatihdgn.Todo.Context;
 using Fatihdgn.Todo.DTOs.Validators;
 using Fatihdgn.Todo.Entities;
+using Fatihdgn.Todo.Entities.Extensions;
 using Fatihdgn.Todo.Handlers;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -102,6 +103,8 @@ builder.Services.AddHealthChecks().AddDbContextCheck<TodoDB>();
 
 var app = builder.Build();
 
+
+
 var apiVersionDescriptionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 
 // Configure the HTTP request pipeline.
@@ -127,6 +130,16 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.UseHealthChecks("/_health");
+
+if (app.Environment.IsDevelopment())
+{
+    using var scope = app.Services.CreateScope();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<TodoUserEntity>>();
+    var user = new TodoUserEntity { UserName = "user@example.com", Email = "user@example.com" };
+    user.RenewRefreshToken();
+    await userManager.CreateAsync(user, "Password1!");
+}
+
 
 app.Run();
 

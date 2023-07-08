@@ -68,6 +68,7 @@ public class RegisterViewModel : BindableObject
 
     public ICommand LoginCommand { get; private set; }
     public ICommand RegisterCommand { get; private set; }
+    public ICommand GoToLoginCommand { get; private set; } = new Command(async () => await Shell.Current.GoToAsync($"///{nameof(Login)}"));
 
     private async Task RegisterAsync()
     {

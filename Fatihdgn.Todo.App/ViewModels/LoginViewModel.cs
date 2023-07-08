@@ -22,12 +22,18 @@ public class LoginViewModel : BindableObject
         Email = new ValidatableBindableObject<string>(string.Empty);
         Email.Validators.Add(new ObjectValidator<string>("Email address is empty", string.IsNullOrEmpty));
         Email.Validators.Add(new ObjectValidator<string>("Email address is not valid", value => !new EmailAddressAttribute().IsValid(value)));
+#if DEBUG
+        Email.Value = "user@example.com";
+#endif
     }
     public ValidatableBindableObject<string> Password { get; set; }
     void SetupPasswordObject()
     {
         Password = new ValidatableBindableObject<string>(string.Empty);
         Password.Validators.Add(new ObjectValidator<string>("Password is empty", string.IsNullOrEmpty));
+#if DEBUG
+        Password.Value = "Password1!";
+#endif
     }
 
     void Setup()

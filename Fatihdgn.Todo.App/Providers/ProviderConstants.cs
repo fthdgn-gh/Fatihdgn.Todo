@@ -8,5 +8,5 @@ namespace Fatihdgn.Todo.App.Providers;
 
 public static class ProviderConstants
 {
-    public const string FatihdgnTodoClientBaseUrl = "http://localhost:32771";
+    public const string FatihdgnTodoClientBaseUrl = "http://localhost:32773";
 }
