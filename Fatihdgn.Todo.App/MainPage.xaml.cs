@@ -1,4 +1,5 @@
 ﻿using Fatihdgn.Todo.API.Client;
+using Fatihdgn.Todo.App.Managers;
 using Fatihdgn.Todo.App.Pages;
 using System.Net.Http;
 
@@ -17,10 +18,11 @@ public partial class MainPage : ContentPage
 
     private async void ContentPage_Loaded(object sender, EventArgs e)
     {
-        var accessToken = await SecureStorage.GetAsync("AccessToken");
-        var refreshToken = await SecureStorage.GetAsync("RefreshToken");
+        
+        var accessToken = await SecureStorageUserManager.Instance.AccessToken.GetAsync();
+        var refreshToken = await SecureStorageUserManager.Instance.RefreshToken.GetAsync();
+        var email = await SecureStorageUserManager.Instance.Email.GetAsync();
 
-        var email = await SecureStorage.GetAsync("Email");
         if (email is null)
         {
             await Shell.Current.GoToAsync($"///{nameof(Login)}");
@@ -39,8 +41,8 @@ public partial class MainPage : ContentPage
             var refreshTokenResponse = await _auth.RefreshTokenAsync(new AuthRefreshTokenDTO { Email = email, RefreshToken = refreshToken });
             accessToken = refreshTokenResponse.AccessToken;
             refreshToken = refreshTokenResponse.RefreshToken;
-            await SecureStorage.SetAsync("AccessToken", accessToken);
-            await SecureStorage.SetAsync("RefreshToken", refreshToken);
+            await SecureStorageUserManager.Instance.AccessToken.SetAsync(accessToken);
+            await SecureStorageUserManager.Instance.AccessToken.SetAsync(refreshToken);
             await Shell.Current.GoToAsync($"///{nameof(Dashboard)}");
             return;
         }
