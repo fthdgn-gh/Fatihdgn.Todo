@@ -63,7 +63,9 @@ public class LoginViewModel : BindableObject
         {
             try
             {
-                var response = await _authClient.LoginAsync(new AuthLoginDTO { Email = Email, Password = Password, RememberMe = true });
+                var response = await _authClient.LoginAsync(new AuthLoginDTO { Email = Email, Password = Password, RememberMe = RememberMe });
+                
+                await Shell.Current.GoToAsync($"///{nameof(Dashboard)}");
             }
             catch {
                 Error = "Username or password isn't correct";
