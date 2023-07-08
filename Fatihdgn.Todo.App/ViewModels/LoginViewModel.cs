@@ -1,8 +1,10 @@
 ﻿using Fatihdgn.Todo.API.Client;
+using Fatihdgn.Todo.App.Helpers;
 using Fatihdgn.Todo.App.Pages;
 using Fatihdgn.Todo.App.Providers;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,24 +16,27 @@ public class LoginViewModel : BindableObject
 {
     private readonly IFatihdgnTodoAuthClient _authClient;
 
-    private string email;
-
-    public string Email
+    public ValidatableBindableObject<string> Email { get; set; } 
+    void SetupEmailObject()
     {
-        get { return email; }
-        set { email = value; OnPropertyChanged(); }
+        Email = new ValidatableBindableObject<string>(string.Empty);
+        Email.Validators.Add(new ObjectValidator<string>("Email address is empty", string.IsNullOrEmpty));
+        Email.Validators.Add(new ObjectValidator<string>("Email address is not valid", value => !new EmailAddressAttribute().IsValid(value)));
+    }
+    public ValidatableBindableObject<string> Password { get; set; }
+    void SetupPasswordObject()
+    {
+        Password = new ValidatableBindableObject<string>(string.Empty);
+        Password.Validators.Add(new ObjectValidator<string>("Password is empty", string.IsNullOrEmpty));
     }
 
-    private string password;
-
-    public string Password
+    void Setup()
     {
-        get { return password; }
-        set { password = value; OnPropertyChanged(); }
+        SetupEmailObject();
+        SetupPasswordObject();
     }
 
     private bool rememberMe;
-
     public bool RememberMe
     {
         get { return rememberMe; }
@@ -40,8 +45,8 @@ public class LoginViewModel : BindableObject
 
 
     private string error;
-    public string Error 
-    { 
+    public string Error
+    {
         get => error;
         set { error = value; OnPropertyChanged(); }
     }
@@ -55,26 +60,28 @@ public class LoginViewModel : BindableObject
         _authClient = FatihdgnTodoAuthClientProvider.Current;
         LoginCommand = new Command(async () => await LoginAsync());
         RegisterCommand = new Command(async () => await RegisterAsync());
+        Setup();
     }
 
     private async Task LoginAsync()
     {
-        if (!string.IsNullOrEmpty(Email) && !string.IsNullOrEmpty(Password))
+        if (Email.HasMessage || Password.HasMessage) return;
+        try
         {
-            try
-            {
-                var response = await _authClient.LoginAsync(new AuthLoginDTO { Email = Email, Password = Password, RememberMe = RememberMe });
-                
-                await Shell.Current.GoToAsync($"///{nameof(Dashboard)}");
-            }
-            catch {
-                Error = "Username or password isn't correct";
-            }
+            var response = await _authClient.LoginAsync(new AuthLoginDTO { Email = Email.Value, Password = Password.Value, RememberMe = RememberMe });
+
+            await Shell.Current.GoToAsync($"///{nameof(Dashboard)}");
         }
+        catch
+        {
+            Error = "Username or password isn't correct.";
+        }
+        Setup();
     }
 
     private async Task RegisterAsync()
     {
         await Shell.Current.GoToAsync($"///{nameof(Register)}");
+        Setup();
     }
 }

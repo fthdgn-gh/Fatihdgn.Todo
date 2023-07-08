@@ -7,8 +7,10 @@
     <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand">
         <StackLayout Spacing="20" Padding="20" MinimumWidthRequest="400">
             <Label Text="Login" FontSize="24" TextColor="{StaticResource Gray100}"></Label>
-            <Entry Placeholder="Email" Text="{Binding Email}"></Entry>
-            <Entry Placeholder="Password" Text="{Binding Password}" IsPassword="True"></Entry>
+            <Entry Placeholder="Email" Text="{Binding Email.Value}" />
+            <Label Text="{Binding Email.Message}" IsVisible="{Binding Email.HasMessage}" TextColor="{StaticResource Red300Accent}" />
+            <Entry Placeholder="Password" Text="{Binding Password.Value}" IsPassword="True" />
+            <Label Text="{Binding Password.Message}" IsVisible="{Binding Password.HasMessage}" TextColor="{StaticResource Red300Accent}" />
             <StackLayout Orientation="Horizontal">
                 <CheckBox IsChecked="{Binding RememberMe}" />
                 <Label Text="Remember me" VerticalOptions="Center" />

@@ -12,107 +12,49 @@ using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using CommunityToolkit.Maui.Alerts;
 using System.Resources;
+using Fatihdgn.Todo.App.Helpers;
 
 namespace Fatihdgn.Todo.App.ViewModels;
 
 public class RegisterViewModel : BindableObject
 {
     private readonly IFatihdgnTodoAuthClient _authClient;
-    private string email;
 
-    public string Email
+    public RegisterViewModel()
     {
-        get { return email; }
-        set { email = value; OnPropertyChanged(); UpdateEmailError(); }
+        _authClient = FatihdgnTodoAuthClientProvider.Current;
+        RegisterCommand = new Command(async () => await RegisterAsync());
+        Setup();
     }
 
-    private void UpdateEmailError()
+    public void Setup()
     {
-        if (string.IsNullOrEmpty(Email))
-        {
-            EmailError = "Email address is empty";
-            return;
-        }
-        if (!new EmailAddressAttribute().IsValid(Email))
-        {
-            EmailError = "Email address is not valid";
-            return;
-        }
-
-        EmailError = string.Empty;
+        SetupEmailObject();
+        SetupPasswordObject();
+        SetupConfirmPasswordObject();
+    }
+    public ValidatableBindableObject<string> Email { get; set; }
+    void SetupEmailObject()
+    {
+        Email = new ValidatableBindableObject<string>(string.Empty);
+        Email.Validators.Add(new ObjectValidator<string>("Email address is empty", string.IsNullOrEmpty));
+        Email.Validators.Add(new ObjectValidator<string>("Email address is not valid", value => !new EmailAddressAttribute().IsValid(value)));
     }
 
-    public bool HasEmailError => !string.IsNullOrEmpty(EmailError);
-    private string emailError;
-    public string EmailError
+    public ValidatableBindableObject<string> Password { get; set; }
+    void SetupPasswordObject()
     {
-        get => emailError;
-        set { emailError = value; OnPropertyChanged(); OnPropertyChanged(nameof(HasEmailError)); }
+        Password = new ValidatableBindableObject<string>(string.Empty);
+        Password.Validators.Add(new ObjectValidator<string>("Password is empty", string.IsNullOrEmpty));
     }
 
-    private string password;
-
-    public string Password
+    public ValidatableBindableObject<string> ConfirmPassword { get; set; }
+    void SetupConfirmPasswordObject()
     {
-        get { return password; }
-        set { password = value; OnPropertyChanged(); UpdatePasswordError(); }
+        ConfirmPassword = new ValidatableBindableObject<string>(string.Empty);
+        ConfirmPassword.Validators.Add(new ObjectValidator<string>("Confirm password is empty", string.IsNullOrEmpty));
+        ConfirmPassword.Validators.Add(new ObjectValidator<string>("Confirm password doesn't match with the password", value => Password.Value != value));
     }
-
-    private void UpdatePasswordError()
-    {
-        if (string.IsNullOrEmpty(Password))
-        {
-            PasswordError = "Password is empty";
-            return;
-        }
-
-        PasswordError = string.Empty;
-    }
-
-    public bool HasPasswordError => !string.IsNullOrEmpty(PasswordError);
-
-    private string passwordError;
-    public string PasswordError
-    {
-        get => passwordError;
-        set { passwordError = value; OnPropertyChanged(); OnPropertyChanged(nameof(HasPasswordError)); }
-    }
-
-
-
-    private string confirmPassword;
-    public string ConfirmPassword
-    {
-        get { return confirmPassword; }
-        set { confirmPassword = value; OnPropertyChanged(); UpdateConfirmPasswordError(); }
-    }
-
-    private void UpdateConfirmPasswordError()
-    {
-        if (string.IsNullOrEmpty(ConfirmPassword))
-        {
-            ConfirmPasswordError = "Confirm password is empty";
-            return;
-        }
-
-        if (Password != ConfirmPassword)
-        {
-            ConfirmPasswordError = "Confirm password doesn't match with the password";
-            return;
-        }
-
-        ConfirmPasswordError = string.Empty;
-    }
-
-    public bool HasConfirmPasswordError => !string.IsNullOrEmpty(ConfirmPasswordError);
-
-    private string confirmPasswordError;
-    public string ConfirmPasswordError
-    {
-        get => confirmPasswordError;
-        set { confirmPasswordError = value; OnPropertyChanged(); OnPropertyChanged(nameof(HasConfirmPasswordError)); }
-    }
-
 
     public bool HasError => !string.IsNullOrEmpty(Error);
 
@@ -127,19 +69,13 @@ public class RegisterViewModel : BindableObject
     public ICommand LoginCommand { get; private set; }
     public ICommand RegisterCommand { get; private set; }
 
-    public RegisterViewModel()
-    {
-        _authClient = FatihdgnTodoAuthClientProvider.Current;
-        RegisterCommand = new Command(async () => await RegisterAsync());
-    }
-
     private async Task RegisterAsync()
     {
-        if (!string.IsNullOrEmpty(EmailError) || !string.IsNullOrEmpty(PasswordError) || !string.IsNullOrEmpty(ConfirmPasswordError)) return;
+        if (Email.HasMessage || Password.HasMessage || ConfirmPassword.HasMessage) return;
 
         try
         {
-            await _authClient.RegisterAsync(new AuthRegisterDTO { Email = Email, Password = Password, ConfirmPassword = ConfirmPassword });
+            await _authClient.RegisterAsync(new AuthRegisterDTO { Email = Email.Value, Password = Password.Value, ConfirmPassword = ConfirmPassword.Value });
             Error = string.Empty;
             var modalPage = new ContentPage
             {
@@ -196,6 +132,6 @@ public class RegisterViewModel : BindableObject
         {
             Error = "Unknown error. Please reach out to the service provider.";
         }
-
+        Setup();
     }
 }
