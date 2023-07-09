@@ -5,142 +5,188 @@
              xmlns:ui="clr-namespace:Xe.AcrylicView;assembly=Xe.AcrylicView"
              xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
              BackgroundColor="{StaticResource Gray600}">
-    <Grid>
-        <Image Aspect="AspectFill" Source="background.jpg" />
-        <ui:AcrylicView VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" 
+    <Grid ColumnDefinitions="auto,*">
+        <Image Grid.ColumnSpan="2" Aspect="AspectFill" Source="background.jpg" />
+        <ui:AcrylicView 
+            EffectStyle="Light"
+                Margin="0,5,5,5"
+                CornerRadius="0,25,25,0"
+                Padding="10"
+            HorizontalOptions="StartAndExpand" 
+            IsVisible="{Binding IsMenuOpened}">
+            <Grid RowDefinitions="1*,11*,auto">
+                <Label FontSize="Subtitle">Todo Lists</Label>
+                <VerticalStackLayout Grid.Row="1" Spacing="2">
+                    <ui:AcrylicView Padding="5" EffectStyle="Dark">
+                        <HorizontalStackLayout>
+                            <fluent:MauiIcon Icon="AppsList20" />
+                            <Label VerticalOptions="Center" Margin="5,0,0,0">Content</Label>
+                        </HorizontalStackLayout>
+                    </ui:AcrylicView>
+                    <ui:AcrylicView Padding="5" EffectStyle="Dark">
+                        <HorizontalStackLayout>
+                            <fluent:MauiIcon Icon="AppsList20" />
+                            <Label VerticalOptions="Center" Margin="5,0,0,0">Content</Label>
+                        </HorizontalStackLayout>
+                    </ui:AcrylicView>
+                    <ui:AcrylicView Padding="5" EffectStyle="Dark">
+                        <HorizontalStackLayout>
+                            <fluent:MauiIcon Icon="AppsList20" />
+                            <Label VerticalOptions="Center" Margin="5,0,0,0">Content</Label>
+                        </HorizontalStackLayout>
+                    </ui:AcrylicView>
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Row="2">
+                    <ui:AcrylicView Padding="5" EffectStyle="Dark">
+                        <HorizontalStackLayout>
+                            <fluent:MauiIcon Icon="Add12" />
+                            <Label VerticalOptions="Center" Margin="5,0,0,0">Content</Label>
+                        </HorizontalStackLayout>
+                    </ui:AcrylicView>
+                    <ui:AcrylicView Padding="5" EffectStyle="Dark">
+                        <HorizontalStackLayout>
+                            <fluent:MauiIcon Icon="Add12" />
+                            <Label VerticalOptions="Center" Margin="5,0,0,0">Content</Label>
+                        </HorizontalStackLayout>
+                    </ui:AcrylicView>
+                </VerticalStackLayout>
+            </Grid>
+        </ui:AcrylicView>
+        <ui:AcrylicView Grid.Column="1"
                 EffectStyle="Light"
                 Margin="5,5,5,0"
                 CornerRadius="25,25,0,0" >
             <Grid RowDefinitions="1*,10*,auto">
                 <VerticalStackLayout>
                     <Grid ColumnDefinitions="*,auto,*">
-                        <Grid Grid.Column="0" HorizontalOptions="Start">
+                        <Grid Grid.Column="0">
                             <HorizontalStackLayout>
-                                <fluent:MauiIcon Icon="Add24" Margin="10" VerticalOptions="Center" />
-                                <Label VerticalOptions="Center" Margin="0,-5,0,0">Add List</Label>
+                                <HorizontalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ToggleMenuCommand}"></TapGestureRecognizer>
+                                </HorizontalStackLayout.GestureRecognizers>
+                                <fluent:MauiIcon Icon="GridDots24" Margin="10" VerticalOptions="Center" />
                             </HorizontalStackLayout>
                         </Grid>
-                        <Grid Grid.Column="1" HorizontalOptions="Fill">
-                            <Label VerticalOptions="Center" Margin="20">Items</Label>
+                        <Grid Grid.Column="1">
+                            <Label VerticalOptions="Center" FontSize="Title" Margin="20" >Items</Label>
                         </Grid>
                         <Grid Grid.Column="2" HorizontalOptions="End">
                             <HorizontalStackLayout>
-                                <Label VerticalOptions="Center" Margin="0,-5,0,0">Generate</Label>
-                                <fluent:MauiIcon Icon="Add24" Margin="10" VerticalOptions="Center" />
+                                <fluent:MauiIcon Icon="Settings24" Margin="10" VerticalOptions="Center" />
                             </HorizontalStackLayout>
                         </Grid>
                     </Grid>
                 </VerticalStackLayout>
                 <ScrollView Grid.Row="1" VerticalScrollBarVisibility="Always" VerticalOptions="FillAndExpand">
-                        <StackLayout>
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
+                    <StackLayout>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
 
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
-                            <Grid>
-                                <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
-                                    <HorizontalStackLayout >
-                                        <CheckBox IsChecked="True" VerticalOptions="Center" />
-                                        <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
-                                    </HorizontalStackLayout>
-                                </ui:AcrylicView>
-                            </Grid>
-                        </StackLayout>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
+                        <Grid>
+                            <ui:AcrylicView Padding="10" Margin="1" EffectStyle="ExtraDark">
+                                <HorizontalStackLayout >
+                                    <CheckBox IsChecked="True" VerticalOptions="Center" />
+                                    <Label Text="Content" VerticalOptions="Center" Margin="0,-3,0,0"></Label>
+                                </HorizontalStackLayout>
+                            </ui:AcrylicView>
+                        </Grid>
+                    </StackLayout>
                 </ScrollView>
-                <Grid Grid.Row="2" ColumnDefinitions="1*,auto" Margin="0,0,0,5">
+                <Grid Grid.Row="2" ColumnDefinitions="1*,auto" Margin="0,5,0,5">
                     <Entry Text="Hello" HorizontalOptions="FillAndExpand"></Entry>
                     <Button Grid.Column="1" BackgroundColor="Transparent" TextColor="White" Margin="5,0,0,0" Text="Add"></Button>
                 </Grid>
