@@ -1,7 +1,7 @@
 <div class="flex h-screen items-center justify-center flex-col">
   <div class="flex flex-row place-items-start">
-    <i class="fa-solid fa-chevron-left fa-2x cursor-pointer" (click)="redirectToLogin()"></i>
-    <h1 class="ml-5 text-2xl">Register</h1>
+    <i class="fa-solid fa-chevron-left fa-2x cursor-pointer text-primary-content" (click)="redirectToLogin()"></i>
+    <h1 class="ml-5 text-2xl text-primary-content">Register</h1>
   </div>
   <form [formGroup]="f" (ngSubmit)="onSubmit()">
     <input

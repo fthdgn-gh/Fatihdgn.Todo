@@ -12,6 +12,7 @@ import { environment } from 'src/environments/environment';
 
 import { ApiInterceptor } from './helpers/api.interceptor';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { SideNavComponent } from './components/sidenav/sidenav.component';
 
 export const API_INTERCEPTOR_PROVIDER: Provider = {
   provide: HTTP_INTERCEPTORS,
@@ -25,6 +26,7 @@ export const API_INTERCEPTOR_PROVIDER: Provider = {
     LoginComponent,
     RegisterComponent,
     DashboardComponent,
+    SideNavComponent
   ],
   imports: [
     BrowserModule,
