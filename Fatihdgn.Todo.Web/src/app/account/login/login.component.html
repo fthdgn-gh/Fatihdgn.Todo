@@ -1,0 +1,21 @@
+<div class="artboard phone-1 flex items-center justify-center flex-col">
+  <h1 class="text-2xl">Login</h1>
+  <form [formGroup]="f" (ngSubmit)="onSubmit()">
+    <input
+      class="input input-bordered input-primary w-full mt-2"
+      [class.input-error]="f.get('email')!.invalid && (f.get('email')!.dirty || f.get('email')!.touched) && (f.get('email')!.hasError('required') || f.get('email')!.hasError('email'))"
+      formControlName="email"
+      placeholder="Email"
+    />
+    <input
+      class="input input-bordered input-primary w-full mt-2"
+      [class.input-error]="f.get('password')!.invalid && (f.get('password')!.dirty || f.get('password')!.touched) && f.get('password')!.hasError('required')"
+      formControlName="password"
+      placeholder="Password"
+    />
+    <button class="btn btn-primary w-full mt-2" [disabled]="f.invalid">
+      Login
+    </button>
+  </form>
+  <button class="btn btn-primary w-full mt-2">Register</button>
+</div>
