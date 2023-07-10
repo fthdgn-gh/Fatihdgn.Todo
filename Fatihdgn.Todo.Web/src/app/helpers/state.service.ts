@@ -3,9 +3,11 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { BehaviorSubject } from "rxjs";
 import { State } from "../models/state.model";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class StateService {
-  private _state$: BehaviorSubject<State> = new BehaviorSubject<State>({
+  private _value$: BehaviorSubject<State> = new BehaviorSubject<State>({
     items: [],
     lists: [],
     templates: [],
@@ -14,15 +16,15 @@ export class StateService {
     currentTemplate: {}
   });
 
-  public get state$() {
-    return toSignal(this._state$.asObservable());
+  public get value$() {
+    return toSignal(this._value$.asObservable());
   }
 
-  public set state(value: State) {
-    this._state$.next(value);
+  public set value(value: State) {
+    this._value$.next(value);
   }
 
-  public get state(): State {
-    return this._state$.getValue();
+  public get value(): State {
+    return this._value$.getValue();
   }
 }

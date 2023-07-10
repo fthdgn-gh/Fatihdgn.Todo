@@ -46,5 +46,5 @@
   </div>
 </div>
 <ng-template #navContent>
-  Side Nav Bar Content Here
+  <div *ngFor="let list of state.value.lists">{{list.name}}</div>
 </ng-template>
