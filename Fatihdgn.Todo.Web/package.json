@@ -23,6 +23,7 @@
     "@angular/router": "^16.1.0",
     "jest-editor-support": "*",
     "rxjs": "~7.8.0",
+    "subsink": "^1.0.2",
     "tslib": "^2.3.0",
     "zone.js": "~0.13.0"
   },

@@ -11,7 +11,8 @@ export class ApiInterceptor implements HttpInterceptor {
   ) {}
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let login = this.storageService.get<AuthLoginResponseDto>('login');
-    if(login == null) next.handle(req);
+    console.log(login);
+    if(login == null) return next.handle(req);
     // Apply the headers
     req = req.clone({
       setHeaders: {
