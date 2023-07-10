@@ -9,7 +9,7 @@ import { LocalStorageService } from 'src/app/helpers/local-storage.service';
 import { SubSink } from 'subsink';
 
 @Component({
-  selector: 'app-login',
+  selector: 'todo-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
