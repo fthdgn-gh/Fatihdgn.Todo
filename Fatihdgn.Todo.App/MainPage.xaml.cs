@@ -1,6 +1,8 @@
 ﻿using Fatihdgn.Todo.API.Client;
 using Fatihdgn.Todo.App.Managers;
 using Fatihdgn.Todo.App.Pages;
+using Fatihdgn.Todo.App.Providers;
+using Fatihdgn.Todo.App.State;
 using System.Net.Http;
 
 namespace Fatihdgn.Todo.App;
@@ -18,10 +20,11 @@ public partial class MainPage : ContentPage
 
     private async void ContentPage_Loaded(object sender, EventArgs e)
     {
-        
-        var accessToken = await SecureStorageUserManager.Instance.AccessToken.GetAsync();
-        var refreshToken = await SecureStorageUserManager.Instance.RefreshToken.GetAsync();
-        var email = await SecureStorageUserManager.Instance.Email.GetAsync();
+#if !DEBUG
+        var userManager = SecureStorageUserManager.Instance;
+        var accessToken = await userManager.AccessToken.GetAsync();
+        var refreshToken = await userManager.RefreshToken.GetAsync();
+        var email = await userManager.Email.GetAsync();
 
         if (email is null)
         {
@@ -31,7 +34,10 @@ public partial class MainPage : ContentPage
 
         if (accessToken is not null)
         {
+            FatihdgnTodoClientProvider.ApplyAccessToken(accessToken);
+            await AppStatePopulator.Populate(AppState.Instance);
             await Shell.Current.GoToAsync($"///{nameof(Dashboard)}");
+
             return;
         }
 
@@ -42,10 +48,16 @@ public partial class MainPage : ContentPage
             accessToken = refreshTokenResponse.AccessToken;
             refreshToken = refreshTokenResponse.RefreshToken;
             await SecureStorageUserManager.Instance.AccessToken.SetAsync(accessToken);
-            await SecureStorageUserManager.Instance.AccessToken.SetAsync(refreshToken);
+            if (refreshToken is not null)
+                await SecureStorageUserManager.Instance.AccessToken.SetAsync(refreshToken);
+            FatihdgnTodoClientProvider.ApplyAccessToken(accessToken);
+            await AppStatePopulator.Populate(AppState.Instance);
             await Shell.Current.GoToAsync($"///{nameof(Dashboard)}");
             return;
         }
+#endif
         await Shell.Current.GoToAsync($"///{nameof(Login)}");
     }
+
+
 }

@@ -1,7 +1,10 @@
-﻿using Fatihdgn.Todo.API.Client;
+﻿using CommunityToolkit.Mvvm.Input;
+using Fatihdgn.Todo.API.Client;
 using Fatihdgn.Todo.App.Helpers;
+using Fatihdgn.Todo.App.Managers;
 using Fatihdgn.Todo.App.Pages;
 using Fatihdgn.Todo.App.Providers;
+using Fatihdgn.Todo.App.State;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -12,11 +15,11 @@ using System.Windows.Input;
 
 namespace Fatihdgn.Todo.App.ViewModels;
 
-public class LoginViewModel : BindableObject
+public partial class LoginViewModel : BindableObject
 {
     private readonly IFatihdgnTodoAuthClient _authClient;
 
-    public ValidatableBindableObject<string> Email { get; set; } 
+    public ValidatableBindableObject<string> Email { get; set; }
     void SetupEmailObject()
     {
         Email = new ValidatableBindableObject<string>(string.Empty);
@@ -57,24 +60,27 @@ public class LoginViewModel : BindableObject
         set { error = value; OnPropertyChanged(); }
     }
 
-
-    public ICommand LoginCommand { get; private set; }
-    public ICommand RegisterCommand { get; private set; }
-
     public LoginViewModel()
     {
         _authClient = FatihdgnTodoAuthClientProvider.Current;
-        LoginCommand = new Command(async () => await LoginAsync());
-        RegisterCommand = new Command(async () => await RegisterAsync());
         Setup();
     }
 
+    [RelayCommand]
     private async Task LoginAsync()
     {
         if (Email.HasMessage || Password.HasMessage) return;
         try
         {
             var response = await _authClient.LoginAsync(new AuthLoginDTO { Email = Email.Value, Password = Password.Value, RememberMe = RememberMe });
+            var accessToken = response.AccessToken;
+            var refreshToken = response.RefreshToken;
+            await SecureStorageUserManager.Instance.Email.SetAsync(Email.Value);
+            await SecureStorageUserManager.Instance.AccessToken.SetAsync(accessToken);
+            if (refreshToken is not null)
+                await SecureStorageUserManager.Instance.AccessToken.SetAsync(refreshToken);
+            FatihdgnTodoClientProvider.ApplyAccessToken(accessToken);
+            await AppStatePopulator.Populate(AppState.Instance);
 
             await Shell.Current.GoToAsync($"///{nameof(Dashboard)}");
         }
@@ -85,6 +91,7 @@ public class LoginViewModel : BindableObject
         Setup();
     }
 
+    [RelayCommand]
     private async Task RegisterAsync()
     {
         await Shell.Current.GoToAsync($"///{nameof(Register)}");

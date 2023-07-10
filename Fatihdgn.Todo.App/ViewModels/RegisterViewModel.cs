@@ -13,17 +13,17 @@ using Microsoft.Maui.Controls;
 using CommunityToolkit.Maui.Alerts;
 using System.Resources;
 using Fatihdgn.Todo.App.Helpers;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Fatihdgn.Todo.App.ViewModels;
 
-public class RegisterViewModel : BindableObject
+public partial class RegisterViewModel : BindableObject
 {
     private readonly IFatihdgnTodoAuthClient _authClient;
 
     public RegisterViewModel()
     {
         _authClient = FatihdgnTodoAuthClientProvider.Current;
-        RegisterCommand = new Command(async () => await RegisterAsync());
         Setup();
     }
 
@@ -65,12 +65,14 @@ public class RegisterViewModel : BindableObject
         set { error = value; OnPropertyChanged(); OnPropertyChanged(nameof(HasError)); }
     }
 
+    [RelayCommand]
+    public async Task GoToLogin()
+    {
+        await Shell.Current.GoToAsync($"///{nameof(Login)}");
+    }
 
-    public ICommand LoginCommand { get; private set; }
-    public ICommand RegisterCommand { get; private set; }
-    public ICommand GoToLoginCommand { get; private set; } = new Command(async () => await Shell.Current.GoToAsync($"///{nameof(Login)}"));
-
-    private async Task RegisterAsync()
+    [RelayCommand]
+    public async Task RegisterAsync()
     {
         if (Email.HasMessage || Password.HasMessage || ConfirmPassword.HasMessage) return;
 
