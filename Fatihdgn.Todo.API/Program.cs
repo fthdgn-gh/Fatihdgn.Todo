@@ -1,3 +1,4 @@
+using Fatihdgn.Todo.API.Middlewares;
 using Fatihdgn.Todo.Context;
 using Fatihdgn.Todo.DTOs.Validators;
 using Fatihdgn.Todo.Entities;
@@ -18,6 +19,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddUserSecrets<Program>();
+
+builder.Services.AddCors(options => options.AddPolicy("AllowAll", policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -124,10 +127,13 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
+app.UseOptions();
+app.UseCors("AllowAll");
 app.MapControllers();
 
 app.UseHealthChecks("/_health");
