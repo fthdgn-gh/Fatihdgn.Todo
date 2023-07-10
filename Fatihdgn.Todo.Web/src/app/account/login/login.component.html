@@ -1,4 +1,4 @@
-<div class="artboard phone-1 flex items-center justify-center flex-col">
+<div class="h-screen flex items-center justify-center flex-col">
   <h1 class="text-2xl">Login</h1>
   <form [formGroup]="f" (ngSubmit)="onSubmit()">
     <input
@@ -29,12 +29,13 @@
       <input
         type="checkbox"
         formControlName="rememberMe"
-        class="checkbox checkbox-primary mt-2"
+        class="toggle toggle-primary mt-2"
       />
     </label>
     <button class="btn btn-primary w-full mt-2" [disabled]="f.invalid">
       Login
     </button>
+    <button (click)="redirectToRegister()" class="btn btn-primary w-full mt-2">Register</button>
   </form>
-  <button class="btn btn-primary w-full mt-2">Register</button>
+  <span *ngIf="error" class="text-error mt-5">{{error}}</span>
 </div>

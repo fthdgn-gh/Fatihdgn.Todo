@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { of } from 'rxjs';
@@ -16,12 +16,14 @@ import { SubSink } from 'subsink';
 })
 export class LoginComponent implements OnDestroy, OnInit {
   private subs = new SubSink();
+  error: string = "";
   f: FormGroup;
   constructor(
     private readonly fb: FormBuilder, 
     private readonly router: Router, 
     private readonly auth: AuthService,
-    private readonly storage: LocalStorageService
+    private readonly storage: LocalStorageService,
+    private readonly cdr: ChangeDetectorRef
   ) {
     this.f = this.fb.group({
       email: ['user@example.com', [Validators.required, Validators.email]],
@@ -44,6 +46,10 @@ export class LoginComponent implements OnDestroy, OnInit {
     this.subs.unsubscribe();
   }
 
+  redirectToRegister(){
+    this.router.navigate(["/account/register"]);
+  }
+
   onSubmit() {
     if(this.f.invalid) return;
     const value = this.f.getRawValue();
@@ -56,6 +62,8 @@ export class LoginComponent implements OnDestroy, OnInit {
     }).pipe(
       catchError(err => {
         console.log(err);
+        this.error = err.error;
+        this.cdr.markForCheck();
         return of();
       }),
       tap(resp => {

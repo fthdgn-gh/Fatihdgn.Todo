@@ -1,7 +1,46 @@
-<div class="artboard phone-1 flex items-center justify-center flex-col">
-  <h1 class="text-2xl">Login</h1>
-  <input placeholder="Username" class="input input-bordered input-primary w-full mt-2" />
-  <input placeholder="Password" class="input input-bordered input-primary w-full mt-2" />
-  <input placeholder="Password confirmation" class="input input-bordered input-primary w-full mt-2" />
-  <button class="btn btn-primary w-full mt-2">Register</button>
+<div class="flex h-screen items-center justify-center flex-col">
+  <div class="flex flex-row place-items-start">
+    <i class="fa-solid fa-chevron-left fa-2x cursor-pointer" (click)="redirectToLogin()"></i>
+    <h1 class="ml-5 text-2xl">Register</h1>
+  </div>
+  <form [formGroup]="f" (ngSubmit)="onSubmit()">
+    <input
+      type="text"
+      placeholder="Email" 
+      formControlName="email" 
+      class="input input-bordered input-primary w-full mt-2" 
+      [class.input-error]="
+        f.get('email')!.invalid &&
+        (f.get('email')!.dirty || f.get('email')!.touched) &&
+        (f.get('email')!.hasError('required') ||
+          f.get('email')!.hasError('email'))
+      "
+      />
+    <input 
+      type="password"
+      placeholder="Password" 
+      formControlName="password" 
+      class="input input-bordered input-primary w-full mt-2" 
+      [class.input-error]="
+        f.get('password')!.invalid &&
+        (f.get('password')!.dirty || f.get('password')!.touched) &&
+        f.get('password')!.hasError('required')
+      "
+      />
+    <input 
+      type="password"
+      placeholder="Password confirmation" 
+      formControlName="confirmPassword" 
+      class="input input-bordered input-primary w-full mt-2"
+      [class.input-error]="
+        f.get('confirmPassword')!.invalid &&
+        (f.get('confirmPassword')!.dirty || f.get('confirmPassword')!.touched) &&
+        (f.get('confirmPassword')!.hasError('required') || f.get('confirmPassword')!.hasError('passwordMismatch'))
+      "
+      />
+    <button class="btn btn-primary w-full mt-2" [disabled]="f.invalid">Register</button>
+  </form>
+  <div *ngIf="errors" class="errors flex flex-col text-error mt-5">
+    <div *ngFor="let error of errors">{{error}}</div>
+  </div>
 </div>
