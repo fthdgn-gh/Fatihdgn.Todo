@@ -17,7 +17,7 @@ export class StateService {
   });
 
   public get value$() {
-    return toSignal(this._value$.asObservable());
+    return this._value$.asObservable();
   }
 
   public set value(value: State) {

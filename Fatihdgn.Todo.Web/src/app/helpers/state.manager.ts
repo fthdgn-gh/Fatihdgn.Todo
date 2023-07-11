@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, firstValueFrom, of, switchMap } from "rxjs";
+import { Observable, firstValueFrom, of, switchMap, tap } from "rxjs";
 import { ItemsService, ListsService, TemplatesService } from "src/api/services";
 import { StateService } from "./state.service";
 
@@ -15,13 +15,35 @@ export class StateManager {
   ) {
 
   }
-  async initAsync(): Promise<void> {
-    const state = this.state.value;
-    state.lists = await firstValueFrom(this.lists.getAllLists());
-    if (state.lists.length > 0) {
-      state.items = await firstValueFrom(this.items.getAllItemsByListId({ id: state.lists[0].id! }));
-    }
-    state.templates = await firstValueFrom(this.templates.getAllTemplates());
-    this.state.value = state;
+  init(): Observable<never> {
+    return this.lists.getAllLists().pipe(
+      tap(lists => {
+        const state = this.state.value;
+        state.lists = lists;
+        this.state.value = state;
+      }),
+      switchMap(lists => {
+        const state = this.state.value;
+        if(lists.length > 0) {
+          const list = lists[0];
+          state.currentList = list;
+          return this.items.getAllItemsByListId({ id: list.id! });
+        }
+        this.state.value = state;
+        return of([]);
+      }),
+      tap(items => {
+        const state = this.state.value;
+        state.items = items;
+        this.state.value = state;
+      }),
+      switchMap(() => this.templates.getAllTemplates()),
+      tap(templates => {
+        const state = this.state.value;
+        state.templates = templates;
+        this.state.value = state;
+      }),
+      switchMap(() => of())
+    );
   }
 }
