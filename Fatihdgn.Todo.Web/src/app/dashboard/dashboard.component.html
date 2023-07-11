@@ -27,6 +27,9 @@
     <a class="btn btn-ghost normal-case text-xl">{{ currentList$()?.name }}</a>
   </div>
   <div class="flex-none gap-2">
+    <button class="btn btn-ghost" (click)="switchTheme()">
+      <i class="fa-solid fa-palette"></i>
+    </button>
     <div class="dropdown dropdown-end">
       <label tabindex="0" class="btn btn-ghost btn-circle avatar">
         <div class="w-10 rounded-full">
@@ -71,7 +74,7 @@
   <div class="flex flex-col items-start justify-start">
     <div
       *ngFor="let item of items$()"
-      class="flex flex-row items-center mb-2 p-3 bg-neutral text-neutral-content rounded-lg"
+      class="flex flex-row items-center mb-2 p-3 bg-secondary rounded-lg"
     >
       <ng-container *ngIf="!isItemInEditMode(item); else editItemModeTemplate">
         <input
@@ -81,11 +84,11 @@
           (change)="onItemIsCompletedChanged(item, $event)"
         />
         <div class="flex flex-col ml-3">
-          <span class="text-lg font-semibold">{{ item.content }}</span>
+          <span class="text-lg text-secondary-content font-semibold">{{ item.content }}</span>
           <span>{{ item.note }}</span>
           <!-- <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut, totam. Perferendis accusantium ea tempora consequatur, eveniet delectus, nesciunt quae repellendus voluptates, corporis porro molestiae dolor reprehenderit dolores odio quod consequuntur.</span> -->
         </div>
-        <div class="flex flex-row items-center justify-center ml-5">
+        <div class="flex flex-row items-center text-secondary-content justify-center ml-5">
           <button class="btn btn-ghost" (click)="switchItemToEditMode(item)">
             <i class="fa-solid fa-edit"></i>
           </button>

@@ -15,6 +15,7 @@ import { toSignal } from "@angular/core/rxjs-interop";
     styleUrls: ["./dashboard.component.css"]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+
     private subs = new SubSink();
     public state$: Signal<State | undefined>;
     public currentList$: Signal<TodoListDto | undefined>;
@@ -37,8 +38,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.templates$ = computed(() => this.state$()?.templates);
     }
 
-
     ngOnInit(): void {
+        this.setCurrentTheme();
         this.subs.sink = this.stateManager.init().subscribe();
     }
 
@@ -135,5 +136,55 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     createListFromTemplate(template: TodoTemplateDto) {
         this.subs.sink = this.stateManager.createListFromTemplate(template).subscribe();
+    }
+    themes = [
+      "light",
+      "dark",
+      "cupcake",
+      "bumblebee",
+      "emerald",
+      "corporate",
+      "synthwave",
+      "retro",
+      "cyberpunk",
+      "valentine",
+      "halloween",
+      "garden",
+      "forest",
+      "aqua",
+      "lofi",
+      "pastel",
+      "fantasy",
+      "wireframe",
+      "black",
+      "luxury",
+      "dracula",
+      "cmyk",
+      "autumn",
+      "business",
+      "acid",
+      "lemonade",
+      "night",
+      "coffee",
+      "winter",
+    ];
+    switchTheme() {
+        const currentTheme = this.storage.get<string>("theme") ?? "dark";
+        let index = this.themes.indexOf(currentTheme);
+        index++;
+        if(index >= this.themes.length)
+            index = 0;
+        const newTheme = this.themes[index];
+        this.setTheme(newTheme);
+    }
+
+    setCurrentTheme() {
+        const currentTheme = this.storage.get<string>("theme") ?? "dark";
+        this.setTheme(currentTheme);
+    }
+
+    setTheme(theme: string) {
+        document.documentElement.setAttribute("data-theme", theme);
+        this.storage.set("theme", theme);
     }
 }
