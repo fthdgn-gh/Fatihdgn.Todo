@@ -19,20 +19,22 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private subs = new SubSink();
     public state$: Signal<State | undefined>;
     public currentList$: Signal<TodoListDto | undefined>;
+    public lists$: Signal<TodoListDto[] | undefined>;
     public items$: Signal<TodoItemDto[] | undefined>;
 
     constructor(
-    private readonly storage: LocalStorageService,
-    private readonly router: Router,
-    private readonly navService: NavigationService,
-    public readonly state: StateService,
-    private readonly stateManager: StateManager
+        private readonly storage: LocalStorageService,
+        private readonly router: Router,
+        private readonly navService: NavigationService,
+        public readonly state: StateService,
+        private readonly stateManager: StateManager
     ) {
         this.state$ = toSignal(this.state.value$);
         this.currentList$ = computed(() => this.state$()?.currentList);
+        this.lists$ = computed(() => this.state$()?.lists);
         this.items$ = computed(() => this.state$()?.items);
     }
-  
+
 
     ngOnInit(): void {
         this.subs.sink = this.stateManager.init().subscribe();
@@ -42,12 +44,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.subs.unsubscribe();
     }
 
-    logout(){
+    logout() {
         this.storage.remove("login");
         this.router.navigate(["/account/login"]);
     }
 
     toggleSideNav() {
         this.navService.setShowNav(true);
+    }
+
+    selectList(list: TodoListDto): void {
+        this.subs.sink = this.stateManager.selectList(list).subscribe();
     }
 }
