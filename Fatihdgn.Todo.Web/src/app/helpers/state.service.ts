@@ -26,4 +26,10 @@ export class StateService {
     public get value(): State {
         return this._value$.getValue();
     }
+
+    public update(updateFn: (state: State) => void): void {
+        const state = this.value;
+        updateFn(state);
+        this.value = state;
+    }
 }

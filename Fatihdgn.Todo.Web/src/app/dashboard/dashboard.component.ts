@@ -53,7 +53,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.navService.setShowNav(true);
     }
 
-    selectList(list: TodoListDto): void {
+    onListSelected(list: TodoListDto): void {
         this.subs.sink = this.stateManager.selectList(list).subscribe();
+    }
+
+    onItemIsCompletedChanged(item:TodoItemDto, event: Event): void{
+        const isChecked = (event.target as HTMLInputElement).checked;
+        this.subs.sink = this.stateManager.itemIsCompletedChanged(item, isChecked).subscribe();
     }
 }

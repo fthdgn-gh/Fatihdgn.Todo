@@ -47,7 +47,7 @@
 >
   <div class="flex flex-col items-start justify-start">
     <div *ngFor="let item of items$()" class="flex flex-row mb-2">
-      <input type="checkbox" class="checkbox checkbox-primary" />
+      <input type="checkbox" class="checkbox checkbox-primary" [checked]="item.isCompleted" (change)="onItemIsCompletedChanged(item, $event)" />
       <span class="ml-3">{{ item.content }}</span>
     </div>
   </div>
@@ -56,7 +56,7 @@
   <div
     *ngFor="let list of lists$()"
     class="flex flex-row items-center cursor-pointer text-primary-content"
-    (click)="selectList(list)"
+    (click)="onListSelected(list)"
   >
     <i class="fa-solid fa-list fa-2x"></i>
     <span class="ml-3 text-lg">{{ list?.name }}</span>
