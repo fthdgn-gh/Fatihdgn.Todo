@@ -5,8 +5,10 @@ using Fatihdgn.Todo.Entities;
 using Fatihdgn.Todo.Entities.Extensions;
 using Fatihdgn.Todo.Handlers;
 using Fatihdgn.Todo.Repositories;
+using Fatihdgn.Todo.Requests;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -141,19 +143,8 @@ app.UseHealthChecks("/_health");
 if (app.Environment.IsDevelopment())
 {
     using var scope = app.Services.CreateScope();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<TodoUserEntity>>();
-    var todoListRepository = scope.ServiceProvider.GetRequiredService<ITodoListRepository>();
-    var todoItemRepository = scope.ServiceProvider.GetRequiredService<ITodoItemRepository>();
-    var user = new TodoUserEntity { UserName = "user@example.com", Email = "user@example.com" };
-    user.RenewRefreshToken();
-    await userManager.CreateAsync(user, "Password1!");
-    var response = await todoListRepository.AddAsync(new TodoListEntity { Id = Guid.NewGuid(), By = user, Name = "Todo List" });
-    var list = response.AsT0;
-    await todoItemRepository.AddAsync(new TodoItemEntity { Id = Guid.NewGuid(), By = user, List = list, Content = "Buy eggs"});
-    await todoItemRepository.AddAsync(new TodoItemEntity { Id = Guid.NewGuid(), By = user, List = list, Content = "Buy milk"});
-    await todoItemRepository.AddAsync(new TodoItemEntity { Id = Guid.NewGuid(), By = user, List = list, Content = "Buy bread"});
+    var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+    await mediator.Send(new AuthRegisterCommand(new Fatihdgn.Todo.DTOs.AuthRegisterDTO { Email = "user@example.com", Password = "Password1!", ConfirmPassword = "Password1!" }));
 }
 
-
 app.Run();
-

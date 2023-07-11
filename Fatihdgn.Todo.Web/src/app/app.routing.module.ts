@@ -16,7 +16,6 @@ const routes: Routes = [
         component: DashboardComponent,
         canActivate: [AuthGuard]
     },
-
     {
         path: "account/login",
         component: LoginComponent

@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable, of, switchMap, tap } from "rxjs";
 import { ItemsService, ListsService, TemplatesService } from "src/api/services";
 import { StateService } from "./state.service";
-import { TodoItemDto, TodoListDto } from "src/api/models";
+import { TodoItemDto, TodoListDto, TodoTemplateDto } from "src/api/models";
 
 @Injectable({
     providedIn: "root"
@@ -59,7 +59,6 @@ export class StateManager {
         if (!item.id) return of();
         this.state.update(state => state.currentItem = item);
         return this.items.patchItem({ id: item.id, body: { isCompleted } }).pipe(
-            switchMap(this.selectList),
             switchMap(() => of())
         );
     }
@@ -125,11 +124,26 @@ export class StateManager {
                     state.currentList = list;
                 });
             }),
-            switchMap(this.selectList),
+            switchMap(list => this.selectList(list)),
             switchMap(() => of())
         );
     }
 
+    createListFromTemplate(template: TodoTemplateDto): Observable<never> {
+        if (!template.id) return of();
+        return this.lists.createListByTemplate({
+            id: template.id
+        }).pipe(
+            tap(list => {
+                this.state.update(state => {
+                    state.lists.push(list);
+                    state.currentList = list;
+                });
+            }),
+            switchMap(list => this.selectList(list)),
+            switchMap(() => of())
+        );
+    }
 
     updateList(list: TodoListDto) {
         if (!list.id) return of();
@@ -151,10 +165,10 @@ export class StateManager {
         if (!list.id) return of();
         const currentList = this.state.value.currentList;
 
-        return this.items.removeItem({ id: list.id }).pipe(
+        return this.lists.removeList({ id: list.id }).pipe(
             tap(() => {
                 this.state.update(state => {
-                    state.items.splice(state.items.indexOf(list), 1);
+                    state.lists.splice(state.lists.indexOf(list), 1);
                 });
             }),
             switchMap(() => {
@@ -170,6 +184,50 @@ export class StateManager {
                         });
                 }
                 return of();
+            }),
+            switchMap(() => of())
+        );
+    }
+
+    createTemplateFromList(list: TodoListDto): Observable<never> {
+        if (!list.id) return of();
+        return this.templates.createTemplateByList({ id: list.id }).pipe(
+            tap(item => {
+                this.state.update(state => {
+                    state.templates.push(item);
+                });
+            }),
+            switchMap(() => of())
+        );
+    }
+
+
+    updateTemplate(template: TodoTemplateDto) {
+        if (!template.id) return of();
+        this.state.update(state => state.currentTemplate = template);
+
+        return this.templates.updateTemplate({
+            id: template.id,
+            body: { ...template }
+        }).pipe(
+            tap(updatedTemplate => {
+                this.state.update(state => {
+                    state.templates.splice(state.items.indexOf(template), 1, updatedTemplate);
+                });
+            })
+        );
+    }
+
+    deleteTemplate(template: TodoTemplateDto) {
+        if (!template.id) return of();
+        const currentTemplate = this.state.value.currentTemplate;
+        if (template.id == currentTemplate.id) this.state.update(state => state.currentTemplate = {});
+
+        return this.templates.removeTemplate({ id: template.id }).pipe(
+            tap(() => {
+                this.state.update(state => {
+                    state.templates.splice(state.items.indexOf(template), 1);
+                });
             }),
             switchMap(() => of())
         );

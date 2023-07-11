@@ -5,7 +5,7 @@ import { NavigationService } from "../helpers/navigatation.service";
 import { StateManager } from "../helpers/state.manager";
 import { StateService } from "../helpers/state.service";
 import { SubSink } from "subsink";
-import { TodoItemDto, TodoListDto } from "src/api/models";
+import { TodoItemDto, TodoListDto, TodoTemplateDto } from "src/api/models";
 import { State } from "../models/state.model";
 import { toSignal } from "@angular/core/rxjs-interop";
 
@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public currentList$: Signal<TodoListDto | undefined>;
     public lists$: Signal<TodoListDto[] | undefined>;
     public items$: Signal<TodoItemDto[] | undefined>;
+    public templates$: Signal<TodoTemplateDto[] | undefined>;
 
     constructor(
         private readonly storage: LocalStorageService,
@@ -33,6 +34,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.currentList$ = computed(() => this.state$()?.currentList);
         this.lists$ = computed(() => this.state$()?.lists);
         this.items$ = computed(() => this.state$()?.items);
+        this.templates$ = computed(() => this.state$()?.templates);
     }
 
 
@@ -63,7 +65,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.subs.sink = this.stateManager.changeItemIsCompleted(item, isChecked).subscribe();
     }
 
-    onNewItemCreated(content: string) {
+    onItemCreated(content: string) {
         if (!content) return;
         this.subs.sink = this.stateManager.createItem(content).subscribe();
     }
@@ -71,7 +73,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     onItemDeleted(item: TodoItemDto) {
         this.subs.sink = this.stateManager.deleteItem(item).subscribe();
     }
-
 
     isItemInEditMode(item: TodoItemDto): boolean {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,7 +88,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.subs.sink = this.stateManager.updateItem(item).subscribe();
     }
 
-    onNewListCreated(name: string) {
+    onListCreated(name: string) {
         this.toggleSideNav();
         this.subs.sink = this.stateManager.createList(name).subscribe();
     }
@@ -104,5 +105,35 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     saveListChanges(list: TodoListDto) {
         this.subs.sink = this.stateManager.updateList(list).subscribe();
+    }
+
+    onListDeleted(list: TodoListDto) {
+        this.subs.sink = this.stateManager.deleteList(list).subscribe();
+    }
+
+    isTemplateInEditMode(template: TodoTemplateDto): boolean {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        return (template as any).edit === true;
+    }
+
+    switchTemplateToEditMode(template: TodoTemplateDto): void {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (template as any).edit = true;
+    }
+
+    onTemplateDeleted(template: TodoTemplateDto) {
+        this.subs.sink = this.stateManager.deleteTemplate(template).subscribe();
+    }
+
+    saveTemplateChanges(template: TodoTemplateDto) {
+        this.subs.sink = this.stateManager.updateTemplate(template).subscribe();
+    }
+
+    onCreateTemplateFromList(list: TodoListDto) {
+        this.subs.sink = this.stateManager.createTemplateFromList(list).subscribe();
+    }
+
+    createListFromTemplate(template: TodoTemplateDto) {
+        this.subs.sink = this.stateManager.createListFromTemplate(template).subscribe();
     }
 }

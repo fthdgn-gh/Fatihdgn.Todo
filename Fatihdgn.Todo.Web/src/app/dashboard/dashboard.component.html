@@ -54,13 +54,13 @@
           placeholder="Enter your next todo..."
           class="input input-primary"
           (keyup.enter)="
-            onNewItemCreated(newTodoContent.value); newTodoContent.value = ''
+            onItemCreated(newTodoContent.value); newTodoContent.value = ''
           "
         />
         <button
           class="btn btn-square btn-primary"
           (click)="
-            onNewItemCreated(newTodoContent.value); newTodoContent.value = ''
+            onItemCreated(newTodoContent.value); newTodoContent.value = ''
           "
         >
           <i class="fa-solid fa-plus"></i>
@@ -132,14 +132,14 @@
           placeholder="Name for your next list..."
           class="input input-secondary"
           (keyup.enter)="
-            onNewListCreated(newTodoListContent.value);
+            onListCreated(newTodoListContent.value);
             newTodoListContent.value = ''
           "
         />
         <button
           class="btn btn-square btn-secondary"
           (click)="
-            onNewListCreated(newTodoListContent.value);
+            onListCreated(newTodoListContent.value);
             newTodoListContent.value = ''
           "
         >
@@ -149,7 +149,8 @@
     </div>
   </div>
   <span class="text-lg font-bold text-secondary-content">Lists</span>
-  <div
+  <ng-container *ngIf="lists$()?.length ?? 0 > 0; else emptyListsTemplate">
+    <div
     *ngFor="let list of lists$()"
     class="flex flex-row items-center justify-between w-full text-secondary-content"
   >
@@ -162,10 +163,13 @@
         <span class="ml-3 text-lg">{{ list?.name }}</span>
       </div>
       <div class="flex flex-row">
+        <button class="btn btn-ghost" (click)="onCreateTemplateFromList(list)">
+          <i class="fa-solid fa-rectangle-list"></i>
+        </button>
         <button class="btn btn-ghost" (click)="switchListToEditMode(list)">
           <i class="fa-solid fa-edit"></i>
         </button>
-        <button class="btn btn-ghost">
+        <button class="btn btn-ghost" (click)="onListDeleted(list)">
           <i class="fa-solid fa-trash"></i>
         </button>
       </div>
@@ -175,7 +179,7 @@
         class="flex items-center cursor-pointer"
       >
         <i class="fa-solid fa-list fa-2x"></i>
-        <input class="input input-secondary ml-3 text-lg" [(ngModel)]="list.name" />
+        <input class="input input-secondary ml-3 text-lg" [(ngModel)]="list.name" (keyup.enter)="saveListChanges(list)" />
       </div>
       <div class="flex flex-row">
         <button class="btn btn-ghost" (click)="saveListChanges(list)">
@@ -184,4 +188,55 @@
       </div>
     </ng-template>
   </div>
+  </ng-container>
+  <ng-template #emptyListsTemplate>
+    <div class="flex text-secondary-content">
+      It's lonely in here. Add a list above.
+    </div>
+  </ng-template>
+  <span class="text-lg font-bold text-secondary-content">Templates</span>
+  <ng-container *ngIf="templates$()?.length ?? 0 > 0; else emptyTemplatesTemplate">
+    <div
+    *ngFor="let template of templates$()"
+    class="flex flex-row items-center justify-between w-full text-secondary-content"
+  >
+    <ng-container *ngIf="!isTemplateInEditMode(template); else editTemplateModeTemplate">
+      <div
+        class="flex items-center cursor-pointer"
+      >
+        <i class="fa-solid fa-rectangle-list fa-2x"></i>
+        <span class="ml-3 text-lg">{{ template?.name }}</span>
+      </div>
+      <div class="flex flex-row">
+        <button class="btn btn-ghost" (click)="createListFromTemplate(template)">
+          <i class="fa-solid fa-list"></i>
+        </button>
+        <button class="btn btn-ghost" (click)="switchTemplateToEditMode(template)">
+          <i class="fa-solid fa-edit"></i>
+        </button>
+        <button class="btn btn-ghost" (click)="onTemplateDeleted(template)">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    </ng-container>
+    <ng-template #editTemplateModeTemplate>
+      <div
+        class="flex items-center cursor-pointer"
+      >
+        <i class="fa-solid fa-list fa-2x"></i>
+        <input class="input input-secondary ml-3 text-lg" [(ngModel)]="template.name" (keyup.enter)="saveTemplateChanges(template)" />
+      </div>
+      <div class="flex flex-row">
+        <button class="btn btn-ghost" (click)="saveTemplateChanges(template)">
+          <i class="fa-solid fa-save"></i>
+        </button>
+      </div>
+    </ng-template>
+  </div>
+  </ng-container>
+  <ng-template #emptyTemplatesTemplate>
+    <div class="flex text-secondary-content">
+      You don't have any templates. Create one from a list above.
+    </div>
+  </ng-template>
 </ng-template>

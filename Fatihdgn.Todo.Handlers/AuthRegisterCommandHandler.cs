@@ -6,20 +6,24 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using OneOf;
 using OneOf.Types;
+using System.Collections.Generic;
 
 namespace Fatihdgn.Todo.Handlers;
 
-internal class AuthRegisterCommandHandler : IRequestHandler<AuthRegisterCommand, OneOf<None, Error<IEnumerable<IdentityError>>>>
+public class AuthRegisterCommandHandler : IRequestHandler<AuthRegisterCommand, OneOf<None, Error<IEnumerable<IdentityError>>>>
 {
-    const string DefaultListName = "Todo List";
+    const string DefaultListName = "Groceries";
+    static string[] DefaultItemContents = new string[] { "Buy eggs", "Buy milk", "Buy bread" };
 
     private readonly UserManager<TodoUserEntity> _userManager;
     private readonly ITodoListCommandRepository _todoListCommandRepository;
+    private readonly ITodoItemCommandRepository _todoItemCommandRepository;
 
-    public AuthRegisterCommandHandler(UserManager<TodoUserEntity> userManager, ITodoListCommandRepository todoListCommandRepository)
+    public AuthRegisterCommandHandler(UserManager<TodoUserEntity> userManager, ITodoListCommandRepository todoListCommandRepository, ITodoItemCommandRepository todoItemCommandRepository)
     {
         _userManager = userManager;
         _todoListCommandRepository = todoListCommandRepository;
+        _todoItemCommandRepository = todoItemCommandRepository;
     }
 
     public async Task<OneOf<None, Error<IEnumerable<IdentityError>>>> Handle(AuthRegisterCommand request, CancellationToken cancellationToken)
@@ -33,6 +37,8 @@ internal class AuthRegisterCommandHandler : IRequestHandler<AuthRegisterCommand,
         var defaultListResult = await _todoListCommandRepository.AddAsync(new TodoListEntity { Id = Guid.NewGuid(), By = user, Name = DefaultListName });
         var defaultList = defaultListResult.AsT0;
 
+        foreach (var defaultItemContent in DefaultItemContents)
+            await _todoItemCommandRepository.AddAsync(new TodoItemEntity { Id = Guid.NewGuid(), By = user, List = defaultList, Content = defaultItemContent });
         return new None();
     }
 }
