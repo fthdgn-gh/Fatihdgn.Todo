@@ -8,7 +8,7 @@ import { TodoItemDto, TodoListDto } from "src/api/models";
     providedIn: "root"
 })
 export class StateManager {
-
+    
     constructor(
         private readonly lists: ListsService,
         private readonly items: ItemsService,
@@ -55,11 +55,122 @@ export class StateManager {
         );
     }
 
-    itemIsCompletedChanged(item: TodoItemDto, isCompleted: boolean): Observable<never> {
+    changeItemIsCompleted(item: TodoItemDto, isCompleted: boolean): Observable<never> {
         if (!item.id) return of();
         this.state.update(state => state.currentItem = item);
         return this.items.patchItem({ id: item.id, body: { isCompleted } }).pipe(
             switchMap(this.selectList),
+            switchMap(() => of())
+        );
+    }
+
+    createItem(content: string): Observable<never> {
+        const currentList = this.state.value.currentList;
+        if (!currentList.id) return of();
+
+        return this.items.createItem({
+            body: {
+                listId: currentList.id,
+                content,
+            }
+        }).pipe(
+            tap(item => {
+                this.state.update(state => {
+                    state.items.push(item);
+                });
+            }),
+            switchMap(() => of())
+        );
+    }
+
+
+    updateItem(item: TodoItemDto) {
+        if (!item.id) return of();
+        this.state.update(state => state.currentItem = item);
+
+        return this.items.updateItem({
+            id: item.id,
+            body: { ...item }
+        }).pipe(
+            tap(updatedItem => {
+                this.state.update(state => {
+                    state.items.splice(state.items.indexOf(item), 1, updatedItem);
+                });
+            })
+        );
+    }
+
+    deleteItem(item: TodoItemDto) {
+        if (!item.id) return of();
+        const currentItem = this.state.value.currentItem;
+        if (item.id == currentItem.id) this.state.update(state => state.currentItem = {});
+
+        return this.items.removeItem({ id: item.id }).pipe(
+            tap(() => {
+                this.state.update(state => {
+                    state.items.splice(state.items.indexOf(item), 1);
+                });
+            }),
+            switchMap(() => of())
+        );
+    }
+
+    createList(name: string): Observable<never> {
+        return this.lists.createList({
+            body: { name }
+        }).pipe(
+            tap(list => {
+                this.state.update(state => {
+                    state.lists.push(list);
+                    state.currentList = list;
+                });
+            }),
+            switchMap(this.selectList),
+            switchMap(() => of())
+        );
+    }
+
+
+    updateList(list: TodoListDto) {
+        if (!list.id) return of();
+        this.state.update(state => state.currentList = list);
+
+        return this.lists.updateList({
+            id: list.id,
+            body: { ...list }
+        }).pipe(
+            tap(updatedList => {
+                this.state.update(state => {
+                    state.lists.splice(state.lists.indexOf(list), 1, updatedList);
+                });
+            })
+        );
+    }
+
+    deleteList(list: TodoListDto) {
+        if (!list.id) return of();
+        const currentList = this.state.value.currentList;
+
+        return this.items.removeItem({ id: list.id }).pipe(
+            tap(() => {
+                this.state.update(state => {
+                    state.items.splice(state.items.indexOf(list), 1);
+                });
+            }),
+            switchMap(() => {
+                if (list.id == currentList.id) {
+                    const state = this.state.value;
+                    this.state.update(state => state.currentList = {});
+                    if (state.lists.length > 0)
+                        return this.selectList(state.lists[0]);
+                    else
+                        this.state.update(state => {
+                            while (state.items.length > 0)
+                                state.items.pop();
+                        });
+                }
+                return of();
+            }),
             switchMap(() => of())
         );
     }

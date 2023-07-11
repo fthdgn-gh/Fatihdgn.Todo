@@ -1,7 +1,7 @@
 <todo-side-nav
   [sidenavTemplateRef]="navContent"
   [direction]="'left'"
-  [navWidth]="350"
+  [navWidth]="450"
   [duration]="0.5"
 ></todo-side-nav>
 
@@ -45,20 +45,143 @@
 <div
   class="flex flex-col items-center justify-center mt-5 text-primary-content"
 >
+  <div class="flex flex-row mb-5">
+    <div class="form-control">
+      <div class="input-group">
+        <input
+          #newTodoContent
+          type="text"
+          placeholder="Enter your next todo..."
+          class="input input-primary"
+          (keyup.enter)="
+            onNewItemCreated(newTodoContent.value); newTodoContent.value = ''
+          "
+        />
+        <button
+          class="btn btn-square btn-primary"
+          (click)="
+            onNewItemCreated(newTodoContent.value); newTodoContent.value = ''
+          "
+        >
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    </div>
+  </div>
   <div class="flex flex-col items-start justify-start">
-    <div *ngFor="let item of items$()" class="flex flex-row mb-2">
-      <input type="checkbox" class="checkbox checkbox-primary" [checked]="item.isCompleted" (change)="onItemIsCompletedChanged(item, $event)" />
-      <span class="ml-3">{{ item.content }}</span>
+    <div
+      *ngFor="let item of items$()"
+      class="flex flex-row items-center mb-2 p-3 bg-neutral text-neutral-content rounded-lg"
+    >
+      <ng-container *ngIf="!isItemInEditMode(item); else editItemModeTemplate">
+        <input
+          type="checkbox"
+          class="checkbox checkbox-primary"
+          [checked]="item.isCompleted"
+          (change)="onItemIsCompletedChanged(item, $event)"
+        />
+        <div class="flex flex-col ml-3">
+          <span class="text-lg font-semibold">{{ item.content }}</span>
+          <span>{{ item.note }}</span>
+          <!-- <span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut, totam. Perferendis accusantium ea tempora consequatur, eveniet delectus, nesciunt quae repellendus voluptates, corporis porro molestiae dolor reprehenderit dolores odio quod consequuntur.</span> -->
+        </div>
+        <div class="flex flex-row items-center justify-center ml-5">
+          <button class="btn btn-ghost" (click)="switchItemToEditMode(item)">
+            <i class="fa-solid fa-edit"></i>
+          </button>
+          <button class="btn btn-ghost" (click)="onItemDeleted(item)">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      </ng-container>
+      <ng-template #editItemModeTemplate>
+        <input
+          type="checkbox"
+          class="checkbox checkbox-primary"
+          [checked]="item.isCompleted"
+          (change)="onItemIsCompletedChanged(item, $event)"
+        />
+        <div class="flex flex-col ml-3">
+          <span class="text-lg font-semibold mb-2">Content</span>
+          <input
+            class="input input-primary text-lg font-semibold mb-1"
+            [(ngModel)]="item.content"
+          />
+          <span class="text-lg font-semibold mb-2">Note</span>
+          <textarea
+            class="textarea textarea-primary mb-1"
+            [(ngModel)]="item.note"
+          ></textarea>
+        </div>
+        <div class="flex flex-row items-center justify-center ml-5">
+          <button class="btn btn-ghost" (click)="saveItemChanges(item)">
+            <i class="fa-solid fa-save"></i>
+          </button>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>
 <ng-template #navContent>
+  <div class="flex flex-row mb-5">
+    <div class="form-control">
+      <div class="input-group">
+        <input
+          #newTodoListContent
+          type="text"
+          placeholder="Name for your next list..."
+          class="input input-secondary"
+          (keyup.enter)="
+            onNewListCreated(newTodoListContent.value);
+            newTodoListContent.value = ''
+          "
+        />
+        <button
+          class="btn btn-square btn-secondary"
+          (click)="
+            onNewListCreated(newTodoListContent.value);
+            newTodoListContent.value = ''
+          "
+        >
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  <span class="text-lg font-bold text-secondary-content">Lists</span>
   <div
     *ngFor="let list of lists$()"
-    class="flex flex-row items-center cursor-pointer text-primary-content"
-    (click)="onListSelected(list)"
+    class="flex flex-row items-center justify-between w-full text-secondary-content"
   >
-    <i class="fa-solid fa-list fa-2x"></i>
-    <span class="ml-3 text-lg">{{ list?.name }}</span>
+    <ng-container *ngIf="!isListInEditMode(list); else editListModeTemplate">
+      <div
+        class="flex items-center cursor-pointer"
+        (click)="onListSelected(list)"
+      >
+        <i class="fa-solid fa-list fa-2x"></i>
+        <span class="ml-3 text-lg">{{ list?.name }}</span>
+      </div>
+      <div class="flex flex-row">
+        <button class="btn btn-ghost" (click)="switchListToEditMode(list)">
+          <i class="fa-solid fa-edit"></i>
+        </button>
+        <button class="btn btn-ghost">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    </ng-container>
+    <ng-template #editListModeTemplate>
+      <div
+        class="flex items-center cursor-pointer"
+      >
+        <i class="fa-solid fa-list fa-2x"></i>
+        <input class="input input-secondary ml-3 text-lg" [(ngModel)]="list.name" />
+      </div>
+      <div class="flex flex-row">
+        <button class="btn btn-ghost" (click)="saveListChanges(list)">
+          <i class="fa-solid fa-save"></i>
+        </button>
+      </div>
+    </ng-template>
   </div>
 </ng-template>
