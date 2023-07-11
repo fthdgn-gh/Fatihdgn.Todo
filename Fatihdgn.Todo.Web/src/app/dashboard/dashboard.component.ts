@@ -5,7 +5,7 @@ import { NavigationService } from '../helpers/navigatation.service';
 import { StateManager } from '../helpers/state.manager';
 import { StateService } from '../helpers/state.service';
 import { SubSink } from 'subsink';
-import { TodoListDto } from 'src/api/models';
+import { TodoItemDto, TodoListDto } from 'src/api/models';
 import { State } from '../models/state.model';
 import { toSignal } from '@angular/core/rxjs-interop';
 
@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private subs = new SubSink();
   public state$: Signal<State | undefined>;
   public currentList$: Signal<TodoListDto | undefined>;
+  public items$: Signal<TodoItemDto[] | undefined>;
 
   constructor(
     private readonly storage: LocalStorageService,
@@ -29,6 +30,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ) {
     this.state$ = toSignal(this.state.value$);
     this.currentList$ = computed(() => this.state$()?.currentList);
+    this.items$ = computed(() => this.state$()?.items);
   }
   
 
