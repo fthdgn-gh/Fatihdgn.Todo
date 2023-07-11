@@ -1,1 +1,1 @@
-export type SideNavDirection = 'left' | 'right';
+export type SideNavDirection = "left" | "right";
