@@ -107,5 +107,3 @@ npm start
 ```
 
 That's it!
-
-Note: Currently I couldn't run the "docker compose up" command, I'll look into it. 
