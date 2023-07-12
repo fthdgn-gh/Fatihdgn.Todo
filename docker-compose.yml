@@ -1,0 +1,18 @@
+version: '3'
+services:
+  app:
+    build:
+      context: ./Fatihdgn.Todo.Web
+      dockerfile: Dockerfile
+    ports:
+      - 8080:4200
+    depends_on:
+      - api
+
+  api:
+    build:
+      context: ../Fatihdgn.Todo.API
+      dockerfile: Dockerfile
+    ports:
+      - 5001:80
+      - 5000:420
