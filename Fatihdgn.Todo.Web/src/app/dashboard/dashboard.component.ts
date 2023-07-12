@@ -49,6 +49,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     logout() {
         this.storage.remove("login");
+        this.storage.remove("lastSelectedListId");
         this.router.navigate(["/account/login"]);
     }
 

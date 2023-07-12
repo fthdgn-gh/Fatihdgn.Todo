@@ -26,8 +26,8 @@ export class LoginComponent implements OnDestroy, OnInit {
     private readonly cdr: ChangeDetectorRef
     ) {
         this.f = this.fb.group({
-            email: ["user@example.com", [Validators.required, Validators.email]],
-            password: ["Password1!", [Validators.required]],
+            email: ["", [Validators.required, Validators.email]],
+            password: ["", [Validators.required]],
             rememberMe: [false]
         });
     }

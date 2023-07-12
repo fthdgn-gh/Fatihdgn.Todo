@@ -138,9 +138,12 @@ app.MapControllers();
 
 app.UseHealthChecks("/_health");
 
+using var scope = app.Services.CreateScope();
+var context = scope.ServiceProvider.GetRequiredService<TodoDB>();
+await context.Database.EnsureCreatedAsync();
+
 if (app.Environment.IsDevelopment())
 {
-    using var scope = app.Services.CreateScope();
     var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
     await mediator.Send(new AuthRegisterCommand(new Fatihdgn.Todo.DTOs.AuthRegisterDTO { Email = "user@example.com", Password = "Password1!", ConfirmPassword = "Password1!" }));
 }

@@ -70,11 +70,11 @@ Look into "Fatihdgn.Todo.API/appsettings.json" file and replace the connection s
 
 You can run the API using the command below
 
-```
-dotnet run --project Fatihdgn.Todo.API -c Release
+```sh
+dotnet run --project Fatihdgn.Todo.API -c Release environment=Production
 ```
 
-After that, note the host address that you can find inside the logs of the command above.
+After that, note the host address that you can find inside the logs of the command above in case it's changed. It starts with "Now listening on: https://<your_address>"
 
 ### Change the Web app environment
 
