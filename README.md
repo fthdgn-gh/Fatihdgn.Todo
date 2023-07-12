@@ -52,6 +52,16 @@ dotnet user-secrets set "JwtBearerAuthenticationIssuerSigningKey" "<generate_a_l
 
 You can use [this site](https://generate-random.org/string-generator?count=1&length=256&has_lowercase=0&has_lowercase=1&has_uppercase=0&has_symbols=0&has_numbers=0&has_numbers=1&is_pronounceable=0) for generating this secret.
 
+
+### Host the application
+
+Then run the command below.
+```sh
+docker compose up
+```
+
+## OR
+
 ### Change connection string
 
 Look into "Fatihdgn.Todo.API/appsettings.json" file and replace the connection string there.
