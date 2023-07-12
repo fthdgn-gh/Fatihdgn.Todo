@@ -1,9 +1,5 @@
 ﻿using Fatihdgn.Todo.API.Client;
-using Fatihdgn.Todo.App.Managers;
 using Fatihdgn.Todo.App.Pages;
-using Fatihdgn.Todo.App.Providers;
-using Fatihdgn.Todo.App.State;
-using System.Net.Http;
 
 namespace Fatihdgn.Todo.App;
 

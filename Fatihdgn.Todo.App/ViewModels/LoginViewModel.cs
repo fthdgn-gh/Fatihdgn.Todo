@@ -5,13 +5,7 @@ using Fatihdgn.Todo.App.Managers;
 using Fatihdgn.Todo.App.Pages;
 using Fatihdgn.Todo.App.Providers;
 using Fatihdgn.Todo.App.State;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Fatihdgn.Todo.App.ViewModels;
 

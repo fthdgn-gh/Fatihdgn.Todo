@@ -4,7 +4,6 @@ using Fatihdgn.Todo.App.Providers;
 using Fatihdgn.Todo.App.State;
 using Fatihdgn.Todo.App.State.Models;
 using System.Collections.ObjectModel;
-using System.Windows.Input;
 
 namespace Fatihdgn.Todo.App.ViewModels;
 
@@ -41,7 +40,7 @@ public partial class DashboardViewModel : BindableObject
         _state.CurrentTodoListId = list.Id;
         _state.CurrentTodoList.MapFrom(list);
         _state.Items.Clear();
-        foreach(var item in await _client.GetAllItemsByListIdAsync(list.Id))
+        foreach (var item in await _client.GetAllItemsByListIdAsync(list.Id))
             _state.Items.Add(item);
     }
 

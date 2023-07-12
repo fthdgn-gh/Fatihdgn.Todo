@@ -1,5 +1,4 @@
 ﻿using Fatihdgn.Todo.API.Client;
-using Microsoft.Extensions.Http;
 
 namespace Fatihdgn.Todo.App.Providers;
 

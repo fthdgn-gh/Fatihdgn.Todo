@@ -6,7 +6,6 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using OneOf;
 using OneOf.Types;
-using System.Collections.Generic;
 
 namespace Fatihdgn.Todo.Handlers;
 

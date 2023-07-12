@@ -15,16 +15,16 @@ public static class AppStatePopulator
 
         var todoClient = FatihdgnTodoClientProvider.Current;
         state.Lists.Clear();
-        foreach(var list in await todoClient.GetAllListsAsync())
+        foreach (var list in await todoClient.GetAllListsAsync())
             state.Lists.Add(list);
 
         var currentList = state.Lists.FirstOrDefault();
         state.Items.Clear();
-        if(currentList is not null)
+        if (currentList is not null)
         {
             state.CurrentTodoListId = currentList.Id;
             state.CurrentTodoList.MapFrom(currentList);
-            foreach(var item in await todoClient.GetAllItemsByListIdAsync(currentList.Id))
+            foreach (var item in await todoClient.GetAllItemsByListIdAsync(currentList.Id))
                 state.Items.Add(item);
         }
 

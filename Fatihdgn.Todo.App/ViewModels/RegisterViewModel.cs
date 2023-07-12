@@ -1,11 +1,73 @@
-﻿using Fatihdgn.Todo.API.Client;
+﻿
+/* Unmerged change from project 'Fatihdgn.Todo.App (net7.0-maccatalyst)'
+Before:
+using Fatihdgn.Todo.API.Client;
 using Fatihdgn.Todo.App.Pages;
+After:
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.Input;
+using Fatihdgn.Todo.API.Client;
+using Fatihdgn.Todo.App.Helpers;
+using Fatihdgn.Todo.App.Pages;
+*/
+
+/* Unmerged change from project 'Fatihdgn.Todo.App (net7.0-windows10.0.19041.0)'
+Before:
+using Fatihdgn.Todo.API.Client;
+using Fatihdgn.Todo.App.Pages;
+After:
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.Input;
+using Fatihdgn.Todo.API.Client;
+using Fatihdgn.Todo.App.Helpers;
+using Fatihdgn.Todo.App.Pages;
+*/
+
+/* Unmerged change from project 'Fatihdgn.Todo.App (net7.0-android)'
+Before:
+using Fatihdgn.Todo.API.Client;
+using Fatihdgn.Todo.App.Pages;
+After:
+using CommunityToolkit.Maui.Alerts;
+using CommunityToolkit.Mvvm.Input;
+using Fatihdgn.Todo.API.Client;
+using Fatihdgn.Todo.App.Helpers;
+using Fatihdgn.Todo.App.Pages;
+*/
+using CommunityToolkit.Mvvm.Input;
+using Fatihdgn.Todo.API.Client;
+using Fatihdgn.Todo.App.Helpers;
+using Fatihdgn.Todo.App.Pages;
+
+/* Unmerged change from project 'Fatihdgn.Todo.App (net7.0-maccatalyst)'
+Before:
+using Newtonsoft.Json.Linq;
+After:
+using Microsoft.Maui.Controls;
+using Newtonsoft.Json.Linq;
+*/
+
+/* Unmerged change from project 'Fatihdgn.Todo.App (net7.0-windows10.0.19041.0)'
+Before:
+using Newtonsoft.Json.Linq;
+After:
+using Microsoft.Maui.Controls;
+using Newtonsoft.Json.Linq;
+*/
+
+/* Unmerged change from project 'Fatihdgn.Todo.App (net7.0-android)'
+Before:
+using Newtonsoft.Json.Linq;
+After:
+using Microsoft.Maui.Controls;
+using Newtonsoft.Json.Linq;
+*/
 using Fatihdgn.Todo.App.Providers;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
+using System.
+/* Unmerged change from project 'Fatihdgn.Todo.App (net7.0-maccatalyst)'
+Before:
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,6 +76,47 @@ using CommunityToolkit.Maui.Alerts;
 using System.Resources;
 using Fatihdgn.Todo.App.Helpers;
 using CommunityToolkit.Mvvm.Input;
+After:
+using System.Resources;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+*/
+
+/* Unmerged change from project 'Fatihdgn.Todo.App (net7.0-windows10.0.19041.0)'
+Before:
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Microsoft.Maui.Controls;
+using CommunityToolkit.Maui.Alerts;
+using System.Resources;
+using Fatihdgn.Todo.App.Helpers;
+using CommunityToolkit.Mvvm.Input;
+After:
+using System.Resources;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+*/
+
+/* Unmerged change from project 'Fatihdgn.Todo.App (net7.0-android)'
+Before:
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Microsoft.Maui.Controls;
+using CommunityToolkit.Maui.Alerts;
+using System.Resources;
+using Fatihdgn.Todo.App.Helpers;
+using CommunityToolkit.Mvvm.Input;
+After:
+using System.Resources;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+*/
+Text;
 
 namespace Fatihdgn.Todo.App.ViewModels;
 

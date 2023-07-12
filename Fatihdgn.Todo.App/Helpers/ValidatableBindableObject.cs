@@ -7,7 +7,7 @@ public class ValidatableBindableObject<T> : BindableObject, IValidatableObject<T
         this.value = value;
     }
     private T value;
-    public T Value 
+    public T Value
     {
         get => value;
         set
@@ -21,7 +21,7 @@ public class ValidatableBindableObject<T> : BindableObject, IValidatableObject<T
     public bool HasMessage => !string.IsNullOrEmpty(message);
 
     string message;
-    public string Message 
+    public string Message
     {
         get => message;
         set { this.message = value; OnPropertyChanged(); OnPropertyChanged(nameof(HasMessage)); }
@@ -31,7 +31,7 @@ public class ValidatableBindableObject<T> : BindableObject, IValidatableObject<T
     private void UpdateMessage()
     {
         Message = string.Empty;
-        if(isFirstValidation) { isFirstValidation = false; return; }
+        if (isFirstValidation) { isFirstValidation = false; return; }
         foreach (var validator in Validators)
         {
             var result = validator.Validate(Value);
