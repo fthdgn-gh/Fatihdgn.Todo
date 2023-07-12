@@ -16,7 +16,7 @@ It's basically my playground to try out new technologies and techniques.
 
 ## Techniques
 
-- Functional programming
+- Functional programming in C#
 - CQRS
 - Unit testing
 
