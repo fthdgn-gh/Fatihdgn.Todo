@@ -40,8 +40,8 @@ Here are the installation steps
 
 There is one secret that needs to be prepared. Go to the root of the repository. Initialize the user secrets if not already.
 
-cmd
 ```
+cmd
 dotnet user-secrets init
 ```
 
