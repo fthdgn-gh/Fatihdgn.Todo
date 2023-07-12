@@ -3,17 +3,19 @@ import { Observable, of, switchMap, tap } from "rxjs";
 import { ItemsService, ListsService, TemplatesService } from "src/api/services";
 import { StateService } from "./state.service";
 import { TodoItemDto, TodoListDto, TodoTemplateDto } from "src/api/models";
+import { LocalStorageService } from "./local-storage.service";
 
 @Injectable({
     providedIn: "root"
 })
 export class StateManager {
-    
+
     constructor(
         private readonly lists: ListsService,
         private readonly items: ItemsService,
         private readonly templates: TemplatesService,
-        private readonly state: StateService
+        private readonly state: StateService,
+        private readonly storage: LocalStorageService
     ) {
 
     }
@@ -25,7 +27,13 @@ export class StateManager {
             switchMap(lists => {
                 const state = this.state.value;
                 if (lists.length > 0) {
-                    const list = lists[0];
+                    let list: TodoListDto | null = null;
+                    const lastSelectedListId = this.storage.get<string>("lastSelectedListId");
+                    if (lastSelectedListId) {
+                        list = lists.filter(x => x.id == lastSelectedListId)[0];
+                    }
+                    if (!list)
+                        list = lists[0];
                     state.currentList = list;
                     return this.items.getAllItemsByListId({ id: list.id! });
                 }
@@ -47,6 +55,7 @@ export class StateManager {
         if (!list.id) return of();
 
         this.state.update(state => state.currentList = list);
+        this.storage.set("lastSelectedListId", list.id);
         return this.items.getAllItemsByListId({ id: list.id }).pipe(
             tap(items => {
                 this.state.update(state => state.items = items);
