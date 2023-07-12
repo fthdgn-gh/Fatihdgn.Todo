@@ -60,7 +60,7 @@ Look into "Fatihdgn.Todo.API/appsettings.json" file and replace the connection s
 ```json
 {
   "ConnectionStrings": {
-    "TodoDB": "your_connection_string"
+    "TodoDB": "<your_connection_string>"
   },
   ...
 }
