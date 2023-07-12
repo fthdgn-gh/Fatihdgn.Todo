@@ -30,7 +30,7 @@ It's basically my playground to try out new technologies and techniques.
 - NSwag
 - xunit
 
-Feel free to give it a spin.
+Feel free to give it a spin. Giving a star to the repository would be appreciated.
 
 ## Installation
 
