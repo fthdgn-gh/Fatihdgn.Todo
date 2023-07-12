@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fatihdgn.Todo.App", "Fatihd
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Fatihdgn.Todo.Web", "Fatihdgn.Todo.Web\Fatihdgn.Todo.Web.esproj", "{C4ECB3BC-2F0D-4A28-947C-226CD10BE81D}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{CBC0B2A0-DAE7-4EBC-91A9-64653A3662F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -109,6 +111,10 @@ Global
 		{C4ECB3BC-2F0D-4A28-947C-226CD10BE81D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4ECB3BC-2F0D-4A28-947C-226CD10BE81D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C4ECB3BC-2F0D-4A28-947C-226CD10BE81D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{CBC0B2A0-DAE7-4EBC-91A9-64653A3662F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBC0B2A0-DAE7-4EBC-91A9-64653A3662F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBC0B2A0-DAE7-4EBC-91A9-64653A3662F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBC0B2A0-DAE7-4EBC-91A9-64653A3662F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

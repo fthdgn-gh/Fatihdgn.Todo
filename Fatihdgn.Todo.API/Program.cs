@@ -68,9 +68,9 @@ builder.Services.AddOpenApiDocument(config =>
 
 builder.Services.AddDbContext<TodoDB>(options =>
 {
-    if (builder.Environment.IsDevelopment())
-        options.UseInMemoryDatabase(nameof(TodoDB));
-    else
+    //if (builder.Environment.IsDevelopment())
+    //    options.UseInMemoryDatabase(nameof(TodoDB));
+    //else
         options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(TodoDB)));
 
     options.UseLazyLoadingProxies();

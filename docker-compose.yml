@@ -1,6 +1,30 @@
-version: '3'
+version: '3.4'
+
 services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    restart: unless-stopped
+    container_name: fatihdgntodo-sqlserver
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: uKvKWLWebXu9GpMw
+      MSSQL_PID: Developer
+    volumes:
+      - mssql-data:/var/opt/mssql
+    ports:
+      - 1433:1433
+  api:
+    image: ${DOCKER_REGISTRY-}fatihdgntodo-api
+    build:
+      context: .
+      dockerfile: Fatihdgn.Todo.API/Dockerfile
+    ports:
+      - 8180:443
+      - 8181:80
+    depends_on:
+      - sqlserver
   app:
+    image: ${DOCKER_REGISTRY-}fatihdgntodo-app
     build:
       context: ./Fatihdgn.Todo.Web
       dockerfile: Dockerfile
@@ -8,11 +32,5 @@ services:
       - 8080:4200
     depends_on:
       - api
-
-  api:
-    build:
-      context: ../Fatihdgn.Todo.API
-      dockerfile: Dockerfile
-    ports:
-      - 5001:80
-      - 5000:420
+volumes:
+  mssql-data:
