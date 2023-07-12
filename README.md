@@ -1,4 +1,104 @@
-# Fatihdgn.Todo
+# Todo App
 
-Things to look after;
-- Integration between MediatR and FluentValidation
+A simple Todo app that is taken to great lengths.
+It's basically my playground to try out new technologies and techniques.
+
+## Technologies
+
+- ASP.NET Core Web API
+- Entity Framework Core
+- Microsoft ASP.NET Core Identity
+- Swagger support
+- .NET MAUI
+- Angular
+- Capacitor (for native iOS and Android apps)
+- Docker
+
+## Techniques
+
+- Functional programming
+- CQRS
+- Unit testing
+
+## Third-party Libraries
+
+- OneOf
+- FluentValidation
+- MediatR
+- Moq
+- Newtonsoft.Json
+- NSwag
+- xunit
+
+Feel free to give it a spin.
+
+## Installation
+
+Here are the installation steps
+
+### Prepare the user secrets
+
+There is one secret that needs to be prepared. Go to the root of the repository. Initialize the user secrets if not already.
+
+cmd
+```
+dotnet user-secrets init
+```
+
+After that, create the secret below.
+
+cmd
+```
+dotnet user-secrets set "JwtBearerAuthenticationIssuerSigningKey" "<generate_a_long_string_here>" --project "Fatihdgn.Todo.API"
+```
+
+You can use [this site](https://generate-random.org/string-generator?count=1&length=256&has_lowercase=0&has_lowercase=1&has_uppercase=0&has_symbols=0&has_numbers=0&has_numbers=1&is_pronounceable=0) for generating this secret.
+
+### Change connection string
+
+Look into "Fatihdgn.Todo.API/appsettings.json" file and replace the connection string there.
+
+json
+```
+{
+  "ConnectionStrings": {
+    "TodoDB": "your_connection_string"
+  },
+  ...
+}
+```
+
+### Run the API
+
+You can run the API using the command below
+
+```
+dotnet run --project Fatihdgn.Todo.API -c Release
+```
+
+After that, note the host address that you can find inside the logs of the command above.
+
+### Change the Web app environment
+
+Change the files in "Fatihdgn.Todo.Web/src/environments/environment.ts" and "Fatihdgn.Todo.Web/src/environments/environment.prod.ts" to use the host address that you noted above.
+
+TS
+```
+export const environment = {
+    production: false,
+    apiBaseUrl: "https://<your_address>"
+};
+```
+
+### Run the Web app
+
+Now go to "Fatihdgn.Todo.Web" directory and run the app.
+
+```
+cd Fatihdgn.Todo.Web
+npm start
+```
+
+That's it!
+
+Note: Currently I couldn't run the "docker compose up" command, I'll look into it. 
