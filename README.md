@@ -40,15 +40,13 @@ Here are the installation steps
 
 There is one secret that needs to be prepared. Go to the root of the repository. Initialize the user secrets if not already.
 
-```
-cmd
+```sh
 dotnet user-secrets init
 ```
 
 After that, create the secret below.
 
-cmd
-```
+```sh
 dotnet user-secrets set "JwtBearerAuthenticationIssuerSigningKey" "<generate_a_long_string_here>" --project "Fatihdgn.Todo.API"
 ```
 
@@ -58,8 +56,8 @@ You can use [this site](https://generate-random.org/string-generator?count=1&len
 
 Look into "Fatihdgn.Todo.API/appsettings.json" file and replace the connection string there.
 
-json
-```
+
+```json
 {
   "ConnectionStrings": {
     "TodoDB": "your_connection_string"
@@ -82,8 +80,7 @@ After that, note the host address that you can find inside the logs of the comma
 
 Change the files in "Fatihdgn.Todo.Web/src/environments/environment.ts" and "Fatihdgn.Todo.Web/src/environments/environment.prod.ts" to use the host address that you noted above.
 
-TS
-```
+```ts
 export const environment = {
     production: false,
     apiBaseUrl: "https://<your_address>"
@@ -94,7 +91,7 @@ export const environment = {
 
 Now go to "Fatihdgn.Todo.Web" directory and run the app.
 
-```
+```sh
 cd Fatihdgn.Todo.Web
 npm start
 ```
