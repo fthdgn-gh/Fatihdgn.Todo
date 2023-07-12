@@ -2,10 +2,10 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Fatihdgn.Todo.App.Pages.Dashboard"
-             xmlns:behaviors="clr-namespace:Fatihdgn.Todo.App.Behaviors"
              xmlns:ui="clr-namespace:Xe.AcrylicView;assembly=Xe.AcrylicView"
              xmlns:fluent="clr-namespace:MauiIcons.Fluent;assembly=MauiIcons.Fluent"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:extensions="clr-namespace:Fatihdgn.Todo.App.Extensions"
              BackgroundColor="{StaticResource Gray600}">
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -22,43 +22,31 @@
             HorizontalOptions="StartAndExpand" 
             MinimumWidthRequest="350"
             IsVisible="{Binding IsMenuOpened}">
-            <Grid RowDefinitions="1*,11*,auto">
-                <HorizontalStackLayout>
+            <Grid RowDefinitions="auto,1*,1*">
+                <VerticalStackLayout>
                     <HorizontalStackLayout>
                         <HorizontalStackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ToggleMenuCommand}"></TapGestureRecognizer>
                         </HorizontalStackLayout.GestureRecognizers>
-                        <fluent:MauiIcon Icon="GridDots24" Margin="10" VerticalOptions="Center" />
+                        <fluent:MauiIcon Icon="GridDots24" Margin="5,10,5,5" VerticalOptions="Center" />
                     </HorizontalStackLayout>
-                    <Label FontSize="Subtitle" VerticalOptions="CenterAndExpand" Margin="0,-2,0,0">Lists</Label>
-                </HorizontalStackLayout>
-                <CollectionView Grid.Row="1" ItemsSource="{Binding Lists}" ItemsLayout="VerticalList" Margin="10,0,0,5">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <HorizontalStackLayout>
-                                <HorizontalStackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding BindingContext.SelectTodoListCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                </VerticalStackLayout>
+                <VerticalStackLayout Grid.Row="1" HorizontalOptions="FillAndExpand">
+                    <Label FontSize="Subtitle" VerticalOptions="FillAndExpand" Margin="5,5,0,0">Lists</Label>
+                    <CollectionView  ItemsSource="{Binding Lists}" ItemsLayout="VerticalList" Margin="5">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <HorizontalStackLayout>
+                                    <HorizontalStackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.SelectTodoListCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
                                                           CommandParameter="{Binding}"/>
-                                </HorizontalStackLayout.GestureRecognizers>
-                                <fluent:MauiIcon Icon="AppsList20" />
-                                <Label VerticalOptions="Center" Margin="5,-3,0,0" Text="{Binding Name}"></Label>
-                            </HorizontalStackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-                <VerticalStackLayout Grid.Row="2">
-                    <ui:AcrylicView Padding="5" CornerRadius="10" EffectStyle="Dark">
-                        <HorizontalStackLayout>
-                            <fluent:MauiIcon Icon="Add12" />
-                            <Label VerticalOptions="Center" Margin="5,0,0,0">Content</Label>
-                        </HorizontalStackLayout>
-                    </ui:AcrylicView>
-                    <ui:AcrylicView Padding="5" CornerRadius="10" EffectStyle="Dark">
-                        <HorizontalStackLayout>
-                            <fluent:MauiIcon Icon="Add12" />
-                            <Label VerticalOptions="Center" Margin="5,0,0,0">Content</Label>
-                        </HorizontalStackLayout>
-                    </ui:AcrylicView>
+                                    </HorizontalStackLayout.GestureRecognizers>
+                                    <fluent:MauiIcon Icon="AppsList20" />
+                                    <Label VerticalOptions="Center" Margin="5,-3,0,0" Text="{Binding Name}"></Label>
+                                </HorizontalStackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </VerticalStackLayout>
             </Grid>
         </ui:AcrylicView>
@@ -92,12 +80,7 @@
                         <DataTemplate>
                             <Grid Margin="10,0,0,0">
                                 <HorizontalStackLayout>
-                                    <CheckBox IsChecked="{Binding IsCompleted}" VerticalOptions="Center">
-                                        <CheckBox.Behaviors>
-                                            <behaviors:CheckboxCommandBehavior 
-                                                Command="{Binding BindingContext.TodoItemCheckedChangedCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
-                                                CommandParameter="{Binding .}" />
-                                        </CheckBox.Behaviors>
+                                    <CheckBox IsChecked="{Binding IsCompleted}" VerticalOptions="Center" CheckedChanged="TodoItem_IsCompletedChanged" extensions:TagExtension.Tag="{Binding .}">
                                     </CheckBox>
                                     <Label Text="{Binding Content}" VerticalOptions="Center"></Label>
                                 </HorizontalStackLayout>

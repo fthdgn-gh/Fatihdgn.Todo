@@ -32,10 +32,11 @@ public partial class DashboardViewModel : BindableObject
 
     public ObservableCollection<TodoListDTO> Lists => AppState.Instance.Lists;
     public ObservableCollection<TodoItemDTO> Items => AppState.Instance.Items;
+    public ObservableCollection<TodoTemplateDTO> Templates => AppState.Instance.Templates;
     public TodoListObject CurrentTodoList => AppState.Instance.CurrentTodoList;
 
     [RelayCommand]
-    private async Task SelectTodoListAsync(TodoListDTO list)
+    public async Task SelectTodoListAsync(TodoListDTO list)
     {
         _state.CurrentTodoListId = list.Id;
         _state.CurrentTodoList.MapFrom(list);
@@ -44,12 +45,13 @@ public partial class DashboardViewModel : BindableObject
             _state.Items.Add(item);
     }
 
-    [RelayCommand]
-    private async Task TodoItemCheckedChangedAsync(object obj)
+
+    public async Task TodoItemIsCompletedChangedAsync(TodoItemDTO item, bool isCompleted)
     {
-        if (obj is not TodoItemDTO item) return;
+        if (item is null) return;
         _state.CurrentTodoItemId = item.Id;
         _state.CurrentTodoItem.MapFrom(item);
-        await _client.PatchItemAsync(item.Id, new TodoItemPatchDTO { IsCompleted = !item.IsCompleted });
+        _state.CurrentTodoItem.IsCompleted = isCompleted;
+        await _client.PatchItemAsync(item.Id, new TodoItemPatchDTO { IsCompleted = isCompleted });
     }
 }
