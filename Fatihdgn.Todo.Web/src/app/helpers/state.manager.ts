@@ -29,9 +29,8 @@ export class StateManager {
                 if (lists.length > 0) {
                     let list: TodoListDto | null = null;
                     const lastSelectedListId = this.storage.get<string>("lastSelectedListId");
-                    if (lastSelectedListId) {
+                    if (lastSelectedListId)
                         list = lists.filter(x => x.id == lastSelectedListId)[0];
-                    }
                     if (!list)
                         list = lists[0];
                     state.currentList = list;
