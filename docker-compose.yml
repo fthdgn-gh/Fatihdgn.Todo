@@ -29,7 +29,7 @@ services:
       context: ./Fatihdgn.Todo.Web
       dockerfile: Dockerfile
     ports:
-      - 8080:4200
+      - 8080:80
     depends_on:
       - api
 volumes:
