@@ -21,6 +21,8 @@ services:
     ports:
       - 8180:443
       - 8181:80
+    environment:
+      - TODO_DATABASE_CONNECTION_STRING=Server=fatihdgntodo-sqlserver;Database=TodoDB;User=sa;Password=uKvKWLWebXu9GpMw;TrustServerCertificate=True;
     depends_on:
       - sqlserver
   app:

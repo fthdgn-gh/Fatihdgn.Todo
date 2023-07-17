@@ -18,6 +18,13 @@ using NSwag.Generation.Processors.Security;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//builder.Configuration.AddEnvironmentVariables();
+
+const string TODO_DATABASE_CONNECTION_STRING = "TODO_DATABASE_CONNECTION_STRING";
+
+if (string.IsNullOrEmpty(builder.Configuration[TODO_DATABASE_CONNECTION_STRING])) throw new ArgumentNullException(TODO_DATABASE_CONNECTION_STRING, $"{TODO_DATABASE_CONNECTION_STRING} is a required environment variable. Please define it.");
+
 builder.Configuration.AddUserSecrets<Program>();
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
@@ -71,7 +78,7 @@ builder.Services.AddDbContext<TodoDB>(options =>
     //if (builder.Environment.IsDevelopment())
     //    options.UseInMemoryDatabase(nameof(TodoDB));
     //else
-        options.UseSqlServer(builder.Configuration.GetConnectionString(nameof(TodoDB)));
+    options.UseSqlServer(builder.Configuration["TODO_DATABASE_CONNECTION_STRING"]);
 
     options.UseLazyLoadingProxies();
 });
@@ -88,20 +95,19 @@ builder.Services.AddIdentity<TodoUserEntity, IdentityRole>()
        .AddDefaultTokenProviders();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidateAudience = true,
-            ValidateLifetime = true,
-            ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["JwtBearerAuthenticationValidIssuer"]!,
-            ValidAudience = builder.Configuration["JwtBearerAuthenticationValidAudience"]!,
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtBearerAuthenticationIssuerSigningKey"]!))
-        };
-    });
-
+   .AddJwtBearer(options =>
+   {
+       options.TokenValidationParameters = new TokenValidationParameters
+       {
+           ValidateIssuer = true,
+           ValidateAudience = true,
+           ValidateLifetime = true,
+           ValidateIssuerSigningKey = true,
+           ValidIssuer = builder.Configuration["JwtBearerAuthenticationValidIssuer"]!,
+           ValidAudience = builder.Configuration["JwtBearerAuthenticationValidAudience"]!,
+           IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtBearerAuthenticationIssuerSigningKey"]!))
+       };
+   });
 
 builder.Services.AddHealthChecks().AddDbContextCheck<TodoDB>();
 
