@@ -19,11 +19,7 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//builder.Configuration.AddEnvironmentVariables();
-
 const string TODO_DATABASE_CONNECTION_STRING = "TODO_DATABASE_CONNECTION_STRING";
-
-if (string.IsNullOrEmpty(builder.Configuration[TODO_DATABASE_CONNECTION_STRING])) throw new ArgumentNullException(TODO_DATABASE_CONNECTION_STRING, $"{TODO_DATABASE_CONNECTION_STRING} is a required environment variable. Please define it.");
 
 builder.Configuration.AddUserSecrets<Program>();
 
@@ -75,10 +71,14 @@ builder.Services.AddOpenApiDocument(config =>
 
 builder.Services.AddDbContext<TodoDB>(options =>
 {
-    //if (builder.Environment.IsDevelopment())
-    //    options.UseInMemoryDatabase(nameof(TodoDB));
-    //else
-    options.UseSqlServer(builder.Configuration["TODO_DATABASE_CONNECTION_STRING"]);
+    if (builder.Environment.IsDevelopment())
+        options.UseInMemoryDatabase(nameof(TodoDB));
+    else
+    {
+
+        if (string.IsNullOrEmpty(builder.Configuration[TODO_DATABASE_CONNECTION_STRING])) throw new ArgumentNullException(TODO_DATABASE_CONNECTION_STRING, $"{TODO_DATABASE_CONNECTION_STRING} is a required environment variable. Please define it.");
+        options.UseSqlServer(builder.Configuration["TODO_DATABASE_CONNECTION_STRING"]);
+    }
 
     options.UseLazyLoadingProxies();
 });

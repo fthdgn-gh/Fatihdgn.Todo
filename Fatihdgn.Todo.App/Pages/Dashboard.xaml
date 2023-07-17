@@ -22,20 +22,18 @@
             HorizontalOptions="StartAndExpand" 
             MinimumWidthRequest="350"
             IsVisible="{Binding IsMenuOpened}">
-            <Grid RowDefinitions="auto,1*,1*">
-                <VerticalStackLayout>
-                    <HorizontalStackLayout>
-                        <HorizontalStackLayout.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding ToggleMenuCommand}"></TapGestureRecognizer>
-                        </HorizontalStackLayout.GestureRecognizers>
-                        <fluent:MauiIcon Icon="GridDots24" Margin="5,10,5,5" VerticalOptions="Center" />
-                    </HorizontalStackLayout>
-                </VerticalStackLayout>
-                <VerticalStackLayout Grid.Row="1" HorizontalOptions="FillAndExpand">
-                    <Label FontSize="Subtitle" VerticalOptions="FillAndExpand" Margin="5,5,0,0">Lists</Label>
-                    <CollectionView  ItemsSource="{Binding Lists}" ItemsLayout="VerticalList" Margin="5">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
+            <VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <HorizontalStackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ToggleMenuCommand}"></TapGestureRecognizer>
+                    </HorizontalStackLayout.GestureRecognizers>
+                    <fluent:MauiIcon Icon="GridDots24" Margin="5,10,5,5" VerticalOptions="Center" />
+                </HorizontalStackLayout>
+                <Label IsVisible="{Binding HasLists}" FontSize="Subtitle" VerticalOptions="FillAndExpand" Margin="5,5,0,0">Lists</Label>
+                <CollectionView ItemsSource="{Binding Lists}" ItemsLayout="VerticalList" Margin="5">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <HorizontalStackLayout>
                                 <HorizontalStackLayout>
                                     <HorizontalStackLayout.GestureRecognizers>
                                         <TapGestureRecognizer Command="{Binding BindingContext.SelectTodoListCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
@@ -44,11 +42,40 @@
                                     <fluent:MauiIcon Icon="AppsList20" />
                                     <Label VerticalOptions="Center" Margin="5,-3,0,0" Text="{Binding Name}"></Label>
                                 </HorizontalStackLayout>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                </VerticalStackLayout>
-            </Grid>
+                                <HorizontalStackLayout Margin="10,0,0,0">
+                                    <fluent:MauiIcon Icon="ClipboardTaskListLtr20">
+                                        <fluent:MauiIcon.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.CreateTemplateByListCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                                          CommandParameter="{Binding}"/>
+                                        </fluent:MauiIcon.GestureRecognizers>
+                                    </fluent:MauiIcon>
+                                </HorizontalStackLayout>
+                            </HorizontalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Label FontSize="Subtitle" VerticalOptions="FillAndExpand" Margin="5,5,0,0">Templates</Label>
+                <CollectionView IsVisible="{Binding HasTemplates}" ItemsSource="{Binding Templates}" ItemsLayout="VerticalList" Margin="5">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid ColumnDefinitions="*,auto,*">
+                                <HorizontalStackLayout Grid.Column="0">
+                                    <fluent:MauiIcon Icon="ClipboardTaskListLtr20" />
+                                    <Label VerticalOptions="Center" Margin="5,-3,0,0" Text="{Binding Name}"></Label>
+                                </HorizontalStackLayout>
+                                <HorizontalStackLayout Grid.Column="2">
+                                    <fluent:MauiIcon Icon="AppsList20">
+                                        <fluent:MauiIcon.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.CreateListByTemplateCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                                          CommandParameter="{Binding}"/>
+                                        </fluent:MauiIcon.GestureRecognizers>
+                                    </fluent:MauiIcon>
+                                </HorizontalStackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
         </ui:AcrylicView>
         <ui:AcrylicView Grid.Column="1"
                 EffectStyle="Light"
@@ -68,11 +95,6 @@
                         <Grid Grid.Column="1">
                             <Label VerticalOptions="Center" FontSize="Title" Margin="20" Text="{Binding CurrentTodoList.Name}"></Label>
                         </Grid>
-                        <Grid Grid.Column="2" HorizontalOptions="End">
-                            <HorizontalStackLayout>
-                                <fluent:MauiIcon Icon="Settings24" Margin="10" VerticalOptions="Center" />
-                            </HorizontalStackLayout>
-                        </Grid>
                     </Grid>
                 </VerticalStackLayout>
                 <CollectionView Grid.Row="1" ItemsSource="{Binding Items}" VerticalOptions="FillAndExpand">
@@ -89,8 +111,8 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
                 <Grid Grid.Row="2" ColumnDefinitions="1*,auto" Margin="0,5,0,5">
-                    <Entry Placeholder="Enter your next todo" HorizontalOptions="FillAndExpand"></Entry>
-                    <Button Grid.Column="1" BackgroundColor="Transparent" TextColor="White" Margin="5,0,0,0" Text="Add"></Button>
+                    <Entry Placeholder="Enter your next todo" HorizontalOptions="FillAndExpand" Text="{Binding TodoContent}"></Entry>
+                    <Button Grid.Column="1" BackgroundColor="Transparent" TextColor="White" Margin="5,0,0,0" Text="Add" Command="{Binding AddTodoItemCommand}"></Button>
                 </Grid>
             </Grid>
         </ui:AcrylicView>

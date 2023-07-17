@@ -30,9 +30,21 @@ public partial class DashboardViewModel : BindableObject
         IsMenuOpened = !IsMenuOpened;
     }
 
+    private string todoContent;
+    public string TodoContent
+    {
+        get => todoContent;
+        set { todoContent = value; OnPropertyChanged(nameof(TodoContent)); }
+    }
+
+
+    public bool HasLists => Lists.Any();
     public ObservableCollection<TodoListDTO> Lists => AppState.Instance.Lists;
+    public bool HasItems => Items.Any();
     public ObservableCollection<TodoItemDTO> Items => AppState.Instance.Items;
+    public bool HasTemplates => Templates.Any();
     public ObservableCollection<TodoTemplateDTO> Templates => AppState.Instance.Templates;
+
     public TodoListObject CurrentTodoList => AppState.Instance.CurrentTodoList;
 
     [RelayCommand]
@@ -43,6 +55,18 @@ public partial class DashboardViewModel : BindableObject
         _state.Items.Clear();
         foreach (var item in await _client.GetAllItemsByListIdAsync(list.Id))
             _state.Items.Add(item);
+        OnPropertyChanged(nameof(Items));
+        OnPropertyChanged(nameof(HasItems));
+    }
+
+    [RelayCommand]
+    public async Task AddTodoItemAsync()
+    {
+        var item = await _client.CreateItemAsync(new TodoItemCreateDTO { Content = TodoContent, ListId = CurrentTodoList.Id, Note = string.Empty });
+        TodoContent = string.Empty;
+        _state.Items.Add(item);
+        OnPropertyChanged(nameof(Items));
+        OnPropertyChanged(nameof(HasItems));
     }
 
 
@@ -53,5 +77,26 @@ public partial class DashboardViewModel : BindableObject
         _state.CurrentTodoItem.MapFrom(item);
         _state.CurrentTodoItem.IsCompleted = isCompleted;
         await _client.PatchItemAsync(item.Id, new TodoItemPatchDTO { IsCompleted = isCompleted });
+    }
+
+    [RelayCommand]
+    public async Task CreateTemplateByListAsync(TodoListDTO list)
+    {
+        _state.CurrentTodoListId = list.Id;
+        _state.CurrentTodoList.MapFrom(list);
+        var template = await _client.CreateTemplateByListAsync(list.Id);
+        _state.Templates.Add(template);
+        OnPropertyChanged(nameof(Templates));
+        OnPropertyChanged(nameof(HasTemplates));
+    }
+
+    [RelayCommand]
+    public async Task CreateListByTemplateAsync(TodoTemplateDTO template)
+    {
+        var list = await _client.CreateListByTemplateAsync(template.Id);
+        _state.Lists.Add(list);
+        OnPropertyChanged(nameof(Lists));
+        OnPropertyChanged(nameof(HasLists));
+        await SelectTodoListAsync(list);
     }
 }
