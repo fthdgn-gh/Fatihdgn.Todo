@@ -18,6 +18,8 @@ It's basically my playground to try out new technologies and techniques.
 - Swagger support
 - .NET MAUI
 - Angular
+- TailwindCSS
+- daisyUI
 - Capacitor (for native iOS and Android apps)
 - Docker
 
