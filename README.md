@@ -3,6 +3,11 @@
 A simple Todo app that is taken to great lengths.
 It's basically my playground to try out new technologies and techniques.
 
+## Images
+
+![List](images/list.png)
+![Menu](images/menu.png)
+
 ## Technologies
 
 - ASP.NET Core Web API
