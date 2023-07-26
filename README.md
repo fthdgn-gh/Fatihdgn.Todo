@@ -6,8 +6,9 @@ It's basically my playground to try out new technologies and techniques.
 
 ## Images
 
-![List](Fatihdgn.Todo.Web/images/list.png)
-![Menu](Fatihdgn.Todo.Web/images/menu.png)
+![Login](images/login.png)
+![List](images/list.png)
+![Menu](images/menu.png)
 
 ## Technologies
 
