@@ -1,12 +1,13 @@
 # Todo App
 
 A simple Todo app that is taken to great lengths.
+
 It's basically my playground to try out new technologies and techniques.
 
 ## Images
 
-![List](images/list.png)
-![Menu](images/menu.png)
+![List](Fatihdgn.Todo.Web/images/list.png)
+![Menu](Fatihdgn.Todo.Web/images/menu.png)
 
 ## Technologies
 
